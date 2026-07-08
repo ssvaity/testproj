@@ -1,0 +1,60 @@
+:root {
+  /* Brand palette — drawn from the logo */
+  --brand-red: #b02a26;
+  --brand-red-dark: #8a1f1c;
+  --brand-gold: #d99a3e;
+  --brand-gold-light: #edd4a0;
+  --terracotta: #c98a79;
+
+  /* Neutrals */
+  --ink: #26201d;
+  --muted: #6b6058;
+  --line: #e7e1da;
+  --surface: #ffffff;
+  --surface-2: #faf6f0;
+  --bg: #ffffff;
+
+  --radius: 10px;
+  --shadow-sm: 0 1px 2px rgba(38, 32, 29, 0.06);
+  --shadow: 0 6px 20px rgba(38, 32, 29, 0.08);
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  font: 16px/1.5 var(--sans);
+  color: var(--ink);
+  background: var(--bg);
+  color-scheme: light;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+a {
+  color: var(--brand-red);
+}
