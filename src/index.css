@@ -28,7 +28,7 @@
 
   font: 16px/1.6 var(--serif);
   color: var(--ink);
-  background: var(--straw);
+  background: #faf7f1;
   color-scheme: light;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -40,7 +40,7 @@
 
 body {
   margin: 0;
-  background: var(--straw); /* warm off-white */
+  background: #faf7f1; /* warm cream page background (navbar stays white, footer dark) */
 }
 
 #root {

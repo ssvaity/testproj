@@ -20,6 +20,27 @@ const readSteps = [
   { title: 'Freely accessible', text: 'The library is open to every scholar, seeker and devotee — no barrier.' },
 ]
 
+const gurudevs = [
+  {
+    image: '/images/gurudev-rajendrasuri.jpg',
+    name: 'Shrimad Vijay Rajendrasurishwarji Maharaja',
+    title: 'Prashantmurti Gachchhadhipati Pujyapad Acharyadev',
+    bio: 'The serene Gachchhadhipati whose blessings guide the Ratnatrayee parivar. Carrying forward a lineage of scholarship and shraman discipline, Pujya Acharyadev inspires the preservation and study of Jain shrut for generations to come.',
+    facts: [],
+  },
+  {
+    image: '/images/gurudev-ratnasundarsuri.jpg',
+    name: 'Shrimad Vijay Ratnasundarsurishwarji Maharaja',
+    title: 'Saraswatilabdhaprasad Pujyapad Gurudev',
+    bio: 'One of the most prolific authors in the Jain tradition, Pujya Gurudev has devoted seven decades to morality, spirituality and personality development — “watering the roots” of a generation through discourses and inspiring literature that reaches seekers in Gujarati, Hindi, English and Marathi.',
+    facts: [
+      { value: '500+', label: 'Books authored' },
+      { value: 'Padma Bhushan', label: 'Conferred 2017' },
+      { value: 'Guinness', label: 'World record holder' },
+    ],
+  },
+]
+
 // Partner list + logos mirrored from vk.jyot.in.
 const partners = [
   { name: 'Jyot', role: 'Host', logo: '/images/partners/jyot.jpg' },
@@ -151,7 +172,7 @@ export default function Home() {
       </section>
 
       {/* Partner marquee */}
-      <section className="w-full overflow-hidden border-y border-warm bg-surface-container-low/50 py-10">
+      <section className="w-full overflow-hidden border-y border-warm bg-white py-10">
         <p className="eyebrow mb-8 text-center">With the support of</p>
         <div className="marquee-track">
           {[0, 1].map((g) => (
@@ -252,7 +273,7 @@ export default function Home() {
         title="Read &amp; download"
         intro="Preview each digitized scripture online, then download the full text to keep — freely, with no barrier to access."
         items={readSteps}
-        image="/images/manuscript-cover.jpg"
+        image="/images/manuscript-texture-2.jpg"
         card={
           <div className="relative z-10 mx-4 w-full max-w-md overflow-hidden rounded-2xl border border-warm bg-white/95 shadow-2xl backdrop-blur-xl">
             <div
@@ -293,6 +314,45 @@ export default function Home() {
         }
       />
 
+      {/* Blessings of the Gurudevs — just before the footer */}
+      <section className="mx-auto w-full max-w-container-max px-margin-mobile pb-stack-lg pt-stack-md">
+        <div className="mb-stack-md text-center">
+          <p className="eyebrow mb-3">With reverence</p>
+          <h2 className="font-headline-lg text-headline-lg text-sepia">Blessings of the Gurudevs</h2>
+        </div>
+        <div className="mx-auto flex max-w-5xl flex-col gap-stack-lg">
+          {gurudevs.map((g) => (
+            <div key={g.name} className="flex flex-col gap-6 sm:min-h-[420px] sm:flex-row sm:items-stretch">
+              {/* Portrait — its own card */}
+              <div className="overflow-hidden rounded-lg border border-warm shadow-sm sm:w-[300px] sm:shrink-0">
+                <img
+                  src={g.image}
+                  alt={g.name}
+                  className="aspect-[3/4] h-full w-full object-cover object-top sm:aspect-auto"
+                />
+              </div>
+              {/* Text — no container */}
+              <div className="flex flex-1 flex-col justify-center gap-4 sm:pl-4">
+                <div>
+                  <p className="eyebrow mb-2 text-brass">{g.title}</p>
+                  <h3 className="font-headline-md text-[24px] leading-snug text-sepia">{g.name}</h3>
+                </div>
+                <p className="max-w-2xl text-sm leading-relaxed text-text-muted">{g.bio}</p>
+                {g.facts.length > 0 && (
+                  <div className="flex flex-wrap gap-x-8 gap-y-3 border-t border-warm pt-4">
+                    {g.facts.map((f) => (
+                      <div key={f.label}>
+                        <p className="font-headline-md text-[19px] leading-none text-oxblood">{f.value}</p>
+                        <p className="mt-1 font-label-md text-label-md text-text-muted">{f.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     </>
   )
 }

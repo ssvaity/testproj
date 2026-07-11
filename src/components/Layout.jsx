@@ -17,10 +17,9 @@ export default function Layout() {
   const isHome = pathname === '/'
   const reduce = useReducedMotion()
 
-  // Replace the option for the page you're already on with Home, so there is
-  // never a dead menu item that does nothing when clicked.
-  const homeItem = { link: '/', text: t.nav.home, image: '/images/hero-garden.jpg' }
+  // Full menu — all pages, always shown.
   const menuItems = [
+    { link: '/', text: t.nav.home, image: '/images/hero-garden.jpg' },
     { link: '/about', text: t.nav.about, image: '/images/manuscript-texture.png' },
     { link: '/search', text: 'Archive', image: '/images/pages/p1.jpg' },
     { link: '/library', text: t.nav.library, image: '/images/manuscript-cover.jpg' },
@@ -30,7 +29,22 @@ export default function Layout() {
       image: '/images/manuscript-cover.jpg',
     },
     { link: '/contact', text: t.nav.contact, image: '/images/garden-strip.jpg' },
-  ].map((it) => (it.link === pathname ? homeItem : it))
+  ]
+
+  // The two logo videos (navbar + menu header) are separate elements, so they
+  // play on independent clocks. Sync the menu one to the navbar one on open.
+  const navVideoRef = useRef(null)
+  const menuVideoRef = useRef(null)
+  useEffect(() => {
+    if (menuOpen && menuVideoRef.current && navVideoRef.current) {
+      try {
+        menuVideoRef.current.currentTime = navVideoRef.current.currentTime
+        menuVideoRef.current.play()
+      } catch {
+        /* ignore */
+      }
+    }
+  }, [menuOpen])
 
   // Replay the folio sweep on real navigations (not the initial page load).
   const prev = useRef(pathname)
@@ -42,6 +56,7 @@ export default function Layout() {
       setSweepKey((k) => k + 1)
       setSweeping(true)
       setMenuOpen(false)
+      window.scrollTo(0, 0)
     }
   }, [pathname])
 
@@ -64,11 +79,12 @@ export default function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Top navbar — scrolls away with the page (not sticky) */}
-      <nav className="z-50 w-full border-b border-warm bg-white">
+      <nav className="z-50 w-full border-b border-warm bg-[#faf7f1]">
         <div className="mx-auto flex max-w-container-max items-center px-margin-mobile py-3">
           {/* Left: logo video + wordmark */}
           <Link to="/" aria-label="Shrutsanjeevan" className="flex items-center gap-3">
             <video
+              ref={navVideoRef}
               src="/logo-video.mp4"
               poster="/logo.png"
               autoPlay
@@ -106,21 +122,33 @@ export default function Layout() {
             transition={{ duration: 0.25, ease: 'easeOut' }}
             className="fixed inset-0 z-[200] flex flex-col bg-[#faf7f1]"
           >
-            <div className="flex items-center justify-between border-b border-warm px-margin-mobile py-4">
-              <Link to="/" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
-                <img src="/logo.png" alt="Shrutsanjeevan" className="h-9 w-auto" />
-                <span className="font-headline-md text-[18px] text-sepia">Shrutsanjeevan</span>
-              </Link>
-              <button
-                type="button"
-                onClick={() => setMenuOpen(false)}
-                aria-label="Close menu"
-                className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood"
-              >
-                <span className="material-symbols-outlined">close</span>
-              </button>
+            <div className="border-b border-warm bg-[#faf7f1]">
+              <div className="mx-auto flex max-w-container-max items-center justify-between px-margin-mobile py-3">
+                <Link to="/" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
+                  <video
+                    ref={menuVideoRef}
+                    src="/logo-video.mp4"
+                    poster="/logo.png"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    aria-hidden="true"
+                    className="h-12 w-auto"
+                  />
+                  <span className="font-headline-lg text-[24px] leading-none text-sepia">Shrutsanjeevan</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setMenuOpen(false)}
+                  aria-label="Close menu"
+                  className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood"
+                >
+                  <span className="material-symbols-outlined">close</span>
+                </button>
+              </div>
             </div>
-            <div className="flex-1">
+            <div className="flex-1" onClick={() => setMenuOpen(false)}>
               <FlowingMenu
                 items={menuItems}
                 speed={18}
