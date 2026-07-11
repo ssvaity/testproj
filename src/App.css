@@ -9,8 +9,13 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  border-bottom: 1px solid #ddd;
-  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(251, 247, 239, 0.88);
+  backdrop-filter: blur(6px);
+  padding: 0.6rem 1.75rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
 .nav-brand {
@@ -19,28 +24,54 @@
 }
 
 .nav-brand img {
-  height: 52px;
+  height: 46px;
   width: auto;
 }
 
 .nav nav {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.75rem;
   margin-left: auto;
+  align-items: center;
 }
 
-.nav a {
+.nav nav a {
   text-decoration: none;
-  color: inherit;
-  font-weight: 500;
+  color: var(--sepia);
+  font-family: var(--display);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  padding-bottom: 2px;
+  border-bottom: 1.5px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.nav nav a:hover {
+  color: var(--oxblood);
 }
 
 .nav nav a.active {
-  color: #c98a79;
-  text-decoration: underline;
+  color: var(--oxblood);
+  border-bottom-color: var(--oxblood);
 }
 
 .content {
   flex: 1;
-  padding: 2rem 1.5rem;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2.75rem 1.5rem 3.5rem;
+}
+
+@media (max-width: 640px) {
+  .nav {
+    gap: 1rem;
+    padding: 0.6rem 1rem;
+  }
+  .nav nav {
+    gap: 1rem;
+  }
+  .nav nav a {
+    font-size: 14px;
+  }
 }

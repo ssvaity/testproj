@@ -1,28 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  /* Brand palette — drawn from the logo */
-  --brand-red: #b02a26;
-  --brand-red-dark: #8a1f1c;
-  --brand-gold: #d99a3e;
-  --brand-gold-light: #edd4a0;
-  --terracotta: #c98a79;
+  /* Palm-Leaf Archive palette */
+  --oxblood: #8a1f1c;
+  --oxblood-dark: #6e1714;
+  --sepia: #5c4326;
+  --olive: #6b6a3a;
+  --brass: #d9a441;
 
   /* Neutrals */
-  --ink: #26201d;
-  --muted: #6b6058;
-  --line: #e7e1da;
+  --ink: #2f2418;
+  --muted: #7c6b52;
+  --line: #e7dcc7;
   --surface: #ffffff;
-  --surface-2: #faf6f0;
+  --leaf: #f3e9d6;
+  --straw: #ffffff;
   --bg: #ffffff;
 
-  --radius: 10px;
-  --shadow-sm: 0 1px 2px rgba(38, 32, 29, 0.06);
-  --shadow: 0 6px 20px rgba(38, 32, 29, 0.08);
+  --radius: 4px;
+  --shadow-sm: 0 1px 2px rgba(47, 36, 24, 0.06);
+  --shadow: 0 10px 30px rgba(47, 36, 24, 0.1);
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --display: 'Marcellus', 'Noto Serif Devanagari', 'Noto Serif', serif;
+  --serif: 'Noto Serif', 'Noto Serif Devanagari', 'Noto Serif Gujarati', serif;
 
-  font: 16px/1.5 var(--sans);
+  font: 16px/1.6 var(--serif);
   color: var(--ink);
-  background: var(--bg);
+  background: var(--straw);
   color-scheme: light;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -34,6 +40,7 @@
 
 body {
   margin: 0;
+  background: var(--straw); /* warm off-white */
 }
 
 #root {
@@ -46,7 +53,8 @@ h1,
 h2,
 h3 {
   color: var(--ink);
-  font-weight: 600;
+  font-family: var(--display);
+  font-weight: 400;
   line-height: 1.2;
   margin: 0 0 0.5rem;
 }
@@ -56,5 +64,137 @@ h1 {
 }
 
 a {
-  color: var(--brand-red);
+  color: var(--oxblood);
+}
+
+/* Partner marquee — continuous horizontal scroll. */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 34s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+/* -----------------------------------------------------------------------------
+   Signature — the palm-leaf binding motif.
+   Eyebrows are set in the display face, spaced and rubricated (oxblood).
+   Punched "binding holes" recur as dividers and on folio cards.
+   -------------------------------------------------------------------------- */
+.eyebrow {
+  font-family: var(--display);
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 12px;
+  color: var(--oxblood);
+}
+
+/* Devanagari & Gujarati read poorly with the wide English letter-spacing.
+   Collapse tracking when the site is viewed in Hindi/Gujarati, and offer a
+   `.indic` helper for script fragments shown inside otherwise-English labels. */
+html[lang='hi'] .eyebrow,
+html[lang='gu'] .eyebrow {
+  letter-spacing: 0.06em;
+}
+html[lang='hi'] [class*='tracking-'],
+html[lang='gu'] [class*='tracking-'],
+html[lang='hi'] .menu span,
+html[lang='gu'] .menu span,
+html[lang='hi'] .menu__item-link,
+html[lang='gu'] .menu__item-link {
+  letter-spacing: 0.02em !important;
+}
+.indic {
+  letter-spacing: normal !important;
+}
+
+/* A single punched binding hole (ring). */
+.hole {
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--oxblood);
+  background: var(--straw);
+  box-shadow: inset 0 1px 1px rgba(47, 36, 24, 0.25);
+  flex: none;
+}
+
+/* Folio card: a leaf with a bound left edge (string line + two holes). */
+.folio {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding-left: 1.75rem;
+}
+.folio::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 14px;
+  bottom: 14px;
+  width: 1.5px;
+  background: linear-gradient(
+    var(--oxblood),
+    var(--oxblood) 40%,
+    transparent 40%,
+    transparent 60%,
+    var(--oxblood) 60%
+  );
+  opacity: 0.55;
+}
+
+/* -----------------------------------------------------------------------------
+   Dialog motion — from the transitions.dev "Modal open / close" skill
+   (ui-skills: jakubantalik/transitions-dev). Scale-up on open, softer
+   scale-down on close, plus a matching overlay fade.
+   -------------------------------------------------------------------------- */
+:root {
+  --modal-open-dur: 250ms;
+  --modal-close-dur: 150ms;
+  --modal-scale: 0.96;
+  --modal-scale-close: 0.96;
+  --modal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.t-modal {
+  transform-origin: center;
+  transform: scale(var(--modal-scale));
+  opacity: 0;
+  transition:
+    transform var(--modal-open-dur) var(--modal-ease),
+    opacity var(--modal-open-dur) var(--modal-ease);
+  will-change: transform, opacity;
+}
+.t-modal.is-open {
+  transform: scale(1);
+  opacity: 1;
+}
+.t-modal.is-closing {
+  transform: scale(var(--modal-scale-close));
+  opacity: 0;
+  transition:
+    transform var(--modal-close-dur) var(--modal-ease),
+    opacity var(--modal-close-dur) var(--modal-ease);
+}
+
+/* Backdrop fade, timed to the modal open/close durations. */
+.t-overlay {
+  opacity: 0;
+  transition: opacity var(--modal-open-dur) var(--modal-ease);
+}
+.t-overlay.is-open {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-modal,
+  .t-overlay {
+    transition: none !important;
+  }
 }
