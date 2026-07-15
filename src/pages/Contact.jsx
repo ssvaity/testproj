@@ -350,12 +350,11 @@ export default function Contact() {
           Your sacred donation is an auspicious offering (Aahuti) in this &ldquo;Pushya&rdquo; Yagna
           begun by Shrutsanjeevan.
         </p>
-      </section>
 
-      {/* Online donation — Razorpay integration point */}
-      <section className="mt-stack-md rounded-xl border border-warm bg-surface-container-lowest p-stack-md shadow-sm">
-        <p className="eyebrow mb-3 text-brass">Give online</p>
-        <h2 className="mb-stack-sm font-headline-md text-headline-md text-sepia">Make a contribution</h2>
+        {/* Give online — Razorpay integration point (same block) */}
+        <div className="mt-stack-md border-t border-warm pt-stack-md">
+          <p className="eyebrow mb-3 text-brass">Give online</p>
+          <h2 className="mb-stack-sm font-headline-md text-headline-md text-sepia">Make a contribution</h2>
         <p className="mb-stack-md max-w-3xl font-body-md text-body-md text-text-muted">
           Support the preservation of India&rsquo;s scriptural heritage. Contribute securely online.
         </p>
@@ -383,6 +382,7 @@ export default function Contact() {
             </span>
           </button>
           <p className="text-xs text-text-muted">Secure checkout coming soon.</p>
+          </div>
         </div>
       </section>
     </>

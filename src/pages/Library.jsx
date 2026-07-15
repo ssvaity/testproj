@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { sampleLibrary } from '../data/sampleLibrary.js'
 import PdfReaderModal from '../components/PdfReaderModal.jsx'
 import Dialog from '../components/Dialog.jsx'
+import HindiKeyboard from '../components/HindiKeyboard.jsx'
 import { trackDownload } from '../lib/analytics.js'
 import { incrementDownloadCount } from '../lib/downloadCounter.js'
 import DownloadCounter from '../components/DownloadCounter.jsx'
@@ -39,6 +40,8 @@ export default function Library() {
   const [language, setLanguage] = useState('')
   const [topic, setTopic] = useState('')
   const [sort, setSort] = useState('title')
+  const [hindiKb, setHindiKb] = useState(false)
+  const keywordRef = useRef(null)
   const [selected, setSelected] = useState(null)
   const [reading, setReading] = useState(null)
   const [chapterSel, setChapterSel] = useState(new Set())
@@ -131,6 +134,7 @@ export default function Library() {
             search
           </span>
           <input
+            ref={keywordRef}
             type="text"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
@@ -166,7 +170,30 @@ export default function Library() {
             </select>
             {chevron}
           </div>
+
+          {/* Hindi keyboard toggle */}
+          <button
+            type="button"
+            onClick={() => setHindiKb((v) => !v)}
+            aria-pressed={hindiKb}
+            title="हिन्दी कीबोर्ड"
+            className={`indic ml-auto inline-flex items-center px-3 py-1.5 font-label-md text-label-md transition-colors ${
+              hindiKb ? 'text-oxblood' : 'text-text-muted hover:text-oxblood'
+            }`}
+          >
+            हिन्दी
+          </button>
         </div>
+
+        {/* On-screen Hindi keyboard */}
+        {hindiKb && (
+          <HindiKeyboard
+            inputRef={keywordRef}
+            value={keyword}
+            setValue={setKeyword}
+            onClose={() => setHindiKb(false)}
+          />
+        )}
       </div>
 
       <p className="mb-stack-md font-body-md text-sm text-text-muted">

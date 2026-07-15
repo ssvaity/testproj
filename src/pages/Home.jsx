@@ -146,7 +146,36 @@ export default function Home() {
             <source src="/videos/peacock.mp4" type="video/mp4" />
           </video>
 
-          <div className="relative z-10 max-w-3xl px-margin-mobile py-stack-lg md:ml-[36%] md:pr-8">
+          {/* Grass footing — static art that grounds the peacock and covers its legs.
+              mix-blend-multiply drops the image's white background so only the grass shows. */}
+          <img
+            src="/images/hero-grass-low.png"
+            alt=""
+            aria-hidden="true"
+            style={{
+              maskImage: 'linear-gradient(to right, #000 58%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to right, #000 58%, transparent 100%)',
+            }}
+            className="pointer-events-none absolute bottom-0 left-0 z-[1] w-[60%] max-w-[340px] object-contain object-bottom mix-blend-multiply md:left-[2%] md:z-[6] md:w-[32%] md:max-w-[400px]"
+          />
+          {/* Second clump — low plants only (no tall grass), overlaps the first so the grass
+              reads as one continuous patch. Edge mask fades it smoothly into the white. */}
+          <img
+            src="/images/hero-grass-low.png"
+            alt=""
+            aria-hidden="true"
+            style={{
+              maskImage:
+                'linear-gradient(to right, transparent 0%, #000 22%, #000 74%, transparent 100%)',
+              WebkitMaskImage:
+                'linear-gradient(to right, transparent 0%, #000 22%, #000 74%, transparent 100%)',
+            }}
+            className="pointer-events-none absolute bottom-0 left-[30%] z-[2] w-[50%] max-w-[280px] -scale-x-100 object-contain object-bottom mix-blend-multiply md:left-[12%] md:z-[7] md:w-[28%] md:max-w-[340px]"
+          />
+
+          <div
+            className="relative z-10 max-w-3xl px-margin-mobile py-stack-lg [text-shadow:0_0_10px_rgba(255,255,255,0.95),0_0_10px_rgba(255,255,255,0.9),0_0_4px_rgba(255,255,255,0.9)] md:ml-[36%] md:pr-8 md:[text-shadow:none]"
+          >
             <p className="eyebrow mb-5">
               <span className="indic">श्रुतसंजीवन</span> · Ratnatrayee Trust
             </p>
