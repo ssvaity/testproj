@@ -33,15 +33,15 @@ const navLinks = [
 function InfoBlock({ label, children }) {
   return (
     <div>
-      <p className="mb-2 text-lg font-semibold text-[#f3e9d6]">{label}</p>
-      <div className="text-base leading-relaxed text-[#f3e9d6]/60">{children}</div>
+      <p className="mb-2 text-lg font-normal text-sepia">{label}</p>
+      <div className="text-base leading-relaxed text-text-muted">{children}</div>
     </div>
   )
 }
 
 export default function Footer() {
   return (
-    <footer className="bg-[#2f2418]">
+    <footer className="border-t-2 border-brass/50 bg-[#faf7f1]">
       <div className="mx-auto w-full max-w-container-max px-margin-mobile py-stack-lg">
         {/* Top */}
         <div className="flex flex-col gap-stack-lg lg:flex-row lg:items-start lg:justify-between">
@@ -49,14 +49,11 @@ export default function Footer() {
           <div>
             <div className="mb-8 flex items-center gap-3">
               <img src="/logo.png" alt="Shrutsanjeevan" className="h-11 w-auto" />
-              <span className="font-headline-md text-[24px] text-[#f3e9d6]">Shrutsanjeevan</span>
+              <span className="font-headline-md text-[24px] text-sepia">Shrutsanjeevan</span>
             </div>
-            <h2 className="font-headline-xl text-[30px] leading-none text-white md:text-[38px]">
-              Get in touch
-            </h2>
             <Link
               to="/contact"
-              className="mt-8 inline-flex items-center rounded-full bg-white px-8 py-3.5 font-label-md text-base text-ink transition-colors hover:bg-cream-surface"
+              className="inline-flex items-center font-label-md text-base text-oxblood transition-colors hover:text-oxblood-dark"
             >
               Contact us
             </Link>
@@ -72,7 +69,7 @@ export default function Footer() {
             <InfoBlock label="Email">
               <a
                 href="mailto:ratnatrayeetrust@gmail.com"
-                className="transition-colors hover:text-[#f3e9d6]"
+                className="transition-colors hover:text-oxblood-dark"
               >
                 ratnatrayeetrust@gmail.com
               </a>
@@ -88,8 +85,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-stack-lg flex flex-col items-center gap-4 border-t border-white/10 pt-6 md:flex-row md:justify-between">
-          <span className="text-[15px] text-[#f3e9d6]/55">
+        <div className="mt-stack-lg flex flex-col items-center gap-4 border-t border-warm pt-6 md:flex-row md:justify-between">
+          <span className="text-[15px] text-text-muted">
             © 2026 Shrutsanjeevan. All rights reserved.
           </span>
           <nav className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
@@ -97,7 +94,7 @@ export default function Footer() {
               <Link
                 key={l.label}
                 to={l.to}
-                className="text-[15px] text-[#f3e9d6]/80 transition-colors hover:text-white"
+                className="text-[15px] text-sepia transition-colors hover:text-oxblood"
               >
                 {l.label}
               </Link>
@@ -109,7 +106,7 @@ export default function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="text-[#f3e9d6]/60 transition-colors hover:text-white"
+                className="text-text-muted transition-colors hover:text-oxblood"
               >
                 <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                   <path fill="currentColor" d={path} />

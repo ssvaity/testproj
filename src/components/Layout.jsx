@@ -21,11 +21,11 @@ export default function Layout() {
   const menuItems = [
     { link: '/', text: t.nav.home, image: '/images/hero-garden.jpg' },
     { link: '/about', text: t.nav.about, image: '/images/manuscript-texture.png' },
-    { link: '/search', text: 'Archive', image: '/images/pages/p1.jpg' },
+    { link: '/search', text: t.nav.archive, image: '/images/pages/p1.jpg' },
     { link: '/library', text: t.nav.library, image: '/images/manuscript-cover.jpg' },
     {
       link: '/requests',
-      text: count > 0 ? `Request list (${count})` : 'Request list',
+      text: count > 0 ? `${t.requestCart} (${count})` : t.requestCart,
       image: '/images/manuscript-cover.jpg',
     },
     { link: '/contact', text: t.nav.contact, image: '/images/garden-strip.jpg' },
@@ -79,7 +79,7 @@ export default function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Top navbar — scrolls away with the page (not sticky) */}
-      <nav className="z-50 w-full border-b border-warm bg-[#faf7f1]">
+      <nav className="z-50 w-full border-b border-warm bg-white">
         <div className="mx-auto flex max-w-container-max items-center px-margin-mobile py-3">
           {/* Left: logo video + wordmark */}
           <Link to="/" aria-label="Shrutsanjeevan" className="flex items-center gap-3">
@@ -92,7 +92,7 @@ export default function Layout() {
               muted
               playsInline
               aria-hidden="true"
-              className="h-12 w-auto"
+              className="h-12 w-auto [filter:brightness(1.09)_contrast(1.04)]"
             />
             <span className="font-headline-lg text-[24px] leading-none text-sepia">Shrutsanjeevan</span>
           </Link>
@@ -120,9 +120,9 @@ export default function Layout() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="fixed inset-0 z-[200] flex flex-col bg-[#faf7f1]"
+            className="fixed inset-0 z-[200] flex flex-col bg-white"
           >
-            <div className="border-b border-warm bg-[#faf7f1]">
+            <div className="border-b border-warm bg-white">
               <div className="mx-auto flex max-w-container-max items-center justify-between px-margin-mobile py-3">
                 <Link to="/" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
                   <video
@@ -134,25 +134,28 @@ export default function Layout() {
                     muted
                     playsInline
                     aria-hidden="true"
-                    className="h-12 w-auto"
+                    className="h-12 w-auto [filter:brightness(1.09)_contrast(1.04)]"
                   />
                   <span className="font-headline-lg text-[24px] leading-none text-sepia">Shrutsanjeevan</span>
                 </Link>
-                <button
-                  type="button"
-                  onClick={() => setMenuOpen(false)}
-                  aria-label="Close menu"
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood"
-                >
-                  <span className="material-symbols-outlined">close</span>
-                </button>
+                <div className="flex items-center gap-3">
+                  <LanguageSwitcher />
+                  <button
+                    type="button"
+                    onClick={() => setMenuOpen(false)}
+                    aria-label="Close menu"
+                    className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood"
+                  >
+                    <span className="material-symbols-outlined">close</span>
+                  </button>
+                </div>
               </div>
             </div>
             <div className="flex-1" onClick={() => setMenuOpen(false)}>
               <FlowingMenu
                 items={menuItems}
                 speed={18}
-                bgColor="#faf7f1"
+                bgColor="#ffffff"
                 textColor="#2f2418"
                 marqueeBgColor="#8a1f1c"
                 marqueeTextColor="#f3e9d6"

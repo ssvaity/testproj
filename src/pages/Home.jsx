@@ -1,5 +1,7 @@
 import CountUp from '../components/CountUp.jsx'
-import { useLanguage } from '../context/LanguageContext.jsx'
+import { blobB, blobC } from '../data/blobs.js'
+
+const gurudevBlobs = [blobB, blobC]
 
 const heroStats = [
   { to: 80000, from: 79000, label: 'Books & E-Books' },
@@ -25,14 +27,14 @@ const gurudevs = [
     image: '/images/gurudev-rajendrasuri.jpg',
     name: 'Shrimad Vijay Rajendrasurishwarji Maharaja',
     title: 'Prashantmurti Gachchhadhipati Pujyapad Acharyadev',
-    bio: 'The serene Gachchhadhipati whose blessings guide the Ratnatrayee parivar. Carrying forward a lineage of scholarship and shraman discipline, Pujya Acharyadev inspires the preservation and study of Jain shrut for generations to come.',
+    bio: 'The serene Gachchhadhipati whose blessings guide the Ratnatrayee parivar. Carrying forward a lineage of scholarship and shraman discipline, Pujya Acharyadev inspires the preservation and study of shrut for generations to come.',
     facts: [],
   },
   {
     image: '/images/gurudev-ratnasundarsuri.jpg',
     name: 'Shrimad Vijay Ratnasundarsurishwarji Maharaja',
     title: 'Saraswatilabdhaprasad Pujyapad Gurudev',
-    bio: 'One of the most prolific authors in the Jain tradition, Pujya Gurudev has devoted seven decades to morality, spirituality and personality development — “watering the roots” of a generation through discourses and inspiring literature that reaches seekers in Gujarati, Hindi, English and Marathi.',
+    bio: 'One of the most prolific authors in the tradition, Pujya Gurudev has devoted seven decades to morality, spirituality and personality development — “watering the roots” of a generation through discourses and inspiring literature that reaches seekers in Gujarati, Hindi, English and Marathi.',
     facts: [
       { value: '500+', label: 'Books authored' },
       { value: 'Padma Bhushan', label: 'Conferred 2017' },
@@ -71,7 +73,7 @@ function RevealList({ items }) {
               }`}
             />
             <h3
-              className={`mb-2 text-lg font-medium transition-colors ${
+              className={`mb-2 text-lg font-normal transition-colors ${
                 i === 0 ? 'text-ink' : 'text-ink/55 group-hover:text-ink'
               }`}
             >
@@ -89,7 +91,7 @@ function RevealList({ items }) {
 
 function FeatureSection({ icon, eyebrow, title, intro, items, image, reverse, card }) {
   return (
-    <section className="w-full border-y border-warm bg-surface-container-low/50">
+    <section className="w-full border-y border-warm bg-white">
       <div
         className={`mx-auto flex w-full max-w-container-max flex-col lg:min-h-[560px] lg:flex-row ${
           reverse ? 'lg:flex-row-reverse' : ''
@@ -125,51 +127,39 @@ function FeatureSection({ icon, eyebrow, title, intro, items, image, reverse, ca
 }
 
 export default function Home() {
-  const { t } = useLanguage()
   return (
     <>
-      {/* Hero — full-height garden mural with the invitation overlaid */}
+      {/* Hero — white background + painterly peacock video (opaque MP4 on white, so it
+          reads as transparent and works in every browser). Plays once, then holds its
+          final frame (no loop). */}
       <section className="w-full px-4 pt-4 pb-stack-lg sm:px-6">
-        <div className="relative flex min-h-[86vh] w-full items-center justify-center overflow-hidden rounded-[24px] border border-warm shadow-sm">
-          <img
-            src="/images/hero-garden.jpg"
-            alt="Illustrated Jain palace garden with peacocks"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-          {/* legibility scrim: gentle overall wash + a darker pool behind the text */}
-          <div className="absolute inset-0 bg-ink/15" />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(ellipse 68% 52% at 50% 52%, rgba(47,36,24,0.55), rgba(47,36,24,0.15) 58%, transparent 80%)',
-            }}
-          />
+        <div className="relative flex min-h-[70vh] w-full items-center overflow-hidden rounded-[24px] border border-warm bg-white shadow-sm md:min-h-[78vh]">
+          <video
+            className="pointer-events-none absolute bottom-0 left-0 z-0 h-[82%] w-auto max-w-none object-contain object-bottom opacity-90 md:z-[5] md:h-[96%] md:opacity-100"
+            poster="/images/peacock-poster.jpg"
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+          >
+            <source src="/videos/peacock.mp4" type="video/mp4" />
+          </video>
 
-          <div className="relative z-10 flex flex-col items-center px-6 text-center">
-            <h1 className="max-w-3xl font-headline-xl text-headline-lg-mobile md:text-headline-xl text-white drop-shadow-lg">
-              {t.heroTitle}
-            </h1>
-          </div>
-        </div>
-      </section>
-
-      {/* Intro statement */}
-      <section className="mx-auto w-full max-w-container-max px-margin-mobile pb-stack-lg">
-        <div className="flex flex-col gap-8 lg:flex-row">
-          <div className="flex items-start pt-2 lg:w-2/5">
-            <span className="eyebrow">Research · Preservation · Upgradation</span>
-          </div>
-          <div className="lg:w-3/5">
-            <p className="font-headline-md text-[28px] leading-snug text-ink md:text-[34px]">
+          <div className="relative z-10 max-w-3xl px-margin-mobile py-stack-lg md:ml-[36%] md:pr-8">
+            <p className="eyebrow mb-5">
+              <span className="indic">श्रुतसंजीवन</span> · Ratnatrayee Trust
+            </p>
+            <p className="font-headline-md text-[26px] leading-snug text-ink md:text-[34px]">
               Shrutsanjeevan, an initiative of the Ratnatrayee Trust, is devoted to rejuvenating
               our ancient manuscript treasure — transcribing, researching, editing and digitizing
-              the Jain scriptural heritage so that knowledge once locked in bhandars can be read
+              the scriptural heritage so that knowledge once locked in bhandars can be read
               by anyone, anywhere.
             </p>
           </div>
         </div>
       </section>
+
 
       {/* Partner marquee */}
       <section className="w-full overflow-hidden border-y border-warm bg-white py-10">
@@ -218,7 +208,7 @@ export default function Home() {
               {['Tattvartha Sutra', 'Kalpa Sutra', 'Yogashastra'].map((t) => (
                 <div key={t} className="flex items-center justify-between p-4">
                   <div>
-                    <p className="text-sm font-medium text-ink">{t}</p>
+                    <p className="text-sm font-normal text-ink">{t}</p>
                     <p className="text-xs text-text-muted">Koba Gyanmandir</p>
                   </div>
                   <button
@@ -320,19 +310,46 @@ export default function Home() {
           <p className="eyebrow mb-3">With reverence</p>
           <h2 className="font-headline-lg text-headline-lg text-sepia">Blessings of the Gurudevs</h2>
         </div>
+        <svg width="0" height="0" className="absolute" aria-hidden="true">
+          <defs>
+            {gurudevBlobs.map((d, i) => (
+              <clipPath key={i} id={`gurudev-blob-${i}`} clipPathUnits="objectBoundingBox">
+                <path d={d} />
+              </clipPath>
+            ))}
+          </defs>
+        </svg>
         <div className="mx-auto flex max-w-5xl flex-col gap-stack-lg">
-          {gurudevs.map((g) => (
-            <div key={g.name} className="flex flex-col gap-6 sm:min-h-[420px] sm:flex-row sm:items-stretch">
-              {/* Portrait — its own card */}
-              <div className="overflow-hidden rounded-lg border border-warm shadow-sm sm:w-[300px] sm:shrink-0">
+          {gurudevs.map((g, i) => (
+            <div
+              key={g.name}
+              className={`flex flex-col gap-6 sm:min-h-[420px] sm:items-center ${
+                i % 2 === 1 ? 'sm:flex-row-reverse' : 'sm:flex-row'
+              }`}
+            >
+              {/* Portrait — organic blob frame */}
+              <div className="relative mx-auto w-full max-w-[380px] self-center sm:mx-0 sm:w-[400px] sm:shrink-0">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-[-10%]"
+                  style={{
+                    background:
+                      'radial-gradient(58% 58% at 50% 42%, rgba(217,164,65,0.26) 0%, rgba(217,164,65,0.08) 46%, rgba(217,164,65,0) 70%)',
+                  }}
+                />
                 <img
                   src={g.image}
                   alt={g.name}
-                  className="aspect-[3/4] h-full w-full object-cover object-top sm:aspect-auto"
+                  className="relative aspect-[4/4.4] w-full object-cover object-top"
+                  style={{ clipPath: `url(#gurudev-blob-${i})` }}
                 />
               </div>
               {/* Text — no container */}
-              <div className="flex flex-1 flex-col justify-center gap-4 sm:pl-4">
+              <div
+                className={`flex flex-1 flex-col justify-center gap-4 ${
+                  i % 2 === 1 ? 'sm:pr-4' : 'sm:pl-4'
+                }`}
+              >
                 <div>
                   <p className="eyebrow mb-2 text-brass">{g.title}</p>
                   <h3 className="font-headline-md text-[24px] leading-snug text-sepia">{g.name}</h3>

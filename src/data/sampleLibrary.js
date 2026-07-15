@@ -24,7 +24,7 @@ export const sampleLibrary = [
     year: 1995,
     pages: 412,
     summary:
-      'The foundational text of Jain philosophy, presenting the seven tattvas (fundamental truths) and the path to liberation in concise aphoristic form. Revered across all Jain traditions as the first Sanskrit compendium of Jain metaphysics, epistemology, and ethics.',
+      'A foundational philosophical text, presenting the seven tattvas (fundamental truths) and the path to liberation in concise aphoristic form. Revered across all traditions as the first Sanskrit compendium of its metaphysics, epistemology, and ethics.',
     previewUrl: 'https://pdfobject.com/pdf/sample.pdf',
     downloadUrl: 'https://pdfobject.com/pdf/sample.pdf',
     chapters: [
@@ -85,7 +85,7 @@ export const sampleLibrary = [
     year: 1992,
     pages: 524,
     summary:
-      'A comprehensive manual on Jain yoga and ethical discipline composed by the polymath Acharya Hemachandra, covering the conduct of both ascetics and lay followers on the path to spiritual purification.',
+      'A comprehensive manual on yoga and ethical discipline composed by the polymath Acharya Hemachandra, covering the conduct of both ascetics and lay followers on the path to spiritual purification.',
     previewUrl: '',
     downloadUrl: '',
   },
@@ -111,7 +111,7 @@ export const sampleLibrary = [
     year: 2001,
     pages: 96,
     summary:
-      'A celebrated devotional hymn of 48 verses in praise of the first Tirthankara, Rishabhanatha. Cherished for its poetic beauty and recited daily by devotees across Jain communities.',
+      'A celebrated devotional hymn of 48 verses in praise of the first Tirthankara, Rishabhanatha. Cherished for its poetic beauty and recited daily by devotees across communities.',
     previewUrl: SAMPLE,
     downloadUrl: SAMPLE,
     chapters: [
@@ -131,7 +131,7 @@ export const sampleLibrary = [
     year: 2019,
     pages: 164,
     summary:
-      'An accessible exposition of the nine fundamental principles (nava tattva) of Jainism in Gujarati, intended for lay students beginning their study of Jain doctrine.',
+      'An accessible exposition of the nine fundamental principles (nava tattva) in Gujarati, intended for lay students beginning their study of the doctrine.',
     previewUrl: '',
     downloadUrl: '',
   },
@@ -144,7 +144,7 @@ export const sampleLibrary = [
     year: 1988,
     pages: 468,
     summary:
-      'An ocean of knowledge on Jain meditation (dhyana), detailing contemplative practices, the stages of concentration, and the psychology of the passions to be conquered on the path to liberation.',
+      'An ocean of knowledge on meditation (dhyana), detailing contemplative practices, the stages of concentration, and the psychology of the passions to be conquered on the path to liberation.',
     previewUrl: '',
     downloadUrl: '',
   },
@@ -157,7 +157,7 @@ export const sampleLibrary = [
     year: 2012,
     pages: 240,
     summary:
-      'A key doctrinal work presenting the essence of Jain teachings on knowledge, conduct, and the nature of substances (dravya), widely studied alongside Samayasara.',
+      'A key doctrinal work presenting the essence of the teachings on knowledge, conduct, and the nature of substances (dravya), widely studied alongside Samayasara.',
     previewUrl: '',
     downloadUrl: '',
   },

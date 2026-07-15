@@ -14,12 +14,6 @@ const emptyFilters = {
 const languages = [...new Set(sampleBooks.map((b) => b.language))].sort()
 const topics = [...new Set(sampleBooks.map((b) => b.topic))].sort()
 
-const topicCounts = sampleBooks.reduce((m, b) => {
-  m[b.topic] = (m[b.topic] || 0) + 1
-  return m
-}, {})
-
-const popularTexts =['Kalpa Sutra', 'Tattvartha Sutra', 'Yogashastra', 'Bhaktamar Stotra', 'Samayasara']
 
 // iPhone-style Devanagari keyboard — a letters page and a "more" page for
 // matras, marks & digits, toggled from the bottom row.
@@ -133,15 +127,6 @@ export default function Search() {
     setHasSearched(true)
   }
 
-  // Run a search directly from a suggestion (bypasses the input draft state)
-  const runWith = (patch) => {
-    const next = { ...emptyFilters, ...patch }
-    setDraft(next)
-    setFilters(next)
-    setPage(1)
-    setHasSearched(true)
-  }
-
   const newSearch = () => {
     setDraft(emptyFilters)
     setFilters(emptyFilters)
@@ -178,7 +163,13 @@ export default function Search() {
 
   return (
     <>
-      <div className={hasSearched ? '' : 'mx-auto max-w-3xl pt-stack-md'}>
+      <div
+        className={
+          hasSearched
+            ? ''
+            : 'mx-auto flex min-h-[calc(100vh-12rem)] max-w-3xl flex-col justify-center'
+        }
+      >
         {/* Header */}
         {hasSearched ? (
           <div className="mb-stack-sm flex items-center justify-between gap-4">
@@ -196,9 +187,8 @@ export default function Search() {
           </div>
         ) : (
           <div className="text-center">
-            <p className="eyebrow mb-3">The catalogue</p>
-            <h1 className="mb-base font-headline-lg text-headline-lg-mobile md:text-headline-xl text-sepia">
-              What are you looking for?
+            <h1 className="mb-4 font-headline-xl text-[36px] leading-tight text-sepia md:text-[52px]">
+              Where knowledge begins
             </h1>
             <p className="font-body-lg text-body-lg text-text-muted">
               Search over 80,000 manuscripts by title, author, language, bhandar or topic.
@@ -207,62 +197,49 @@ export default function Search() {
         )}
 
         {/* Search box */}
-        <form onSubmit={runSearch} className={hasSearched ? 'mb-stack-md' : 'mt-stack-md'}>
-          <div className="rounded-2xl border border-warm bg-white p-2 shadow-sm transition-shadow focus-within:ring-2 focus-within:ring-secondary-fixed-dim focus-within:ring-opacity-50">
-            <div className="flex items-center gap-3 px-3 pt-2.5">
-              <span className="material-symbols-outlined text-secondary-fixed-dim">search</span>
-              <input
-                ref={keywordRef}
-                className="flex-1 bg-transparent font-body-md text-body-md text-on-surface outline-none placeholder:text-text-muted"
-                id="keyword"
-                placeholder="Search titles, authors, quotes, bhandars…"
-                type="text"
-                autoComplete="off"
-                value={draft.keyword}
-                onChange={update('keyword')}
-              />
-            </div>
-            <div className="mt-2 flex items-center justify-between gap-2 px-1 pb-1">
-              <div className="flex items-center gap-2 sm:gap-4">
-                <button
-                  type="button"
-                  onClick={() => setShowAdvanced((v) => !v)}
-                  aria-expanded={showAdvanced}
-                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 font-label-md text-label-md text-text-muted transition-colors hover:bg-surface-container-low"
-                >
-                  <span className="material-symbols-outlined text-[18px]">tune</span>
-                  Advanced options
-                  <span
-                    className={`material-symbols-outlined text-[18px] transition-transform ${
-                      showAdvanced ? 'rotate-180' : ''
-                    }`}
-                  >
-                    expand_more
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setHindiKb((v) => !v)}
-                  aria-pressed={hindiKb}
-                  title="हिन्दी कीबोर्ड"
-                  className={`indic inline-flex items-center rounded-full px-3 py-2 font-label-md text-label-md transition-colors ${
-                    hindiKb ? 'bg-cream-surface text-oxblood' : 'text-text-muted hover:bg-surface-container-low'
+        <form onSubmit={runSearch} className={hasSearched ? 'mb-stack-md' : 'mt-stack-lg'}>
+          <div className="rounded-2xl border border-warm bg-white px-4 py-3 shadow-sm transition-shadow focus-within:ring-2 focus-within:ring-secondary-fixed-dim focus-within:ring-opacity-50">
+            <input
+              ref={keywordRef}
+              className="w-full border-0 bg-transparent px-1 py-2 font-body-md text-body-md text-on-surface outline-none placeholder:text-text-muted focus:border-0 focus:outline-none focus:ring-0"
+              id="keyword"
+              placeholder="Search the archive — titles, authors, quotes, bhandars…"
+              type="text"
+              autoComplete="off"
+              value={draft.keyword}
+              onChange={update('keyword')}
+            />
+            <div className="mt-2 flex items-center justify-between gap-2">
+              {/* left — advanced search */}
+              <button
+                type="button"
+                onClick={() => setShowAdvanced((v) => !v)}
+                aria-expanded={showAdvanced}
+                className={`inline-flex items-center gap-1 px-1 py-2 font-label-md text-label-md transition-colors ${
+                  showAdvanced ? 'text-oxblood' : 'text-text-muted hover:text-oxblood'
+                }`}
+              >
+                Advanced search
+                <span
+                  className={`material-symbols-outlined text-[18px] transition-transform ${
+                    showAdvanced ? 'rotate-180' : ''
                   }`}
                 >
-                  हिन्दी
-                </button>
-              </div>
-              <button
-                type="submit"
-                className="flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-2.5 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark"
-              >
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  search
+                  expand_more
                 </span>
-                Search
+              </button>
+
+              {/* right — hindi keyboard */}
+              <button
+                type="button"
+                onClick={() => setHindiKb((v) => !v)}
+                aria-pressed={hindiKb}
+                title="हिन्दी कीबोर्ड"
+                className={`indic inline-flex items-center px-1 py-2 font-label-md text-label-md transition-colors ${
+                  hindiKb ? 'text-oxblood' : 'text-text-muted hover:text-oxblood'
+                }`}
+              >
+                हिन्दी
               </button>
             </div>
           </div>
@@ -363,7 +340,7 @@ export default function Search() {
 
           {/* Advanced options panel */}
           {showAdvanced && (
-            <div className="mt-4 rounded-xl border border-warm bg-surface-container-lowest p-stack-md shadow-sm">
+            <div className="mt-4 rounded-2xl border border-warm bg-surface-container-lowest p-stack-md shadow-sm">
               <div className="mb-stack-sm flex items-center justify-between">
                 <p className="font-label-md text-label-md text-sepia">Advanced options</p>
                 <button
@@ -375,7 +352,7 @@ export default function Search() {
                   <span className="material-symbols-outlined text-[20px]">close</span>
                 </button>
               </div>
-              <div className="grid grid-cols-1 gap-gutter md:grid-cols-2 lg:grid-cols-4">
+              <div className="grid grid-cols-1 items-end gap-gutter md:grid-cols-2 lg:grid-cols-4">
                 <div>
                   <label className={labelClass} htmlFor="language">
                     Language
@@ -450,46 +427,8 @@ export default function Search() {
         </form>
       </div>
 
-      {/* Suggestions (before any search) OR results (after a search) */}
-      {!hasSearched ? (
-        <div className="mx-auto mt-stack-lg max-w-4xl">
-          <p className="eyebrow mb-3">Popular texts</p>
-          <div className="mb-stack-md flex flex-wrap gap-2">
-            {popularTexts.map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => runWith({ keyword: t })}
-                className="rounded-full border border-warm bg-white px-4 py-2 font-label-md text-label-md text-sepia transition-colors hover:border-oxblood hover:text-oxblood"
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-
-          <p className="eyebrow mb-3">Browse by topic</p>
-          <div className="grid grid-cols-1 gap-gutter sm:grid-cols-2 lg:grid-cols-3">
-            {topics.map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => runWith({ topic: t })}
-                className="group flex items-center gap-4 rounded-xl border border-warm bg-white p-4 text-left shadow-sm transition-colors hover:border-oxblood/40 hover:bg-cream-surface/40"
-              >
-                <span className="min-w-0">
-                  <span className="block font-headline-md text-[17px] text-ink">{t}</span>
-                  <span className="block text-sm text-text-muted">
-                    {topicCounts[t]} {topicCounts[t] === 1 ? 'text' : 'texts'}
-                  </span>
-                </span>
-                <span className="material-symbols-outlined ml-auto text-text-muted transition-transform group-hover:translate-x-1">
-                  arrow_forward
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : (
+      {/* Results (after a search) */}
+      {hasSearched && (
         <>
           {/* Results Summary */}
           <div className="mb-stack-sm flex flex-col items-center justify-between gap-4 md:flex-row">
@@ -508,7 +447,7 @@ export default function Search() {
                   setPerPage(Number(e.target.value))
                   setPage(1)
                 }}
-                className="cursor-pointer rounded-lg border border-warm bg-white px-3 py-2 font-body-md text-sm text-body-md transition-shadow focus:border-secondary-fixed-dim focus:ring-1 focus:ring-secondary-fixed-dim"
+                className="cursor-pointer rounded-lg border border-warm bg-white py-2 pl-3 pr-9 font-body-md text-sm text-body-md transition-shadow focus:border-secondary-fixed-dim focus:ring-1 focus:ring-secondary-fixed-dim"
               >
                 <option>10</option>
                 <option>25</option>
@@ -520,7 +459,7 @@ export default function Search() {
           {/* Results — editorial list */}
           <div className="mb-stack-md">
             {/* Column header */}
-            <div className="hidden items-center gap-4 border-b border-warm pb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-text-muted sm:flex">
+            <div className="hidden items-center gap-4 border-b border-warm pb-3 text-[11px] font-normal uppercase tracking-[0.16em] text-text-muted sm:flex">
               <span className="w-8 shrink-0">No.</span>
               <span className="flex-1">Manuscript</span>
               <span className="w-40 shrink-0">Language / Topic</span>

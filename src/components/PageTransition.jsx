@@ -63,8 +63,8 @@ export function FolioSweep() {
           filter: 'saturate(0.72)',
           willChange: 'transform',
         }}
-        initial={{ x: '150vw', y: '-150vh' }}
-        animate={{ x: '-150vw', y: '150vh' }}
+        initial={{ x: '0vw', y: '-200vh' }}
+        animate={{ x: '0vw', y: '200vh' }}
         transition={{ duration: 1.5, ease: [0.65, 0, 0.35, 1] }}
       >
         {SCATTER.map((p, i) => (
@@ -87,8 +87,8 @@ export function FolioSweep() {
           aria-hidden="true"
           className="absolute saturate-[.72]"
           style={{ top: `${p.top}%`, left: `${p.left}%`, width: `${p.size}vw`, willChange: 'transform, opacity' }}
-          initial={{ x: '45vw', y: '-60vh', rotate: p.rot, opacity: 0 }}
-          animate={{ x: '-120vw', y: '120vh', rotate: p.rot + p.spin, opacity: [0, 1, 1, 0] }}
+          initial={{ x: '0vw', y: '-80vh', rotate: p.rot, opacity: 0 }}
+          animate={{ x: '0vw', y: '140vh', rotate: p.rot + p.spin, opacity: [0, 1, 1, 0] }}
           transition={{ duration: p.dur, delay: p.delay, ease: [0.4, 0, 0.2, 1], times: [0, 0.15, 0.82, 1] }}
         />
       ))}

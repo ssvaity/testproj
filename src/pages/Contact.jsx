@@ -58,15 +58,12 @@ export default function Contact() {
     setForm(emptyForm)
   }
 
-  const [amount, setAmount] = useState(2500)
-
   const handleDonate = () => {
     // TODO: Connect Razorpay Checkout here.
     // 1. Load https://checkout.razorpay.com/v1/checkout.js
     // 2. Create an order on your backend and get order_id.
     // 3. const rzp = new window.Razorpay({
     //      key: RAZORPAY_KEY_ID,
-    //      amount: amount * 100,       // paise
     //      currency: 'INR',
     //      name: 'Ratnatrayee Trust',
     //      description: 'Dravya Sanjivan donation',
@@ -74,7 +71,7 @@ export default function Contact() {
     //      handler: (res) => { /* verify payment on backend */ },
     //    })
     // 4. rzp.open()
-    window.alert(`Online donations coming soon. Selected amount: ₹${amount.toLocaleString('en-IN')}`)
+    window.alert('Online donations coming soon.')
   }
 
   return (
@@ -342,7 +339,7 @@ export default function Contact() {
               ].map(([k, v]) => (
                 <div key={k} className="flex items-center justify-between gap-4 py-2 first:pt-0 last:pb-0">
                   <dt className="text-text-muted">{k}</dt>
-                  <dd className="font-medium text-on-surface">{v}</dd>
+                  <dd className="font-normal text-on-surface">{v}</dd>
                 </div>
               ))}
             </dl>
@@ -360,50 +357,32 @@ export default function Contact() {
         <p className="eyebrow mb-3 text-brass">Give online</p>
         <h2 className="mb-stack-sm font-headline-md text-headline-md text-sepia">Make a contribution</h2>
         <p className="mb-stack-md max-w-3xl font-body-md text-body-md text-text-muted">
-          Choose an amount to contribute securely. Online payments will be enabled shortly.
+          Support the preservation of India&rsquo;s scriptural heritage. Contribute securely online.
         </p>
 
-        <div className="flex flex-col gap-stack-sm sm:max-w-lg">
-          <div className="flex flex-wrap gap-2">
-            {[1100, 2500, 5100, 11000].map((a) => (
-              <button
-                key={a}
-                type="button"
-                onClick={() => setAmount(a)}
-                className={`rounded-full border px-4 py-2 font-label-md text-label-md transition-colors ${
-                  amount === a
-                    ? 'border-oxblood bg-oxblood text-white'
-                    : 'border-warm text-sepia hover:border-oxblood'
-                }`}
-              >
-                ₹{a.toLocaleString('en-IN')}
-              </button>
-            ))}
-          </div>
-          <div>
-            <label className={labelClass} htmlFor="amount">
-              Amount (₹)
-            </label>
-            <input
-              id="amount"
-              type="number"
-              min="1"
-              className={fieldClass}
-              value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
-            />
-          </div>
+        <div className="flex flex-col items-center gap-4 py-stack-sm text-center">
           <button
             type="button"
             onClick={handleDonate}
-            className="flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark"
+            aria-label="Donate Now — Secured by Razorpay"
+            className="inline-flex items-stretch overflow-hidden rounded-md border border-[#d7dbe3] bg-white shadow-sm transition-shadow hover:shadow-md"
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>lock</span>
-            Donate securely
+            <span className="flex items-center justify-center bg-[#3395ff] px-3">
+              <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#fff" d="M22.436 0l-11.91 7.773-1.174 4.276 6.625-4.297L11.65 24h4.391l7.732-24z" />
+                <path fill="#cfe4ff" d="M1.372 15.076L0 20.194l6.037-3.917 1.663-6.257z" />
+              </svg>
+            </span>
+            <span className="flex flex-col items-start px-6 py-2.5 text-left leading-tight">
+              <span className="font-body-md text-lg font-bold italic tracking-wide text-[#0d2366]">
+                Donate Now
+              </span>
+              <span className="text-[11px] italic tracking-[0.18em] text-[#8890a3]">
+                Secured by Razorpay
+              </span>
+            </span>
           </button>
-          <p className="text-xs text-text-muted">
-            Online payments will be powered by Razorpay. Secure checkout coming soon.
-          </p>
+          <p className="text-xs text-text-muted">Secure checkout coming soon.</p>
         </div>
       </section>
     </>

@@ -41,7 +41,7 @@ export default function Requests() {
   }
 
   return (
-    <>
+    <div className="min-h-[calc(100vh-12rem)]">
       {/* Header */}
       <div className="mb-stack-md">
         <p className="eyebrow mb-2">Your selection</p>
@@ -170,6 +170,6 @@ export default function Requests() {
           </button>
         </div>
       </Dialog>
-    </>
+    </div>
   )
 }

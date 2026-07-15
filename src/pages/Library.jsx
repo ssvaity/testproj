@@ -3,6 +3,14 @@ import { sampleLibrary } from '../data/sampleLibrary.js'
 import PdfReaderModal from '../components/PdfReaderModal.jsx'
 import Dialog from '../components/Dialog.jsx'
 import { trackDownload } from '../lib/analytics.js'
+import { incrementDownloadCount } from '../lib/downloadCounter.js'
+import DownloadCounter from '../components/DownloadCounter.jsx'
+
+// Records a download in both Google Analytics and the live shared counter.
+function recordDownload(book) {
+  trackDownload(book)
+  incrementDownloadCount()
+}
 
 const languages = [...new Set(sampleLibrary.map((b) => b.language))].sort()
 const topics = [...new Set(sampleLibrary.map((b) => b.topic))].sort()
@@ -21,6 +29,10 @@ const coverFor = (id) =>
 
 const selectClass =
   'appearance-none rounded-full border border-warm bg-white px-4 py-2.5 pr-9 font-body-md text-sm text-on-surface transition-shadow focus:border-secondary-fixed-dim focus:ring-2 focus:ring-secondary-fixed-dim focus:ring-opacity-50'
+
+// Filters shown inside the search bar — borderless, plain, like the archive controls.
+const inBarSelectClass =
+  'appearance-none cursor-pointer border-0 bg-transparent px-3 py-1.5 pr-9 font-label-md text-label-md text-text-muted transition-colors hover:text-oxblood focus:border-0 focus:outline-none focus:ring-0'
 
 export default function Library() {
   const [keyword, setKeyword] = useState('')
@@ -70,7 +82,7 @@ export default function Library() {
         document.body.appendChild(a)
         a.click()
         a.remove()
-        trackDownload({ ...selected, chapter: ch.title })
+        recordDownload({ ...selected, chapter: ch.title })
       }, idx * 350)
     )
   }
@@ -100,18 +112,22 @@ export default function Library() {
   return (
     <>
       {/* Header */}
-      <div className="mb-stack-md">
-        <p className="eyebrow mb-2">The reading room</p>
-        <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-sepia">Library</h1>
-        <p className="mt-2 font-body-lg text-body-lg text-text-muted">
-          Read a preview of each digitized scripture online, or download the full text.
-        </p>
+      <div className="mb-stack-md flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="eyebrow mb-2">The reading room</p>
+          <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-sepia">Library</h1>
+          <p className="mt-2 font-body-lg text-body-lg text-text-muted">
+            Read a preview of each digitized scripture online, or download the full text.
+          </p>
+        </div>
+        <DownloadCounter className="md:flex-col md:items-end md:gap-0 md:text-right" />
       </div>
 
-      {/* Toolbar */}
-      <div className="mb-stack-sm flex flex-col gap-3 border-b border-warm pb-stack-sm lg:flex-row lg:items-center">
-        <div className="relative flex-1">
-          <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-secondary-fixed-dim">
+      {/* Toolbar — one search bar with the filters inside it */}
+      <div className="mb-stack-md rounded-2xl border border-warm bg-white px-4 py-3 shadow-sm transition-shadow focus-within:ring-2 focus-within:ring-secondary-fixed-dim focus-within:ring-opacity-50">
+        {/* Search input */}
+        <div className="relative">
+          <span className="material-symbols-outlined absolute left-1 top-1/2 -translate-y-1/2 text-secondary-fixed-dim">
             search
           </span>
           <input
@@ -119,12 +135,13 @@ export default function Library() {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             placeholder="Search your library…"
-            className="h-12 w-full rounded-full border border-warm bg-white pl-12 pr-4 font-body-md text-body-md transition-shadow focus:border-secondary-fixed-dim focus:ring-2 focus:ring-secondary-fixed-dim focus:ring-opacity-50"
+            className="w-full border-0 bg-transparent py-2 pl-10 pr-1 font-body-md text-body-md text-on-surface outline-none placeholder:text-text-muted focus:border-0 focus:outline-none focus:ring-0"
           />
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        {/* Filters */}
+        <div className="mt-1 flex flex-wrap items-center gap-1 border-t border-warm pt-2">
           <div className="relative">
-            <select className={selectClass} value={language} onChange={(e) => setLanguage(e.target.value)}>
+            <select className={inBarSelectClass} value={language} onChange={(e) => setLanguage(e.target.value)}>
               <option value="">All languages</option>
               {languages.map((l) => (
                 <option key={l} value={l}>{l}</option>
@@ -133,7 +150,7 @@ export default function Library() {
             {chevron}
           </div>
           <div className="relative">
-            <select className={selectClass} value={topic} onChange={(e) => setTopic(e.target.value)}>
+            <select className={inBarSelectClass} value={topic} onChange={(e) => setTopic(e.target.value)}>
               <option value="">All topics</option>
               {topics.map((t) => (
                 <option key={t} value={t}>{t}</option>
@@ -142,7 +159,7 @@ export default function Library() {
             {chevron}
           </div>
           <div className="relative">
-            <select className={selectClass} value={sort} onChange={(e) => setSort(e.target.value)}>
+            <select className={inBarSelectClass} value={sort} onChange={(e) => setSort(e.target.value)}>
               <option value="title">Sort: Title</option>
               <option value="author">Sort: Author</option>
               <option value="year">Sort: Newest</option>
@@ -227,7 +244,7 @@ export default function Library() {
                   onClick={() => openBook(b)}
                   className="mt-2.5 block w-full text-left"
                 >
-                  <p className="line-clamp-1 text-sm font-medium text-ink transition-colors group-hover:text-oxblood">
+                  <p className="line-clamp-1 text-sm font-normal text-ink transition-colors group-hover:text-oxblood">
                     {b.title}
                   </p>
                   <p className="line-clamp-1 text-xs text-text-muted">
@@ -303,7 +320,7 @@ export default function Library() {
                     <button
                       type="button"
                       onClick={toggleAll}
-                      className="text-xs font-medium text-oxblood transition-colors hover:underline"
+                      className="text-xs font-normal text-oxblood transition-colors hover:underline"
                     >
                       {chapterSel.size === selected.chapters.length ? 'Clear all' : 'Select all'}
                     </button>
@@ -350,7 +367,7 @@ export default function Library() {
                             href={ch.downloadUrl || undefined}
                             target="_blank"
                             rel="noopener"
-                            onClick={() => ch.downloadUrl && trackDownload({ ...selected, chapter: ch.title })}
+                            onClick={() => ch.downloadUrl && recordDownload({ ...selected, chapter: ch.title })}
                             title="Download chapter"
                             className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-oxblood transition-colors hover:bg-cream-surface ${
                               ch.downloadUrl ? '' : 'pointer-events-none opacity-40'
@@ -378,7 +395,7 @@ export default function Library() {
                       target="_blank"
                       rel="noopener"
                       aria-disabled={!selected.downloadUrl}
-                      onClick={() => selected.downloadUrl && trackDownload(selected)}
+                      onClick={() => selected.downloadUrl && recordDownload(selected)}
                       className={`flex items-center gap-1 rounded-lg bg-primary px-4 py-2 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark ${
                         selected.downloadUrl ? '' : 'pointer-events-none opacity-50'
                       }`}
@@ -407,7 +424,7 @@ export default function Library() {
                     target="_blank"
                     rel="noopener"
                     aria-disabled={!selected.downloadUrl}
-                    onClick={() => selected.downloadUrl && trackDownload(selected)}
+                    onClick={() => selected.downloadUrl && recordDownload(selected)}
                     className={`flex items-center gap-1 rounded-lg border border-primary px-4 py-2 font-label-md text-label-md text-primary transition-colors hover:bg-surface-container-low ${
                       selected.downloadUrl ? '' : 'pointer-events-none opacity-50'
                     }`}
