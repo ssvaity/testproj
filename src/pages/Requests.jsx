@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext.jsx'
+import { useLanguage } from '../context/LanguageContext.jsx'
 import Dialog from '../components/Dialog.jsx'
 import { REQUEST_WHATSAPP, REQUEST_EMAIL } from '../config.js'
 
@@ -19,6 +20,8 @@ function buildMessage(items, name, note) {
 
 export default function Requests() {
   const { items, remove, clear, count } = useCart()
+  const { t } = useLanguage()
+  const r = t.requestsPage
   const [name, setName] = useState('')
   const [note, setNote] = useState('')
   const [confirmClear, setConfirmClear] = useState(false)
@@ -44,12 +47,12 @@ export default function Requests() {
     <div className="min-h-[calc(100vh-12rem)]">
       {/* Header */}
       <div className="mb-stack-md">
-        <p className="eyebrow mb-2">Your selection</p>
+        <p className="eyebrow mb-2">{r.eyebrow}</p>
         <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-sepia">
-          Request list{count > 0 ? ` · ${count}` : ''}
+          {r.title}{count > 0 ? ` · ${count}` : ''}
         </h1>
         <p className="mt-2 font-body-lg text-body-lg text-text-muted">
-          Review the manuscripts you&rsquo;d like to request, then send the list to the kendra.
+          {r.intro}
         </p>
       </div>
 
@@ -59,14 +62,14 @@ export default function Requests() {
             menu_book
           </span>
           <p className="mb-6 font-body-md text-body-md text-text-muted">
-            Your request list is empty. Add manuscripts from the archive.
+            {r.empty}
           </p>
           <Link
             to="/search"
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark"
           >
             <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>search</span>
-            Browse the archive
+            {r.browse}
           </Link>
         </div>
       ) : (
@@ -97,24 +100,24 @@ export default function Requests() {
               onClick={() => setConfirmClear(true)}
               className="mt-stack-sm font-label-md text-label-md text-sm text-text-muted transition-colors hover:text-oxblood"
             >
-              Clear list
+              {r.clear}
             </button>
           </div>
 
           {/* Action card */}
           <aside className="h-fit rounded-xl border border-warm bg-surface-container-lowest p-stack-md lg:sticky lg:top-6">
-            <h2 className="mb-stack-sm font-headline-md text-headline-md text-sepia">Send your request</h2>
+            <h2 className="mb-stack-sm font-headline-md text-headline-md text-sepia">{r.sendTitle}</h2>
             <div className="mb-3 flex flex-col gap-2">
               <input
                 type="text"
-                placeholder="Your name (optional)"
+                placeholder={r.namePh}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full rounded-lg border border-warm bg-white p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
               />
               <textarea
                 rows={3}
-                placeholder="Add a note (optional)"
+                placeholder={r.notePh}
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 className="w-full resize-y rounded-lg border border-warm bg-white p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
@@ -125,14 +128,14 @@ export default function Requests() {
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-oxblood px-4 py-3.5 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark"
             >
               <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>chat</span>
-              Request via WhatsApp
+              {r.whatsapp}
             </button>
             <button
               onClick={sendEmail}
               className="mt-3 flex w-full items-center justify-center gap-1.5 font-label-md text-label-md text-sm text-oxblood transition-colors hover:text-maroon-dark"
             >
               <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>mail</span>
-              Email instead
+              {r.email}
             </button>
           </aside>
         </div>
@@ -145,10 +148,9 @@ export default function Requests() {
         ariaLabel="Clear request list"
         panelClassName="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-stack-md"
       >
-        <h2 className="font-headline-md text-headline-md text-sepia">Clear request list?</h2>
+        <h2 className="font-headline-md text-headline-md text-sepia">{r.clearTitle}</h2>
         <p className="mt-2 font-body-md text-body-md text-text-muted">
-          This removes all {count} manuscript{count === 1 ? '' : 's'} from your request list. This
-          can&rsquo;t be undone.
+          {r.clearBody}
         </p>
         <div className="mt-stack-md flex justify-end gap-3">
           <button
@@ -156,7 +158,7 @@ export default function Requests() {
             onClick={() => setConfirmClear(false)}
             className="rounded-lg border border-warm px-5 py-2 font-label-md text-label-md text-ink transition-colors hover:bg-surface-container-low"
           >
-            Cancel
+            {r.cancel}
           </button>
           <button
             type="button"
@@ -166,7 +168,7 @@ export default function Requests() {
             }}
             className="rounded-lg bg-primary px-5 py-2 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark"
           >
-            Clear list
+            {r.clear}
           </button>
         </div>
       </Dialog>

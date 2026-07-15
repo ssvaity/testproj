@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { sampleBooks } from '../data/sampleBooks.js'
 import { useCart } from '../context/CartContext.jsx'
+import { useLanguage } from '../context/LanguageContext.jsx'
 
 const emptyFilters = {
   keyword: '',
@@ -36,6 +37,7 @@ const labelClass = 'block font-label-md text-label-md text-on-surface mb-base'
 
 export default function Search() {
   const { toggle, has } = useCart()
+  const { t } = useLanguage()
   const [searchParams] = useSearchParams()
   const initialKeyword = searchParams.get('q') || ''
   const initialFilters = { ...emptyFilters, keyword: initialKeyword }
@@ -188,10 +190,10 @@ export default function Search() {
         ) : (
           <div className="text-center">
             <h1 className="mb-4 font-headline-xl text-[36px] leading-tight text-sepia md:text-[52px]">
-              Where knowledge begins
+              {t.catalogue.heading}
             </h1>
             <p className="font-body-lg text-body-lg text-text-muted">
-              Search over 80,000 manuscripts by title, author, language, bhandar or topic.
+              {t.catalogue.subtitle}
             </p>
           </div>
         )}

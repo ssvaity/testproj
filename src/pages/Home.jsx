@@ -1,47 +1,18 @@
 import CountUp from '../components/CountUp.jsx'
 import { blobB, blobC } from '../data/blobs.js'
+import { useLanguage } from '../context/LanguageContext.jsx'
 
 const gurudevBlobs = [blobB, blobC]
 
 const heroStats = [
-  { to: 80000, from: 79000, label: 'Books & E-Books' },
-  { to: 25, label: 'Published granths' },
-  { to: 4, label: 'Published books' },
-  { to: 8, label: 'Languages' },
+  { to: 80000, from: 79000 },
+  { to: 25 },
+  { to: 4 },
+  { to: 8 },
 ]
 
-const searchSteps = [
-  { title: 'Search the catalogue', text: 'Look across languages, authors, bhandars and topics to find the exact text you need.' },
-  { title: 'Add to your request list', text: 'Collect the manuscripts you want and keep them together as you browse.' },
-  { title: 'Send your request', text: 'Share the list with the kendra in one tap over WhatsApp or email.' },
-]
-
-const readSteps = [
-  { title: 'Read a preview online', text: 'Open a portion of each digitized scripture right in your browser.' },
-  { title: 'Download the full text', text: 'Take the complete PDF with you for study, offline and at your own pace.' },
-  { title: 'Freely accessible', text: 'The library is open to every scholar, seeker and devotee — no barrier.' },
-]
-
-const gurudevs = [
-  {
-    image: '/images/gurudev-rajendrasuri.jpg',
-    name: 'Shrimad Vijay Rajendrasurishwarji Maharaja',
-    title: 'Prashantmurti Gachchhadhipati Pujyapad Acharyadev',
-    bio: 'The serene Gachchhadhipati whose blessings guide the Ratnatrayee parivar. Carrying forward a lineage of scholarship and shraman discipline, Pujya Acharyadev inspires the preservation and study of shrut for generations to come.',
-    facts: [],
-  },
-  {
-    image: '/images/gurudev-ratnasundarsuri.jpg',
-    name: 'Shrimad Vijay Ratnasundarsurishwarji Maharaja',
-    title: 'Saraswatilabdhaprasad Pujyapad Gurudev',
-    bio: 'One of the most prolific authors in the tradition, Pujya Gurudev has devoted seven decades to morality, spirituality and personality development — “watering the roots” of a generation through discourses and inspiring literature that reaches seekers in Gujarati, Hindi, English and Marathi.',
-    facts: [
-      { value: '500+', label: 'Books authored' },
-      { value: 'Padma Bhushan', label: 'Conferred 2017' },
-      { value: 'Guinness', label: 'World record holder' },
-    ],
-  },
-]
+// Portraits are static; the text (name, title, bio, facts) is translated.
+const gurudevImages = ['/images/gurudev-rajendrasuri.jpg', '/images/gurudev-ratnasundarsuri.jpg']
 
 // Partner list + logos mirrored from vk.jyot.in.
 const partners = [
@@ -127,6 +98,8 @@ function FeatureSection({ icon, eyebrow, title, intro, items, image, reverse, ca
 }
 
 export default function Home() {
+  const { t } = useLanguage()
+  const h = t.home
   return (
     <>
       {/* Hero — white background + painterly peacock video (opaque MP4 on white, so it
@@ -180,10 +153,7 @@ export default function Home() {
               <span className="indic">श्रुतसंजीवन</span> · Ratnatrayee Trust
             </p>
             <p className="font-headline-md text-[26px] leading-snug text-ink md:text-[34px]">
-              Shrutsanjeevan, an initiative of the Ratnatrayee Trust, is devoted to rejuvenating
-              our ancient manuscript treasure — transcribing, researching, editing and digitizing
-              the scriptural heritage so that knowledge once locked in bhandars can be read
-              by anyone, anywhere.
+              {h.heroLead}
             </p>
           </div>
         </div>
@@ -192,7 +162,7 @@ export default function Home() {
 
       {/* Partner marquee */}
       <section className="w-full overflow-hidden border-y border-warm bg-white py-10">
-        <p className="eyebrow mb-8 text-center">With the support of</p>
+        <p className="eyebrow mb-8 text-center">{h.supportOf}</p>
         <div className="marquee-track">
           {[0, 1].map((g) => (
             <div key={g} className="flex items-end gap-16 pr-16">
@@ -211,7 +181,7 @@ export default function Home() {
                       </span>
                     )}
                   </div>
-                  <span className="font-label-md text-label-md text-text-muted">{p.role}</span>
+                  <span className="font-label-md text-label-md text-text-muted">{h.partnerRoles[p.role] || p.role}</span>
                 </div>
               ))}
             </div>
@@ -222,15 +192,15 @@ export default function Home() {
       {/* Feature 1 — Search & request */}
       <FeatureSection
         icon="travel_explore"
-        eyebrow="Find what you need"
-        title="Search &amp; request"
-        intro="Browse tens of thousands of catalogued manuscripts, collect the ones you want, and send your request to the kendra in a single step."
-        items={searchSteps}
+        eyebrow={h.search.eyebrow}
+        title={h.search.title}
+        intro={h.search.intro}
+        items={h.search.steps}
         image="/images/manuscript-texture.png"
         card={
           <div className="relative z-10 mx-4 w-full max-w-md overflow-hidden rounded-2xl border border-warm bg-white/95 shadow-2xl backdrop-blur-xl">
             <div className="flex items-center justify-between border-b border-warm p-4">
-              <span className="font-label-md text-label-md text-sepia">Request list</span>
+              <span className="font-label-md text-label-md text-sepia">{h.search.requestList}</span>
               <span className="material-symbols-outlined text-oxblood">menu_book</span>
             </div>
             <div className="divide-y divide-warm">
@@ -256,7 +226,7 @@ export default function Home() {
                 className="flex w-full items-center justify-center gap-2 rounded-lg bg-oxblood py-2.5 font-label-md text-label-md text-white transition-colors hover:bg-maroon-dark"
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>chat</span>
-                Request via WhatsApp
+                {h.search.requestWhatsApp}
               </button>
             </div>
           </div>
@@ -265,11 +235,11 @@ export default function Home() {
 
       {/* Collection stats — between the two feature sections */}
       <section className="mx-auto w-full max-w-container-max px-margin-mobile py-stack-lg">
-        <p className="eyebrow mb-3">By the numbers</p>
-        <h2 className="mb-stack-md font-headline-lg text-headline-lg text-sepia">Our digital collection</h2>
+        <p className="eyebrow mb-3">{h.byNumbers}</p>
+        <h2 className="mb-stack-md font-headline-lg text-headline-lg text-sepia">{h.digitalCollection}</h2>
         <div className="grid grid-cols-2 gap-gutter lg:grid-cols-4">
-          {heroStats.map((s) => (
-            <div key={s.label} className="border-t border-oxblood/70 pt-5">
+          {heroStats.map((s, i) => (
+            <div key={i} className="border-t border-oxblood/70 pt-5">
               <CountUp
                 to={s.to}
                 from={s.from ?? 0}
@@ -278,7 +248,7 @@ export default function Home() {
                 ease="linear"
                 className="block font-headline-xl text-[40px] leading-none text-ink"
               />
-              <p className="mt-2 font-label-md text-label-md text-text-muted">{s.label}</p>
+              <p className="mt-2 font-label-md text-label-md text-text-muted">{h.stats[i]}</p>
             </div>
           ))}
         </div>
@@ -288,10 +258,10 @@ export default function Home() {
       <FeatureSection
         reverse
         icon="auto_stories"
-        eyebrow="Study at your pace"
-        title="Read &amp; download"
-        intro="Preview each digitized scripture online, then download the full text to keep — freely, with no barrier to access."
-        items={readSteps}
+        eyebrow={h.read.eyebrow}
+        title={h.read.title}
+        intro={h.read.intro}
+        items={h.read.steps}
         image="/images/manuscript-texture-2.jpg"
         card={
           <div className="relative z-10 mx-4 w-full max-w-md overflow-hidden rounded-2xl border border-warm bg-white/95 shadow-2xl backdrop-blur-xl">
@@ -318,14 +288,14 @@ export default function Home() {
                   className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-oxblood py-2 font-label-md text-label-md text-white transition-colors hover:bg-maroon-dark"
                 >
                   <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>auto_stories</span>
-                  Read
+                  {h.read.readBtn}
                 </button>
                 <button
                   type="button"
                   className="flex flex-1 items-center justify-center gap-1 rounded-lg border border-oxblood py-2 font-label-md text-label-md text-oxblood transition-colors hover:bg-cream-surface"
                 >
                   <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>download</span>
-                  PDF
+                  {h.read.pdfBtn}
                 </button>
               </div>
             </div>
@@ -336,8 +306,8 @@ export default function Home() {
       {/* Blessings of the Gurudevs — just before the footer */}
       <section className="mx-auto w-full max-w-container-max px-margin-mobile pb-stack-lg pt-stack-md">
         <div className="mb-stack-md text-center">
-          <p className="eyebrow mb-3">With reverence</p>
-          <h2 className="font-headline-lg text-headline-lg text-sepia">Blessings of the Gurudevs</h2>
+          <p className="eyebrow mb-3">{h.reverence}</p>
+          <h2 className="font-headline-lg text-headline-lg text-sepia">{h.gurudevsTitle}</h2>
         </div>
         <svg width="0" height="0" className="absolute" aria-hidden="true">
           <defs>
@@ -349,7 +319,7 @@ export default function Home() {
           </defs>
         </svg>
         <div className="mx-auto flex max-w-5xl flex-col gap-stack-lg">
-          {gurudevs.map((g, i) => (
+          {h.gurudevs.map((g, i) => (
             <div
               key={g.name}
               className={`flex flex-col gap-6 sm:min-h-[420px] sm:items-center ${
@@ -367,7 +337,7 @@ export default function Home() {
                   }}
                 />
                 <img
-                  src={g.image}
+                  src={gurudevImages[i]}
                   alt={g.name}
                   className="relative aspect-[4/4.4] w-full object-cover object-top"
                   style={{ clipPath: `url(#gurudev-blob-${i})` }}

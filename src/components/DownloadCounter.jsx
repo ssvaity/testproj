@@ -30,7 +30,7 @@ function useCountUp(target) {
 
 // Shows the live, all-visitors total of manuscripts downloaded. Renders nothing
 // until the counter is configured (config.js) and the first value has loaded.
-export default function DownloadCounter({ className = '' }) {
+export default function DownloadCounter({ className = '', label = 'manuscripts downloaded' }) {
   const [total, setTotal] = useState(null)
   const display = useCountUp(total ?? 0)
 
@@ -46,7 +46,7 @@ export default function DownloadCounter({ className = '' }) {
       <span className="font-headline-lg text-headline-lg-mobile text-oxblood tabular-nums">
         {display.toLocaleString('en-IN')}
       </span>
-      <span className="font-label-md text-label-md text-text-muted">manuscripts downloaded</span>
+      <span className="font-label-md text-label-md text-text-muted">{label}</span>
     </div>
   )
 }

@@ -6,6 +6,7 @@ import HindiKeyboard from '../components/HindiKeyboard.jsx'
 import { trackDownload } from '../lib/analytics.js'
 import { incrementDownloadCount } from '../lib/downloadCounter.js'
 import DownloadCounter from '../components/DownloadCounter.jsx'
+import { useLanguage } from '../context/LanguageContext.jsx'
 
 // Records a download in both Google Analytics and the live shared counter.
 function recordDownload(book) {
@@ -42,6 +43,8 @@ export default function Library() {
   const [sort, setSort] = useState('title')
   const [hindiKb, setHindiKb] = useState(false)
   const keywordRef = useRef(null)
+  const { t } = useLanguage()
+  const lp = t.libraryPage
   const [selected, setSelected] = useState(null)
   const [reading, setReading] = useState(null)
   const [chapterSel, setChapterSel] = useState(new Set())
@@ -117,13 +120,13 @@ export default function Library() {
       {/* Header */}
       <div className="mb-stack-md flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="eyebrow mb-2">The reading room</p>
-          <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-sepia">Library</h1>
+          <p className="eyebrow mb-2">{lp.eyebrow}</p>
+          <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-sepia">{lp.title}</h1>
           <p className="mt-2 font-body-lg text-body-lg text-text-muted">
-            Read a preview of each digitized scripture online, or download the full text.
+            {lp.subtitle}
           </p>
         </div>
-        <DownloadCounter className="md:flex-col md:items-end md:gap-0 md:text-right" />
+        <DownloadCounter label={lp.downloaded} className="md:flex-col md:items-end md:gap-0 md:text-right" />
       </div>
 
       {/* Toolbar — one search bar with the filters inside it */}
