@@ -105,8 +105,11 @@ export default function Home() {
       {/* Hero — white background + painterly peacock video (opaque MP4 on white, so it
           reads as transparent and works in every browser). Plays once, then holds its
           final frame (no loop). */}
-      <section className="w-full px-4 pt-4 pb-stack-md sm:px-6">
-        <div className="relative flex min-h-[52vh] w-full items-center overflow-hidden rounded-[24px] border border-[#e7dcc7] bg-[#fffdf8] shadow-sm md:min-h-[64vh]">
+      {/* First fold — hero grows to fill; the logo loop sits flush at the
+          bottom of the viewport (no scroll needed to see it end). */}
+      <div className="flex min-h-[calc(100vh-4rem)] flex-col">
+      <section className="flex w-full flex-1 flex-col px-4 pt-4 pb-stack-md sm:px-6">
+        <div className="relative flex min-h-[52vh] w-full flex-1 items-center overflow-hidden rounded-[24px] border border-[#e7dcc7] bg-[#fffdf8] shadow-sm md:min-h-[64vh]">
           <video
             className="pointer-events-none absolute bottom-0 left-0 z-0 h-[82%] w-auto max-w-none object-contain object-bottom opacity-90 md:z-[5] md:h-[96%] md:opacity-100"
             poster="/images/peacock-poster.jpg"
@@ -186,6 +189,7 @@ export default function Home() {
           ))}
         </div>
       </section>
+      </div>
 
       {/* Feature 1 — Search & request */}
       <FeatureSection
