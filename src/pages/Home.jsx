@@ -60,11 +60,19 @@ function RevealList({ items }) {
   )
 }
 
-function FeatureSection({ icon, eyebrow, title, intro, items, image, reverse, card }) {
+function FeatureSection({ icon, eyebrow, title, intro, items, image, reverse, card, cardAlign = 'center' }) {
+  // Bleed the whole panel out to its side's viewport edge (removes the dark
+  // gutter left by the centered container); the card stays centered within it.
+  const bleed =
+    cardAlign === 'left'
+      ? 'lg:ml-[calc(50%-50vw+1.5rem)]'
+      : cardAlign === 'right'
+        ? 'lg:mr-[calc(50%-50vw+1.5rem)]'
+        : ''
   return (
     <section className="w-full border-y border-warm bg-surface">
       <div
-        className={`mx-auto flex w-full max-w-container-max flex-col lg:min-h-[560px] lg:flex-row ${
+        className={`mx-auto flex w-full max-w-container-max flex-col lg:min-h-[560px] lg:flex-row lg:gap-10 ${
           reverse ? 'lg:flex-row-reverse' : ''
         }`}
       >
@@ -82,7 +90,7 @@ function FeatureSection({ icon, eyebrow, title, intro, items, image, reverse, ca
         </div>
 
         {/* Visual side — square panel; the texture fills right into the corners */}
-        <div className="group relative flex w-full items-center justify-center overflow-hidden p-5 lg:w-3/5">
+        <div className={`group relative flex w-full items-center justify-center overflow-hidden p-5 lg:flex-1 ${bleed}`}>
           <img
             src={image}
             alt=""
@@ -199,6 +207,7 @@ export default function Home() {
         intro={h.search.intro}
         items={h.search.steps}
         image="/images/manuscript-texture.png"
+        cardAlign="right"
         card={
           <div className="relative z-10 mx-4 w-full max-w-md overflow-hidden rounded-2xl border border-warm bg-surface/95 shadow-2xl backdrop-blur-xl">
             <div className="flex items-center justify-between border-b border-warm p-4">
@@ -265,6 +274,7 @@ export default function Home() {
         intro={h.read.intro}
         items={h.read.steps}
         image="/images/manuscript-texture-2.jpg"
+        cardAlign="left"
         card={
           <div className="relative z-10 mx-4 w-full max-w-md overflow-hidden rounded-2xl border border-warm bg-surface/95 shadow-2xl backdrop-blur-xl">
             <div
