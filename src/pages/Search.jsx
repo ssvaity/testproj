@@ -1,19 +1,24 @@
 import { useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { sampleBooks } from '../data/sampleBooks.js'
+import { useBooks } from '../hooks/useBooks.js'
+import { searchKey } from '../lib/translit.js'
+import { LANGUAGES, GENRES, facetLabel } from '../lib/catalogFacets.js'
+import { LoaderOne } from '../components/Loader.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
+
+// Shared typography with the About page: Playfair serif titles + gold eyebrow.
+const serif = { fontFamily: "'Playfair Display', serif" }
+const eyebrowGold = 'font-label-md text-[12px] uppercase tracking-[0.26em] text-brass'
 
 const emptyFilters = {
   keyword: '',
   language: '',
   topic: '',
   author: '',
-  publisher: '',
+  tikakaar: '',
+  onlyCommentary: false,
 }
-
-const languages = [...new Set(sampleBooks.map((b) => b.language))].sort()
-const topics = [...new Set(sampleBooks.map((b) => b.topic))].sort()
 
 
 // iPhone-style Devanagari keyboard — a letters page and a "more" page for
@@ -32,13 +37,17 @@ const KB_MORE = [
 ]
 
 const fieldClass =
-  'w-full p-3 rounded-lg border border-warm focus:border-secondary-fixed-dim focus:ring-2 focus:ring-secondary-fixed-dim focus:ring-opacity-50 transition-shadow bg-surface font-body-md text-body-md'
+  'w-full p-3 rounded-2xl border border-warm focus:border-secondary-fixed-dim focus:ring-2 focus:ring-secondary-fixed-dim focus:ring-opacity-50 transition-shadow bg-surface font-body-md text-body-md'
 const labelClass = 'block font-label-md text-label-md text-on-surface mb-base'
 
 export default function Search() {
   const { toggle, has } = useCart()
   const { t } = useLanguage()
+  // The whole catalogue is loaded once (cached) and searched in-browser.
+  const { books, loading, error } = useBooks(true)
   const [searchParams] = useSearchParams()
+
+  // Clean, curated dropdown options (LANGUAGES/GENRES from catalogFacets).
   const initialKeyword = searchParams.get('q') || ''
   const initialFilters = { ...emptyFilters, keyword: initialKeyword }
 
@@ -90,33 +99,34 @@ export default function Search() {
   }
 
   const results = useMemo(() => {
-    const kw = filters.keyword.trim().toLowerCase()
-    return sampleBooks.filter((b) => {
-      const matchesKeyword =
-        !kw ||
-        [b.name, b.author, b.publisher, b.topic, b.bhandar, b.id]
-          .join(' ')
-          .toLowerCase()
-          .includes(kw)
-      const matchesLanguage = !filters.language || b.language === filters.language
-      const matchesTopic = !filters.topic || b.topic === filters.topic
+    const kw = filters.keyword.trim()
+    // Cross-script key: matches whether the visitor types Devanagari or Latin,
+    // against both the English names and the Devanagari Type/Language fields.
+    const kwKey = searchKey(kw)
+    return books.filter((b) => {
+      const matchesKeyword = !kwKey || b._key.includes(kwKey)
+      // Language/Type match against the canonical facet sets (handles combos).
+      const matchesLanguage = !filters.language || b._langs.includes(filters.language)
+      const matchesTopic = !filters.topic || b._genres.includes(filters.topic)
+      // Cross-script (Latin <-> Devanagari) match on the specific field.
       const matchesAuthor =
-        !filters.author ||
-        b.author.toLowerCase().includes(filters.author.trim().toLowerCase())
-      const matchesPublisher =
-        !filters.publisher ||
-        b.publisher.toLowerCase().includes(filters.publisher.trim().toLowerCase())
+        !filters.author.trim() || b._authorKey.includes(searchKey(filters.author))
+      const matchesTikakaar =
+        !filters.tikakaar.trim() || b._tikKey.includes(searchKey(filters.tikakaar))
+      const matchesCommentary = !filters.onlyCommentary || Boolean(b.tikakaar)
       return (
         matchesKeyword &&
         matchesLanguage &&
         matchesTopic &&
         matchesAuthor &&
-        matchesPublisher
+        matchesTikakaar &&
+        matchesCommentary
       )
     })
-  }, [filters])
+  }, [filters, books])
 
-  const totalPages = Math.max(1, Math.ceil(results.length / perPage))
+  const resultCount = results.length
+  const totalPages = Math.max(1, Math.ceil(resultCount / perPage))
   const currentPage = Math.min(page, totalPages)
   const pageRows = results.slice((currentPage - 1) * perPage, currentPage * perPage)
 
@@ -144,44 +154,55 @@ export default function Search() {
   }
 
   const clearOne = (key) => {
-    setDraft({ ...draft, [key]: '' })
-    setFilters({ ...filters, [key]: '' })
+    const empty = emptyFilters[key]
+    setDraft({ ...draft, [key]: empty })
+    setFilters({ ...filters, [key]: empty })
     setPage(1)
   }
 
   // Active advanced filters, summarised for the "current search" chips
   const advancedChips = [
-    filters.language && { key: 'language', label: filters.language },
-    filters.topic && { key: 'topic', label: filters.topic },
+    filters.language && { key: 'language', label: facetLabel(filters.language) },
+    filters.topic && { key: 'topic', label: facetLabel(filters.topic) },
     filters.author && { key: 'author', label: `Author: ${filters.author}` },
-    filters.publisher && { key: 'publisher', label: `Publisher: ${filters.publisher}` },
+    filters.tikakaar && { key: 'tikakaar', label: `Commentator: ${filters.tikakaar}` },
+    filters.onlyCommentary && { key: 'onlyCommentary', label: 'With commentary' },
   ].filter(Boolean)
 
-  const pageNumbers = useMemo(() => {
-    const nums = []
-    for (let i = 1; i <= totalPages; i += 1) nums.push(i)
-    return nums
-  }, [totalPages])
+  // A compact, windowed page list: 1 … (current-1, current, current+1) … last.
+  // Keeps the control small even when there are thousands of pages.
+  const pageItems = useMemo(() => {
+    const items = []
+    const window = 1 // pages to show either side of the current page
+    const left = Math.max(2, currentPage - window)
+    const right = Math.min(totalPages - 1, currentPage + window)
+    items.push(1)
+    if (left > 2) items.push('gap-left')
+    for (let i = left; i <= right; i += 1) items.push(i)
+    if (right < totalPages - 1) items.push('gap-right')
+    if (totalPages > 1) items.push(totalPages)
+    return items
+  }, [currentPage, totalPages])
 
   return (
     <>
       <div
         className={
           hasSearched
-            ? 'min-h-[calc(100vh-6rem)]'
-            : 'mx-auto flex min-h-[calc(100vh-6rem)] max-w-3xl flex-col justify-start pt-[6vh]'
+            ? ''
+            : 'mx-auto flex min-h-[calc(100vh-7rem)] max-w-3xl flex-col justify-start pt-[8vh]'
         }
       >
         {/* Header */}
         {hasSearched ? (
           <div className="mb-stack-sm flex items-center justify-between gap-4">
-            <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-sepia">
+            <h1 className="text-[28px] leading-[1.1] text-ink md:text-[36px]" style={serif}>
               The archive
             </h1>
             <button
               type="button"
               onClick={newSearch}
-              className="inline-flex items-center gap-1.5 font-label-md text-label-md text-text-muted transition-colors hover:text-oxblood"
+              className="inline-flex items-center gap-1.5 py-1 font-label-md text-label-md text-text-muted transition-colors hover:text-oxblood"
             >
               <span className="material-symbols-outlined text-[18px]">arrow_back</span>
               New search
@@ -189,23 +210,18 @@ export default function Search() {
           </div>
         ) : (
           <div className="text-center">
-            <p className="mb-4 font-label-md text-[12px] uppercase tracking-[0.32em] text-brass">
-              {t.catalogue.eyebrow}
-            </p>
-            <h1
-              className="mb-5 text-[38px] font-normal leading-[1.04] text-ink md:text-[58px]"
-              style={{ fontFamily: "'Playfair Display', 'Noto Serif Devanagari', 'Noto Serif Gujarati', serif" }}
-            >
+            <p className={`${eyebrowGold} mb-3`}>{t.catalogue.eyebrow || 'The catalogue'}</p>
+            <h1 className="mb-4 text-[38px] leading-[1.08] text-ink md:text-[54px]" style={serif}>
               {t.catalogue.heading}
             </h1>
-            <p className="mx-auto max-w-xl font-body-lg text-body-lg text-text-muted">
+            <p className="mx-auto max-w-xl text-[17px] leading-relaxed text-text-muted">
               {t.catalogue.subtitle}
             </p>
           </div>
         )}
 
         {/* Search box */}
-        <form onSubmit={runSearch} className={hasSearched ? 'mb-stack-md' : 'mt-stack-lg'}>
+        <form onSubmit={runSearch} className={hasSearched ? 'mb-stack-md' : 'mt-16 md:mt-24'}>
           <div className="rounded-2xl border border-warm bg-surface px-4 py-3 shadow-sm transition-shadow focus-within:ring-2 focus-within:ring-secondary-fixed-dim focus-within:ring-opacity-50">
             <input
               ref={keywordRef}
@@ -254,7 +270,7 @@ export default function Search() {
 
           {/* On-screen Hindi keyboard — iPhone style */}
           {hindiKb && (
-            <div className="mt-3 rounded-2xl bg-surface-container-high p-2 shadow-sm sm:p-2.5">
+            <div className="mt-3 rounded-2xl bg-leaf-dark p-2 shadow-sm sm:p-2.5">
               <div className="mb-1.5 flex items-center justify-between px-1">
                 <p className="indic font-label-md text-label-md text-sepia">हिन्दी कीबोर्ड</p>
                 <button
@@ -324,28 +340,6 @@ export default function Search() {
             </div>
           )}
 
-          {/* Active filter chips */}
-          {advancedChips.length > 0 && (
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              {advancedChips.map((c) => (
-                <span
-                  key={c.key}
-                  className="inline-flex items-center gap-1 rounded-full bg-cream-surface px-3 py-1.5 font-label-md text-label-md text-sepia"
-                >
-                  {c.label}
-                  <button
-                    type="button"
-                    onClick={() => clearOne(c.key)}
-                    aria-label={`Remove ${c.label}`}
-                    className="text-text-muted transition-colors hover:text-primary"
-                  >
-                    <span className="material-symbols-outlined text-[16px]">close</span>
-                  </button>
-                </span>
-              ))}
-            </div>
-          )}
-
           {/* Advanced options panel */}
           {showAdvanced && (
             <div className="mt-4 rounded-2xl border border-warm bg-surface-container-lowest p-stack-md shadow-sm">
@@ -367,55 +361,65 @@ export default function Search() {
                   </label>
                   <select className={fieldClass} id="language" value={draft.language} onChange={update('language')}>
                     <option value="">All Languages</option>
-                    {languages.map((l) => (
-                      <option key={l} value={l}>
-                        {l}
+                    {LANGUAGES.map((l) => (
+                      <option key={l.value} value={l.value}>
+                        {l.label}
                       </option>
                     ))}
                   </select>
                 </div>
                 <div>
                   <label className={labelClass} htmlFor="topic">
-                    Topic
+                    Type
                   </label>
                   <select className={fieldClass} id="topic" value={draft.topic} onChange={update('topic')}>
-                    <option value="">All Topics</option>
-                    {topics.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
+                    <option value="">All Types</option>
+                    {GENRES.map((g) => (
+                      <option key={g.value} value={g.value}>
+                        {g.label}
                       </option>
                     ))}
                   </select>
                 </div>
                 <div>
                   <label className={labelClass} htmlFor="author">
-                    Author
+                    Author (Karta)
                   </label>
                   <input
                     className={fieldClass}
                     id="author"
-                    placeholder="E.g., Acharya..."
+                    placeholder="E.g., Hemachandra, Bhadrabahu…"
                     type="text"
                     value={draft.author}
                     onChange={update('author')}
                   />
                 </div>
                 <div>
-                  <label className={labelClass} htmlFor="publisher">
-                    Publisher / Bhandar
+                  <label className={labelClass} htmlFor="tikakaar">
+                    Commentator (Tikakaar)
                   </label>
                   <input
                     className={fieldClass}
-                    id="publisher"
-                    placeholder="E.g., LD Institute..."
+                    id="tikakaar"
+                    placeholder="E.g., Abhayadeva, Malayagiri…"
                     type="text"
-                    value={draft.publisher}
-                    onChange={update('publisher')}
+                    value={draft.tikakaar}
+                    onChange={update('tikakaar')}
                   />
                 </div>
               </div>
 
-              <div className="mt-stack-md flex justify-end gap-4">
+              <div className="mt-stack-md flex flex-col items-center justify-between gap-4 sm:flex-row">
+                <label className="flex cursor-pointer select-none items-center gap-2 font-body-md text-sm text-on-surface">
+                  <input
+                    type="checkbox"
+                    checked={draft.onlyCommentary}
+                    onChange={(e) => setDraft({ ...draft, onlyCommentary: e.target.checked })}
+                    className="h-4 w-4 rounded border-warm text-primary focus:ring-secondary-fixed-dim"
+                  />
+                  Only texts with a commentary (Tikakaar)
+                </label>
+                <div className="flex gap-4">
                 <button
                   type="button"
                   onClick={clearAll}
@@ -429,7 +433,30 @@ export default function Search() {
                 >
                   Apply filters
                 </button>
+                </div>
               </div>
+            </div>
+          )}
+
+          {/* Active filter chips — shown below the advanced options block */}
+          {advancedChips.length > 0 && (
+            <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
+              {advancedChips.map((c) => (
+                <span
+                  key={c.key}
+                  className="inline-flex items-center gap-1.5 py-1 font-label-md text-label-md leading-none text-sepia"
+                >
+                  <span className="leading-none">{c.label}</span>
+                  <button
+                    type="button"
+                    onClick={() => clearOne(c.key)}
+                    aria-label={`Remove ${c.label}`}
+                    className="inline-flex items-center text-text-muted transition-colors hover:text-primary"
+                  >
+                    <span className="material-symbols-outlined text-[18px] leading-none">close</span>
+                  </button>
+                </span>
+              ))}
             </div>
           )}
         </form>
@@ -441,8 +468,16 @@ export default function Search() {
           {/* Results Summary */}
           <div className="mb-stack-sm flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="font-body-md text-body-md text-text-muted">
-              Found <strong className="text-on-surface">{results.length.toLocaleString()}</strong>{' '}
-              {results.length === 1 ? 'result' : 'results'}
+              {loading ? (
+                'Searching…'
+              ) : error ? (
+                <span className="text-oxblood">Couldn’t load the catalogue.</span>
+              ) : (
+                <>
+                  Found <strong className="text-on-surface">{resultCount.toLocaleString()}</strong>{' '}
+                  {resultCount === 1 ? 'result' : 'results'}
+                </>
+              )}
             </p>
             <div className="flex items-center gap-2">
               <label className="font-label-md text-label-md text-text-muted" htmlFor="perPage">
@@ -460,6 +495,7 @@ export default function Search() {
                 <option>10</option>
                 <option>25</option>
                 <option>50</option>
+                <option>100</option>
               </select>
             </div>
           </div>
@@ -470,14 +506,20 @@ export default function Search() {
             <div className="hidden items-center gap-4 border-b border-warm pb-3 text-[11px] font-normal uppercase tracking-[0.16em] text-text-muted sm:flex">
               <span className="w-8 shrink-0">No.</span>
               <span className="flex-1">Manuscript</span>
-              <span className="w-40 shrink-0">Language / Topic</span>
-              <span className="w-12 shrink-0">Year</span>
+              <span className="w-44 shrink-0">Language / Type</span>
               <span className="w-[6rem] shrink-0 text-right">Request</span>
             </div>
 
-            {pageRows.length === 0 ? (
+            {loading ? (
+              <div className="flex flex-col items-center gap-4 border-b border-warm py-16 text-text-muted">
+                <LoaderOne />
+                <span className="font-body-md text-sm">Searching the archive…</span>
+              </div>
+            ) : pageRows.length === 0 ? (
               <div className="border-b border-warm py-12 text-center text-text-muted">
-                No books match your search.
+                {error
+                  ? 'The catalogue could not be loaded. Please try again later.'
+                  : 'No books match your search.'}
               </div>
             ) : (
               <ul>
@@ -485,10 +527,7 @@ export default function Search() {
                   const inCart = has(b.id)
                   const num = String((currentPage - 1) * perPage + i + 1).padStart(2, '0')
                   return (
-                    <li
-                      key={b.id}
-                      className={`group border-b border-warm transition-colors ${inCart ? 'bg-oxblood/[0.06]' : ''}`}
-                    >
+                    <li key={b.id} className="group border-b border-warm">
                       <div className="flex items-start gap-4 py-5">
                         <span className="hidden w-8 shrink-0 pt-1 text-sm tabular-nums text-text-muted sm:block">
                           {num}
@@ -497,32 +536,39 @@ export default function Search() {
                           <p className="font-headline-md text-[19px] leading-snug text-ink transition-colors group-hover:text-oxblood">
                             {b.name}
                           </p>
-                          <p className="mt-0.5 text-sm text-text-muted">
-                            {[b.author, b.bhandar].filter(Boolean).join(' · ')}
-                          </p>
+                          {[b.author, b.tikakaar].filter(Boolean).length > 0 && (
+                            <p className="mt-0.5 text-sm text-text-muted">
+                              {[
+                                b.author && `Karta: ${b.author}`,
+                                b.tikakaar && `Tika: ${b.tikakaar}`,
+                              ]
+                                .filter(Boolean)
+                                .join(' · ')}
+                            </p>
+                          )}
+                          {b.speciality && (
+                            <p className="mt-0.5 text-sm italic text-text-muted">{b.speciality}</p>
+                          )}
                           <p className="mt-1 text-sm text-text-muted sm:hidden">
-                            {b.language} · {b.topic} · {b.year}
+                            {[b.language, b.type].filter(Boolean).join(' · ')}
                           </p>
                         </div>
-                        <div className="hidden w-40 shrink-0 pt-1 text-sm text-text-muted sm:block">
-                          {b.language} · {b.topic}
-                        </div>
-                        <div className="hidden w-12 shrink-0 pt-1 text-sm tabular-nums text-text-muted sm:block">
-                          {b.year}
+                        <div className="hidden w-44 shrink-0 pt-1 text-sm text-text-muted sm:block">
+                          {[b.language, b.type].filter(Boolean).join(' · ')}
                         </div>
                         <div className="w-[6rem] shrink-0 text-right">
                           <button
                             type="button"
                             onClick={() => toggle(b)}
                             aria-pressed={inCart}
-                            className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 font-label-md text-label-md transition-colors ${
+                            className={`inline-flex items-center gap-1 py-1 font-label-md text-label-md transition-colors ${
                               inCart
-                                ? 'bg-primary text-white hover:bg-maroon-dark'
-                                : 'border border-warm text-oxblood hover:border-oxblood hover:bg-cream-surface'
+                                ? 'text-olive hover:text-oxblood'
+                                : 'text-oxblood hover:text-maroon-dark'
                             }`}
                           >
                             <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-                              {inCart ? 'check' : 'add'}
+                              {inCart ? 'check_circle' : 'add'}
                             </span>
                             {inCart ? 'Added' : 'Add'}
                           </button>
@@ -536,7 +582,7 @@ export default function Search() {
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2">
             <button
               disabled={currentPage <= 1}
               onClick={() => setPage(currentPage - 1)}
@@ -544,19 +590,29 @@ export default function Search() {
             >
               Previous
             </button>
-            {pageNumbers.map((n) => (
-              <button
-                key={n}
-                onClick={() => setPage(n)}
-                className={`h-10 w-10 rounded-lg font-label-md text-label-md ${
-                  n === currentPage
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'border border-warm text-on-surface transition-colors hover:bg-surface-container-low'
-                }`}
-              >
-                {n}
-              </button>
-            ))}
+            {pageItems.map((item) =>
+              typeof item === 'string' ? (
+                <span
+                  key={item}
+                  className="flex h-10 w-8 items-end justify-center pb-2 text-text-muted"
+                >
+                  …
+                </span>
+              ) : (
+                <button
+                  key={item}
+                  onClick={() => setPage(item)}
+                  aria-current={item === currentPage ? 'page' : undefined}
+                  className={`h-10 min-w-[2.5rem] rounded-lg px-2 font-label-md text-label-md tabular-nums ${
+                    item === currentPage
+                      ? 'bg-primary text-white shadow-sm'
+                      : 'border border-warm text-on-surface transition-colors hover:bg-surface-container-low'
+                  }`}
+                >
+                  {item}
+                </button>
+              ),
+            )}
             <button
               disabled={currentPage >= totalPages}
               onClick={() => setPage(currentPage + 1)}
@@ -565,6 +621,37 @@ export default function Search() {
               Next
             </button>
           </div>
+
+          {/* Page indicator + jump-to-page for large result sets */}
+          {totalPages > 1 && (
+            <div className="mt-stack-sm flex flex-wrap items-center justify-center gap-3 text-text-muted">
+              <span className="font-label-md text-label-md">
+                Page <strong className="text-on-surface tabular-nums">{currentPage}</strong> of{' '}
+                <span className="tabular-nums">{totalPages.toLocaleString()}</span>
+              </span>
+              {totalPages > 5 && (
+                <span className="flex items-center gap-2">
+                  <label htmlFor="jumpPage" className="font-label-md text-label-md">
+                    Go to page
+                  </label>
+                  <input
+                    id="jumpPage"
+                    type="number"
+                    min={1}
+                    max={totalPages}
+                    defaultValue={currentPage}
+                    key={currentPage}
+                    onKeyDown={(e) => {
+                      if (e.key !== 'Enter') return
+                      const n = Number(e.currentTarget.value)
+                      if (n >= 1 && n <= totalPages) setPage(n)
+                    }}
+                    className="h-10 w-20 rounded-lg border border-warm bg-surface px-3 text-center font-body-md text-body-md tabular-nums transition-shadow focus:border-secondary-fixed-dim focus:ring-1 focus:ring-secondary-fixed-dim"
+                  />
+                </span>
+              )}
+            </div>
+          )}
         </>
       )}
     </>

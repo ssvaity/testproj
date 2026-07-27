@@ -14,8 +14,8 @@ function buildMessage(items, name, phone, email, note) {
   if (name || phone || email) lines.push('')
   lines.push('Requested books:')
   items.forEach((b, i) => {
-    const bhandar = b.bhandar ? ` — ${b.bhandar}` : ''
-    lines.push(`${i + 1}. ${b.name} (No. ${b.id})${bhandar}`)
+    const detail = [b.author, b.tikakaar, b.language].filter(Boolean).join(', ')
+    lines.push(`${i + 1}. ${b.name}${detail ? ` — ${detail}` : ''}`)
   })
   if (note) lines.push('', `Note: ${note}`)
   return lines.join('\n')
@@ -89,7 +89,7 @@ export default function Requests() {
                   <div className="min-w-0">
                     <p className="font-headline-md text-[18px] leading-snug text-ink">{b.name}</p>
                     <p className="mt-0.5 text-sm text-text-muted">
-                      {[b.author, b.bhandar || `No. ${b.id}`].filter(Boolean).join(' · ')}
+                      {[b.author, b.tikakaar, b.language].filter(Boolean).join(' · ')}
                     </p>
                   </div>
                   <button

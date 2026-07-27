@@ -11,6 +11,15 @@ export const REQUEST_WHATSAPP = '917575001083'
 // Email address that should receive book requests.
 export const REQUEST_EMAIL = 'kendra@kobatirth.org'
 
+// -----------------------------------------------------------------------------
+// Archive catalogue — a published Google Sheet (CSV).
+// File -> Share -> Publish to web -> pick the sheet -> "Comma-separated values
+// (.csv)" -> Publish, then paste that URL here. Columns (any order):
+//   Granth Name | Type | Language | Karta | Tikakaar | Speciality
+// -----------------------------------------------------------------------------
+export const BOOKS_SHEET_CSV_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vSkn2CmRShypf5J5p0-kwWsdCiwrz58Ndo30e4wFyWnlwIRa7aAFxMYUCyV1UP5r9cwoKLs4dU4Uty4/pub?output=csv'
+
 // Google Analytics 4 Measurement ID, e.g. 'G-XXXXXXXXXX'.
 // Leave it as '' to turn analytics off. When set, every "Download" click is
 // recorded as a `book_download` event you can total up in the GA dashboard

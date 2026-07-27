@@ -65,9 +65,9 @@ function FeatureSection({ icon, eyebrow, title, intro, items, image, reverse, ca
   // gutter left by the centered container); the card stays centered within it.
   const bleed =
     cardAlign === 'left'
-      ? 'lg:ml-[calc(50%-50vw+1.5rem)]'
+      ? 'lg:ml-[calc(50%-50vw+3.5rem)]'
       : cardAlign === 'right'
-        ? 'lg:mr-[calc(50%-50vw+1.5rem)]'
+        ? 'lg:mr-[calc(50%-50vw+3.5rem)]'
         : ''
   return (
     <section className="w-full border-y border-warm bg-surface">
