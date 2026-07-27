@@ -107,7 +107,7 @@ export default function Home() {
           final frame (no loop). */}
       {/* First fold — hero grows to fill; the logo loop sits flush at the
           bottom of the viewport (no scroll needed to see it end). */}
-      <div className="flex min-h-[calc(100vh-4rem)] flex-col">
+      <div className="flex min-h-[calc(100vh-4.5rem)] flex-col">
       <section className="flex w-full flex-1 flex-col px-4 pt-4 pb-stack-md sm:px-6">
         <div className="relative flex min-h-[52vh] w-full flex-1 items-center overflow-hidden bg-[#fffdf8] md:min-h-[64vh]">
           <video

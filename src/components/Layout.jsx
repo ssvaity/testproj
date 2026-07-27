@@ -71,7 +71,7 @@ export default function Layout() {
           <Link
             to="/"
             aria-label="Shrutsanjeevan"
-            className="flex min-w-0 items-center gap-3 py-3 pl-margin-mobile pr-6 lg:pl-8"
+            className="flex min-w-0 items-center gap-3 py-4 pl-margin-mobile pr-6 lg:pl-8"
           >
             <img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-auto shrink-0 sm:h-9" />
             <span className="whitespace-nowrap font-headline-lg text-[20px] leading-none text-sepia sm:text-[24px]">
@@ -109,7 +109,7 @@ export default function Layout() {
               <div className="relative flex w-full items-stretch">
                 <Link
                   to="/"
-                  className="flex min-w-0 items-center gap-3 py-3 pl-margin-mobile pr-6 lg:pl-8"
+                  className="flex min-w-0 items-center gap-3 py-4 pl-margin-mobile pr-6 lg:pl-8"
                   onClick={() => setMenuOpen(false)}
                 >
                   <img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-auto shrink-0 sm:h-9" />
