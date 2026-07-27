@@ -66,15 +66,21 @@ export default function Layout() {
     <div className="flex min-h-screen flex-col">
       {/* Top navbar — scrolls away with the page (not sticky) */}
       <nav className="z-50 w-full border-b border-warm bg-surface">
-        <div className="mx-auto flex max-w-container-max items-center px-margin-mobile py-3">
-          {/* Left: logo video + wordmark */}
-          <Link to="/" aria-label="Shrutsanjeevan" className="-ml-2 flex items-center gap-2">
-            <img src="/logo.png" alt="" aria-hidden="true" className="h-12 w-auto" />
-            <span className="font-headline-lg text-[24px] leading-none text-sepia">Shrutsanjeevan</span>
+        <div className="relative flex w-full items-stretch">
+          {/* Left: logo + wordmark — position matched to shrutsanjeevan.vercel.app */}
+          <Link
+            to="/"
+            aria-label="Shrutsanjeevan"
+            className="flex min-w-0 items-center gap-3 py-3 pl-margin-mobile pr-6 lg:pl-8"
+          >
+            <img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-auto shrink-0 sm:h-9" />
+            <span className="whitespace-nowrap font-headline-lg text-[20px] leading-none text-sepia sm:text-[24px]">
+              Shrutsanjeevan
+            </span>
           </Link>
 
           {/* Right: actions + menu */}
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex shrink-0 items-center gap-3 pr-margin-mobile lg:pr-8">
             <ThemeToggle />
             <LanguageSwitcher />
             <button
@@ -100,12 +106,18 @@ export default function Layout() {
             className="fixed inset-0 z-[200] flex flex-col bg-surface"
           >
             <div className="border-b border-warm bg-surface">
-              <div className="mx-auto flex max-w-container-max items-center justify-between px-margin-mobile py-3">
-                <Link to="/" className="-ml-2 flex items-center gap-2" onClick={() => setMenuOpen(false)}>
-                  <img src="/logo.png" alt="" aria-hidden="true" className="h-12 w-auto" />
-                  <span className="font-headline-lg text-[24px] leading-none text-sepia">Shrutsanjeevan</span>
+              <div className="relative flex w-full items-stretch">
+                <Link
+                  to="/"
+                  className="flex min-w-0 items-center gap-3 py-3 pl-margin-mobile pr-6 lg:pl-8"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-auto shrink-0 sm:h-9" />
+                  <span className="whitespace-nowrap font-headline-lg text-[20px] leading-none text-sepia sm:text-[24px]">
+                    Shrutsanjeevan
+                  </span>
                 </Link>
-                <div className="flex items-center gap-3">
+                <div className="ml-auto flex shrink-0 items-center gap-3 pr-margin-mobile lg:pr-8">
                   <ThemeToggle />
                   <LanguageSwitcher />
                   <button

@@ -159,19 +159,19 @@ export default function Home() {
 
       {/* Partner marquee — the "logo loop" keeps its light band in both themes
           (partner logos are supplied on white). */}
-      <section className="w-full overflow-hidden border-y border-[#e7dcc7] bg-[#fffdf8] py-10">
-        <p className="eyebrow mb-8 text-center" style={{ color: '#8a1f1c' }}>{h.supportOf}</p>
+      <section className="w-full overflow-hidden border-y border-[#e7dcc7] bg-[#fffdf8] pb-10 pt-1">
+        <p className="eyebrow mb-4 text-center" style={{ color: '#d9a441' }}>{h.supportOf}</p>
         <div className="marquee-track">
           {[0, 1].map((g) => (
             <div key={g} className="flex items-end gap-16 pr-16">
               {partners.map((p) => (
-                <div key={p.name} className="flex w-44 shrink-0 flex-col items-center gap-4 text-center">
+                <div key={p.name} className="flex w-44 shrink-0 flex-col items-center gap-3 text-center">
                   <div className="flex h-20 items-center justify-center">
                     {p.logo ? (
                       <img
                         src={p.logo}
                         alt={p.name}
-                        className="max-h-20 w-auto max-w-[10rem] object-contain"
+                        className="max-h-20 w-auto max-w-[12rem] object-contain"
                       />
                     ) : (
                       <span className="font-headline-md text-[15px] leading-snug text-[#5c4326] line-clamp-3">
