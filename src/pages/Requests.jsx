@@ -6,9 +6,12 @@ import Dialog from '../components/Dialog.jsx'
 import { REQUEST_WHATSAPP, REQUEST_EMAIL } from '../config.js'
 
 // Builds the plain-text message the library receives.
-function buildMessage(items, name, note) {
+function buildMessage(items, name, phone, email, note) {
   const lines = ['Book request from the Shrutsanjeevan website', '']
-  if (name) lines.push(`Name: ${name}`, '')
+  if (name) lines.push(`Name: ${name}`)
+  if (phone) lines.push(`Phone: ${phone}`)
+  if (email) lines.push(`Email: ${email}`)
+  if (name || phone || email) lines.push('')
   lines.push('Requested books:')
   items.forEach((b, i) => {
     const bhandar = b.bhandar ? ` — ${b.bhandar}` : ''
@@ -23,20 +26,24 @@ export default function Requests() {
   const { t } = useLanguage()
   const r = t.requestsPage
   const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
   const [note, setNote] = useState('')
   const [confirmClear, setConfirmClear] = useState(false)
 
-  const message = buildMessage(items, name, note)
+  const message = buildMessage(items, name, phone, email, note)
   const disabled = count === 0
+  const contactMissing = !name.trim() || !phone.trim() || !email.trim()
+  const canSend = !disabled && !contactMissing
 
   const sendWhatsApp = () => {
-    if (disabled) return
+    if (!canSend) return
     const url = `https://wa.me/${REQUEST_WHATSAPP}?text=${encodeURIComponent(message)}`
     window.open(url, '_blank', 'noopener')
   }
 
   const sendEmail = () => {
-    if (disabled) return
+    if (!canSend) return
     const subject = `Book request (${count} book${count === 1 ? '' : 's'})`
     window.location.href = `mailto:${REQUEST_EMAIL}?subject=${encodeURIComponent(
       subject
@@ -110,9 +117,23 @@ export default function Requests() {
             <div className="mb-3 flex flex-col gap-2">
               <input
                 type="text"
-                placeholder={r.namePh}
+                placeholder={`${r.namePh} *`}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-lg border border-warm bg-white p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
+              />
+              <input
+                type="tel"
+                placeholder={`${r.phonePh} *`}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full rounded-lg border border-warm bg-white p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
+              />
+              <input
+                type="email"
+                placeholder={`${r.emailPh} *`}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-lg border border-warm bg-white p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
               />
               <textarea
@@ -125,14 +146,16 @@ export default function Requests() {
             </div>
             <button
               onClick={sendWhatsApp}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-oxblood px-4 py-3.5 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark"
+              disabled={!canSend}
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-oxblood px-4 py-3.5 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-oxblood"
             >
               <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>chat</span>
               {r.whatsapp}
             </button>
             <button
               onClick={sendEmail}
-              className="mt-3 flex w-full items-center justify-center gap-1.5 font-label-md text-label-md text-sm text-oxblood transition-colors hover:text-maroon-dark"
+              disabled={!canSend}
+              className="mt-3 flex w-full items-center justify-center gap-1.5 font-label-md text-label-md text-sm text-oxblood transition-colors hover:text-maroon-dark disabled:cursor-not-allowed disabled:opacity-50"
             >
               <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>mail</span>
               {r.email}

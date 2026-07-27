@@ -105,8 +105,8 @@ export default function Home() {
       {/* Hero — white background + painterly peacock video (opaque MP4 on white, so it
           reads as transparent and works in every browser). Plays once, then holds its
           final frame (no loop). */}
-      <section className="w-full px-4 pt-4 pb-stack-lg sm:px-6">
-        <div className="relative flex min-h-[70vh] w-full items-center overflow-hidden rounded-[24px] border border-warm bg-white shadow-sm md:min-h-[78vh]">
+      <section className="w-full px-4 pt-4 pb-stack-md sm:px-6">
+        <div className="relative flex min-h-[52vh] w-full items-center overflow-hidden rounded-[24px] border border-warm bg-white shadow-sm md:min-h-[64vh]">
           <video
             className="pointer-events-none absolute bottom-0 left-0 z-0 h-[82%] w-auto max-w-none object-contain object-bottom opacity-90 md:z-[5] md:h-[96%] md:opacity-100"
             poster="/images/peacock-poster.jpg"
@@ -313,7 +313,8 @@ export default function Home() {
           <defs>
             {gurudevBlobs.map((d, i) => (
               <clipPath key={i} id={`gurudev-blob-${i}`} clipPathUnits="objectBoundingBox">
-                <path d={d} />
+                {/* grow only the 2nd blob 9% so more of the portrait (hair) shows */}
+                <path d={d} transform={i === 1 ? 'translate(0.5 0.5) scale(1.09) translate(-0.5 -0.5)' : undefined} />
               </clipPath>
             ))}
           </defs>
@@ -327,7 +328,7 @@ export default function Home() {
               }`}
             >
               {/* Portrait — organic blob frame */}
-              <div className="relative mx-auto w-full max-w-[380px] self-center sm:mx-0 sm:w-[400px] sm:shrink-0">
+              <div className="relative mx-auto w-full max-w-[460px] self-center sm:mx-0 sm:w-[470px] sm:shrink-0">
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-[-10%]"

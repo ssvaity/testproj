@@ -42,6 +42,7 @@
 body {
   margin: 0;
   background: #ffffff; /* white page background (footer uses warm cream) */
+  overflow-x: clip; /* allow full-bleed bands without a horizontal scrollbar */
 }
 
 #root {
