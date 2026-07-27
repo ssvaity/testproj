@@ -168,8 +168,8 @@ export default function Search() {
       <div
         className={
           hasSearched
-            ? ''
-            : 'mx-auto flex min-h-[calc(100vh-12rem)] max-w-3xl flex-col justify-start pt-[6vh]'
+            ? 'min-h-screen'
+            : 'mx-auto flex min-h-screen max-w-3xl flex-col justify-start pt-[6vh]'
         }
       >
         {/* Header */}
