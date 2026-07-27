@@ -81,15 +81,15 @@ function FeatureSection({ icon, eyebrow, title, intro, items, image, reverse, ca
           <RevealList items={items} />
         </div>
 
-        {/* Visual side */}
+        {/* Visual side — square panel; the texture fills right into the corners */}
         <div className="group relative flex w-full items-center justify-center overflow-hidden p-5 lg:w-3/5">
           <img
             src={image}
             alt=""
             aria-hidden="true"
-            className="absolute inset-0 h-full w-full rounded-[20px] object-cover opacity-[0.45] transition-transform duration-1000 group-hover:scale-105"
+            className="absolute inset-0 h-full w-full object-cover opacity-[0.45] transition-transform duration-1000 group-hover:scale-105"
           />
-          <div className="absolute inset-0 rounded-[20px] bg-gradient-to-r from-white/45 to-white/15" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/45 to-white/15" />
           {card}
         </div>
       </div>
