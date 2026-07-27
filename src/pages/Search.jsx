@@ -32,7 +32,7 @@ const KB_MORE = [
 ]
 
 const fieldClass =
-  'w-full p-3 rounded-lg border border-warm focus:border-secondary-fixed-dim focus:ring-2 focus:ring-secondary-fixed-dim focus:ring-opacity-50 transition-shadow bg-white font-body-md text-body-md'
+  'w-full p-3 rounded-lg border border-warm focus:border-secondary-fixed-dim focus:ring-2 focus:ring-secondary-fixed-dim focus:ring-opacity-50 transition-shadow bg-surface font-body-md text-body-md'
 const labelClass = 'block font-label-md text-label-md text-on-surface mb-base'
 
 export default function Search() {
@@ -169,7 +169,7 @@ export default function Search() {
         className={
           hasSearched
             ? ''
-            : 'mx-auto flex min-h-[calc(100vh-12rem)] max-w-3xl flex-col justify-center'
+            : 'mx-auto flex min-h-[calc(100vh-12rem)] max-w-3xl flex-col justify-start pt-[6vh]'
         }
       >
         {/* Header */}
@@ -206,7 +206,7 @@ export default function Search() {
 
         {/* Search box */}
         <form onSubmit={runSearch} className={hasSearched ? 'mb-stack-md' : 'mt-stack-lg'}>
-          <div className="rounded-2xl border border-warm bg-white px-4 py-3 shadow-sm transition-shadow focus-within:ring-2 focus-within:ring-secondary-fixed-dim focus-within:ring-opacity-50">
+          <div className="rounded-2xl border border-warm bg-surface px-4 py-3 shadow-sm transition-shadow focus-within:ring-2 focus-within:ring-secondary-fixed-dim focus-within:ring-opacity-50">
             <input
               ref={keywordRef}
               className="w-full border-0 bg-transparent px-1 py-2 font-body-md text-body-md text-on-surface outline-none placeholder:text-text-muted focus:border-0 focus:outline-none focus:ring-0"
@@ -254,14 +254,14 @@ export default function Search() {
 
           {/* On-screen Hindi keyboard — iPhone style */}
           {hindiKb && (
-            <div className="mt-3 rounded-2xl bg-[#e6e1d5] p-2 shadow-sm sm:p-2.5">
+            <div className="mt-3 rounded-2xl bg-surface-container-high p-2 shadow-sm sm:p-2.5">
               <div className="mb-1.5 flex items-center justify-between px-1">
                 <p className="indic font-label-md text-label-md text-sepia">हिन्दी कीबोर्ड</p>
                 <button
                   type="button"
                   onClick={() => setHindiKb(false)}
                   aria-label="Close keyboard"
-                  className="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-white/60 hover:text-oxblood"
+                  className="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-surface/60 hover:text-oxblood"
                 >
                   <span className="material-symbols-outlined text-[18px]">close</span>
                 </button>
@@ -278,7 +278,7 @@ export default function Search() {
                           e.preventDefault()
                           insertChar(ch)
                         }}
-                        className="flex h-10 flex-1 items-center justify-center rounded-md bg-white text-[19px] leading-none text-ink shadow-[0_1px_1px_rgba(47,36,24,0.28)] transition-colors active:bg-cream-surface sm:h-11"
+                        className="flex h-10 flex-1 items-center justify-center rounded-md bg-surface text-[19px] leading-none text-ink shadow-[0_1px_1px_rgba(47,36,24,0.28)] transition-colors active:bg-cream-surface sm:h-11"
                       >
                         {ch}
                       </button>
@@ -304,7 +304,7 @@ export default function Search() {
                       e.preventDefault()
                       insertChar(' ')
                     }}
-                    className="h-10 flex-1 rounded-md bg-white font-label-md text-label-md text-text-muted shadow-[0_1px_1px_rgba(47,36,24,0.28)] transition-colors active:bg-cream-surface sm:h-11"
+                    className="h-10 flex-1 rounded-md bg-surface font-label-md text-label-md text-text-muted shadow-[0_1px_1px_rgba(47,36,24,0.28)] transition-colors active:bg-cream-surface sm:h-11"
                   >
                     Space
                   </button>
@@ -455,7 +455,7 @@ export default function Search() {
                   setPerPage(Number(e.target.value))
                   setPage(1)
                 }}
-                className="cursor-pointer rounded-lg border border-warm bg-white py-2 pl-3 pr-9 font-body-md text-sm text-body-md transition-shadow focus:border-secondary-fixed-dim focus:ring-1 focus:ring-secondary-fixed-dim"
+                className="cursor-pointer rounded-lg border border-warm bg-surface py-2 pl-3 pr-9 font-body-md text-sm text-body-md transition-shadow focus:border-secondary-fixed-dim focus:ring-1 focus:ring-secondary-fixed-dim"
               >
                 <option>10</option>
                 <option>25</option>

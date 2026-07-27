@@ -38,7 +38,7 @@ const socials = [
 ]
 
 const fieldClass =
-  'w-full p-3 rounded-lg border border-warm focus:border-secondary-fixed-dim focus:ring-2 focus:ring-secondary-fixed-dim focus:ring-opacity-50 transition-shadow bg-white font-body-md text-body-md'
+  'w-full p-3 rounded-lg border border-warm focus:border-secondary-fixed-dim focus:ring-2 focus:ring-secondary-fixed-dim focus:ring-opacity-50 transition-shadow bg-surface font-body-md text-body-md'
 const labelClass = 'block font-label-md text-label-md text-on-surface mb-base'
 
 const inquiryTypes = ['General enquiry', 'Join as a volunteer', 'Business query']
@@ -364,7 +364,7 @@ export default function Contact() {
             type="button"
             onClick={handleDonate}
             aria-label="Donate Now — Secured by Razorpay"
-            className="inline-flex items-stretch overflow-hidden rounded-md border border-[#d7dbe3] bg-white shadow-sm transition-shadow hover:shadow-md"
+            className="inline-flex items-stretch overflow-hidden rounded-md border border-[#d7dbe3] bg-surface shadow-sm transition-shadow hover:shadow-md"
           >
             <span className="flex items-center justify-center bg-[#3395ff] px-3">
               <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">

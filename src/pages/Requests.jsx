@@ -120,28 +120,28 @@ export default function Requests() {
                 placeholder={`${r.namePh} *`}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg border border-warm bg-white p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
+                className="w-full rounded-lg border border-warm bg-surface p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
               />
               <input
                 type="tel"
                 placeholder={`${r.phonePh} *`}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full rounded-lg border border-warm bg-white p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
+                className="w-full rounded-lg border border-warm bg-surface p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
               />
               <input
                 type="email"
                 placeholder={`${r.emailPh} *`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-warm bg-white p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
+                className="w-full rounded-lg border border-warm bg-surface p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
               />
               <textarea
                 rows={3}
                 placeholder={r.notePh}
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                className="w-full resize-y rounded-lg border border-warm bg-white p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
+                className="w-full resize-y rounded-lg border border-warm bg-surface p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
               />
             </div>
             <button
@@ -169,7 +169,7 @@ export default function Requests() {
         open={confirmClear}
         onClose={() => setConfirmClear(false)}
         ariaLabel="Clear request list"
-        panelClassName="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-stack-md"
+        panelClassName="bg-surface rounded-2xl shadow-2xl w-full max-w-sm p-stack-md"
       >
         <h2 className="font-headline-md text-headline-md text-sepia">{r.clearTitle}</h2>
         <p className="mt-2 font-body-md text-body-md text-text-muted">

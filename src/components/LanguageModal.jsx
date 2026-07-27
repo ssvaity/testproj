@@ -13,7 +13,7 @@ export default function LanguageModal() {
       onClick={chosen ? closePicker : undefined}
     >
       <div
-        className="relative w-full max-w-md rounded-2xl border border-warm bg-white p-8 text-center shadow-2xl"
+        className="relative w-full max-w-md rounded-2xl border border-warm bg-surface p-8 text-center shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {chosen && (

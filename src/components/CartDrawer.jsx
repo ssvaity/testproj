@@ -51,7 +51,7 @@ export default function CartDrawer({ open, onClose }) {
 
       {/* Panel — styled like the request-list card */}
       <aside
-        className={`fixed right-0 top-0 z-[95] flex h-full w-full max-w-md flex-col overflow-hidden rounded-l-2xl border-y border-l border-warm bg-white shadow-2xl transition-transform ${
+        className={`fixed right-0 top-0 z-[95] flex h-full w-full max-w-md flex-col overflow-hidden rounded-l-2xl border-y border-l border-warm bg-surface shadow-2xl transition-transform ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
         role="dialog"
@@ -123,14 +123,14 @@ export default function CartDrawer({ open, onClose }) {
                 placeholder="Your name (optional)"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg border border-warm bg-white p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
+                className="w-full rounded-lg border border-warm bg-surface p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
               />
               <textarea
                 rows={2}
                 placeholder="Add a note (optional)"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                className="w-full resize-y rounded-lg border border-warm bg-white p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
+                className="w-full resize-y rounded-lg border border-warm bg-surface p-2.5 font-body-md text-sm focus:border-oxblood focus:outline-none focus:ring-2 focus:ring-oxblood/20"
               />
             </div>
             <button

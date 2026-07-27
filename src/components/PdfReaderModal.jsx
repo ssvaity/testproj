@@ -9,7 +9,7 @@ export default function PdfReaderModal({ open, title, url, onClose }) {
       open={open}
       onClose={onClose}
       ariaLabel={title}
-      panelClassName="flex h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl bg-white"
+      panelClassName="flex h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl bg-surface"
     >
       <div className="flex items-center justify-between gap-4 border-b border-warm p-3">
         <div className="min-w-0">

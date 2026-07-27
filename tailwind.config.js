@@ -7,53 +7,54 @@ export default {
   theme: {
     extend: {
       colors: {
-        // --- Palm-Leaf Archive palette ---------------------------------
-        // Named tokens (use these in new markup)
-        straw: '#ffffff', // page background
-        parchment: '#ffffff', // content cards
-        leaf: '#f3e9d6', // leaf-tan accent panels / tiles
-        'leaf-dark': '#e7dcc7',
-        ink: '#2f2418', // primary text (dark sepia)
-        sepia: '#5c4326', // secondary headings / strong text
-        oxblood: '#8a1f1c', // rubrication accent, links, CTAs
-        'oxblood-dark': '#6e1714',
-        olive: '#6b6a3a', // secondary accent, icons
-        'olive-soft': '#dcd6b0',
-        brass: '#d9a441', // sparing metallic accent
-        rule: '#e7dcc7', // hairlines (leaf edges)
+        // --- Palm-Leaf Archive palette (theme-able via CSS vars) --------
+        // Neutrals/text/surfaces flip in dark mode; accents (brass, olive)
+        // stay fixed. `rgb(var(--c-x) / <alpha-value>)` keeps opacity working.
+        straw: 'rgb(var(--c-bg) / <alpha-value>)',
+        parchment: 'rgb(var(--c-surface) / <alpha-value>)',
+        leaf: 'rgb(var(--c-surface-3) / <alpha-value>)',
+        'leaf-dark': 'rgb(var(--c-line) / <alpha-value>)',
+        ink: 'rgb(var(--c-ink) / <alpha-value>)',
+        sepia: 'rgb(var(--c-sepia) / <alpha-value>)',
+        oxblood: 'rgb(var(--c-oxblood) / <alpha-value>)',
+        'oxblood-dark': 'rgb(var(--c-oxblood-dark) / <alpha-value>)',
+        olive: 'rgb(var(--c-olive) / <alpha-value>)',
+        'olive-soft': 'rgb(var(--c-olive-soft) / <alpha-value>)',
+        brass: 'rgb(var(--c-brass) / <alpha-value>)',
+        rule: 'rgb(var(--c-line) / <alpha-value>)',
 
         // --- Semantic aliases the existing pages reference --------------
-        primary: '#8a1f1c', // oxblood
-        'maroon-dark': '#6e1714',
-        'primary-container': '#8a1f1c',
-        'text-muted': '#7c6b52',
-        'on-surface': '#2f2418',
-        'on-surface-variant': '#5c4326',
-        'on-background': '#2f2418',
-        warm: '#e7dcc7',
-        'border-warm': '#e7dcc7',
-        'cream-surface': '#f3e9d6',
-        'surface-container-lowest': '#ffffff',
-        'surface-container-low': '#faf7f1',
-        'surface-container': '#f7f0e4',
-        'surface-container-high': '#f1e8d8',
-        'surface-container-highest': '#f3e9d6',
-        'secondary-fixed-dim': '#6b6a3a', // olive (icons)
-        'secondary-fixed': '#dcd6b0', // chip background
-        'on-secondary-fixed': '#33320f',
-        'on-secondary-container': '#4a4718',
-        secondary: '#6b6a3a',
-        'gold-light': '#e0cfa0',
-        outline: '#9a866a',
-        'outline-variant': '#e7dcc7',
-        background: '#ffffff',
-        surface: '#ffffff',
-        'surface-bright': '#ffffff',
-        'surface-dim': '#f3e9d6',
+        primary: 'rgb(var(--c-oxblood) / <alpha-value>)',
+        'maroon-dark': 'rgb(var(--c-oxblood-dark) / <alpha-value>)',
+        'primary-container': 'rgb(var(--c-oxblood) / <alpha-value>)',
+        'text-muted': 'rgb(var(--c-muted) / <alpha-value>)',
+        'on-surface': 'rgb(var(--c-ink) / <alpha-value>)',
+        'on-surface-variant': 'rgb(var(--c-sepia) / <alpha-value>)',
+        'on-background': 'rgb(var(--c-ink) / <alpha-value>)',
+        warm: 'rgb(var(--c-line) / <alpha-value>)',
+        'border-warm': 'rgb(var(--c-line) / <alpha-value>)',
+        'cream-surface': 'rgb(var(--c-surface-3) / <alpha-value>)',
+        'surface-container-lowest': 'rgb(var(--c-surface) / <alpha-value>)',
+        'surface-container-low': 'rgb(var(--c-surface-2) / <alpha-value>)',
+        'surface-container': 'rgb(var(--c-surface-4) / <alpha-value>)',
+        'surface-container-high': 'rgb(var(--c-surface-3) / <alpha-value>)',
+        'surface-container-highest': 'rgb(var(--c-surface-3) / <alpha-value>)',
+        'secondary-fixed-dim': 'rgb(var(--c-olive) / <alpha-value>)', // olive (icons)
+        'secondary-fixed': 'rgb(var(--c-olive-soft) / <alpha-value>)', // chip background
+        'on-secondary-fixed': 'rgb(var(--c-on-secondary-fixed) / <alpha-value>)',
+        'on-secondary-container': 'rgb(var(--c-on-secondary-container) / <alpha-value>)',
+        secondary: 'rgb(var(--c-olive) / <alpha-value>)',
+        'gold-light': 'rgb(var(--c-gold-light) / <alpha-value>)',
+        outline: 'rgb(var(--c-outline) / <alpha-value>)',
+        'outline-variant': 'rgb(var(--c-line) / <alpha-value>)',
+        background: 'rgb(var(--c-bg) / <alpha-value>)',
+        surface: 'rgb(var(--c-surface) / <alpha-value>)',
+        'surface-bright': 'rgb(var(--c-surface) / <alpha-value>)',
+        'surface-dim': 'rgb(var(--c-surface-3) / <alpha-value>)',
         'on-primary': '#ffffff',
         'on-secondary': '#ffffff',
         error: '#9a2b1a',
-        tertiary: '#6b6a3a',
+        tertiary: 'rgb(var(--c-olive) / <alpha-value>)',
       },
       maxWidth: {
         'container-max': '1120px',

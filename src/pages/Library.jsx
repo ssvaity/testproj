@@ -30,7 +30,7 @@ const coverFor = (id) =>
   COVERS[[...String(id)].reduce((s, c) => s + c.charCodeAt(0), 0) % COVERS.length]
 
 const selectClass =
-  'appearance-none rounded-full border border-warm bg-white px-4 py-2.5 pr-9 font-body-md text-sm text-on-surface transition-shadow focus:border-secondary-fixed-dim focus:ring-2 focus:ring-secondary-fixed-dim focus:ring-opacity-50'
+  'appearance-none rounded-full border border-warm bg-surface px-4 py-2.5 pr-9 font-body-md text-sm text-on-surface transition-shadow focus:border-secondary-fixed-dim focus:ring-2 focus:ring-secondary-fixed-dim focus:ring-opacity-50'
 
 // Filters shown inside the search bar — borderless, plain, like the archive controls.
 const inBarSelectClass =
@@ -130,7 +130,7 @@ export default function Library() {
       </div>
 
       {/* Toolbar — one search bar with the filters inside it */}
-      <div className="mb-stack-md rounded-2xl border border-warm bg-white px-4 py-3 shadow-sm transition-shadow focus-within:ring-2 focus-within:ring-secondary-fixed-dim focus-within:ring-opacity-50">
+      <div className="mb-stack-md rounded-2xl border border-warm bg-surface px-4 py-3 shadow-sm transition-shadow focus-within:ring-2 focus-within:ring-secondary-fixed-dim focus-within:ring-opacity-50">
         {/* Search input */}
         <div className="relative">
           <span className="material-symbols-outlined absolute left-1 top-1/2 -translate-y-1/2 text-secondary-fixed-dim">
@@ -260,7 +260,7 @@ export default function Library() {
                         openBook(b)
                       }}
                       title="View details"
-                      className="flex flex-1 items-center justify-center gap-1 rounded-md bg-white/95 py-1.5 font-label-md text-xs text-oxblood shadow transition-colors hover:bg-white"
+                      className="flex flex-1 items-center justify-center gap-1 rounded-md bg-surface/95 py-1.5 font-label-md text-xs text-oxblood shadow transition-colors hover:bg-surface"
                     >
                       <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>auto_stories</span>
                       Read

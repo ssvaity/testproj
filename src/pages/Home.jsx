@@ -62,7 +62,7 @@ function RevealList({ items }) {
 
 function FeatureSection({ icon, eyebrow, title, intro, items, image, reverse, card }) {
   return (
-    <section className="w-full border-y border-warm bg-white">
+    <section className="w-full border-y border-warm bg-surface">
       <div
         className={`mx-auto flex w-full max-w-container-max flex-col lg:min-h-[560px] lg:flex-row ${
           reverse ? 'lg:flex-row-reverse' : ''
@@ -106,7 +106,7 @@ export default function Home() {
           reads as transparent and works in every browser). Plays once, then holds its
           final frame (no loop). */}
       <section className="w-full px-4 pt-4 pb-stack-md sm:px-6">
-        <div className="relative flex min-h-[52vh] w-full items-center overflow-hidden rounded-[24px] border border-warm bg-white shadow-sm md:min-h-[64vh]">
+        <div className="relative flex min-h-[52vh] w-full items-center overflow-hidden rounded-[24px] border border-[#e7dcc7] bg-[#fffdf8] shadow-sm md:min-h-[64vh]">
           <video
             className="pointer-events-none absolute bottom-0 left-0 z-0 h-[82%] w-auto max-w-none object-contain object-bottom opacity-90 md:z-[5] md:h-[96%] md:opacity-100"
             poster="/images/peacock-poster.jpg"
@@ -149,7 +149,7 @@ export default function Home() {
           <div
             className="relative z-10 max-w-3xl px-margin-mobile py-stack-lg [text-shadow:0_0_10px_rgba(255,255,255,0.95),0_0_10px_rgba(255,255,255,0.9),0_0_4px_rgba(255,255,255,0.9)] md:ml-[36%] md:pr-8 md:[text-shadow:none]"
           >
-            <p className="font-headline-md text-[26px] leading-snug text-ink md:text-[34px]">
+            <p className="font-headline-md text-[26px] leading-snug text-[#2f2418] md:text-[34px]">
               {h.heroLead}
             </p>
           </div>
@@ -157,9 +157,10 @@ export default function Home() {
       </section>
 
 
-      {/* Partner marquee */}
-      <section className="w-full overflow-hidden border-y border-warm bg-white py-10">
-        <p className="eyebrow mb-8 text-center">{h.supportOf}</p>
+      {/* Partner marquee — the "logo loop" keeps its light band in both themes
+          (partner logos are supplied on white). */}
+      <section className="w-full overflow-hidden border-y border-[#e7dcc7] bg-[#fffdf8] py-10">
+        <p className="eyebrow mb-8 text-center" style={{ color: '#8a1f1c' }}>{h.supportOf}</p>
         <div className="marquee-track">
           {[0, 1].map((g) => (
             <div key={g} className="flex items-end gap-16 pr-16">
@@ -173,12 +174,12 @@ export default function Home() {
                         className="max-h-20 w-auto max-w-[10rem] object-contain"
                       />
                     ) : (
-                      <span className="font-headline-md text-[15px] leading-snug text-sepia line-clamp-3">
+                      <span className="font-headline-md text-[15px] leading-snug text-[#5c4326] line-clamp-3">
                         {p.name}
                       </span>
                     )}
                   </div>
-                  <span className="font-label-md text-label-md text-text-muted">{h.partnerRoles[p.role] || p.role}</span>
+                  <span className="font-label-md text-label-md text-[#7c6b52]">{h.partnerRoles[p.role] || p.role}</span>
                 </div>
               ))}
             </div>
@@ -195,7 +196,7 @@ export default function Home() {
         items={h.search.steps}
         image="/images/manuscript-texture.png"
         card={
-          <div className="relative z-10 mx-4 w-full max-w-md overflow-hidden rounded-2xl border border-warm bg-white/95 shadow-2xl backdrop-blur-xl">
+          <div className="relative z-10 mx-4 w-full max-w-md overflow-hidden rounded-2xl border border-warm bg-surface/95 shadow-2xl backdrop-blur-xl">
             <div className="flex items-center justify-between border-b border-warm p-4">
               <span className="font-label-md text-label-md text-sepia">{h.search.requestList}</span>
               <span className="material-symbols-outlined text-oxblood">menu_book</span>
@@ -261,7 +262,7 @@ export default function Home() {
         items={h.read.steps}
         image="/images/manuscript-texture-2.jpg"
         card={
-          <div className="relative z-10 mx-4 w-full max-w-md overflow-hidden rounded-2xl border border-warm bg-white/95 shadow-2xl backdrop-blur-xl">
+          <div className="relative z-10 mx-4 w-full max-w-md overflow-hidden rounded-2xl border border-warm bg-surface/95 shadow-2xl backdrop-blur-xl">
             <div
               className="relative flex h-56 flex-col items-center justify-center border-b border-warm px-6 pb-7 text-center"
               style={{ background: 'linear-gradient(150deg,#22323b,#2f4a54 55%,#1c2b31)' }}

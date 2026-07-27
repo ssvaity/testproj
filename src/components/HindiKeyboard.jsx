@@ -55,14 +55,14 @@ export default function HindiKeyboard({ inputRef, value, setValue, onClose }) {
   }
 
   return (
-    <div className="mt-3 rounded-2xl bg-[#e6e1d5] p-2 shadow-sm sm:p-2.5">
+    <div className="mt-3 rounded-2xl bg-surface-container-high p-2 shadow-sm sm:p-2.5">
       <div className="mb-1.5 flex items-center justify-between px-1">
         <p className="indic font-label-md text-label-md text-sepia">हिन्दी कीबोर्ड</p>
         <button
           type="button"
           onClick={onClose}
           aria-label="Close keyboard"
-          className="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-white/60 hover:text-oxblood"
+          className="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-surface/60 hover:text-oxblood"
         >
           <span className="material-symbols-outlined text-[18px]">close</span>
         </button>
@@ -79,7 +79,7 @@ export default function HindiKeyboard({ inputRef, value, setValue, onClose }) {
                   e.preventDefault()
                   insertChar(ch)
                 }}
-                className="flex h-10 flex-1 items-center justify-center rounded-md bg-white text-[19px] leading-none text-ink shadow-[0_1px_1px_rgba(47,36,24,0.28)] transition-colors active:bg-cream-surface sm:h-11"
+                className="flex h-10 flex-1 items-center justify-center rounded-md bg-surface text-[19px] leading-none text-ink shadow-[0_1px_1px_rgba(47,36,24,0.28)] transition-colors active:bg-cream-surface sm:h-11"
               >
                 {ch}
               </button>
@@ -105,7 +105,7 @@ export default function HindiKeyboard({ inputRef, value, setValue, onClose }) {
               e.preventDefault()
               insertChar(' ')
             }}
-            className="h-10 flex-1 rounded-md bg-white font-label-md text-label-md text-text-muted shadow-[0_1px_1px_rgba(47,36,24,0.28)] transition-colors active:bg-cream-surface sm:h-11"
+            className="h-10 flex-1 rounded-md bg-surface font-label-md text-label-md text-text-muted shadow-[0_1px_1px_rgba(47,36,24,0.28)] transition-colors active:bg-cream-surface sm:h-11"
           >
             Space
           </button>

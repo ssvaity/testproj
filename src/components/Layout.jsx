@@ -5,6 +5,7 @@ import Footer from './Footer.jsx'
 import FlowingMenu from './FlowingMenu.jsx'
 import LanguageSwitcher from './LanguageSwitcher.jsx'
 import LanguageModal from './LanguageModal.jsx'
+import ThemeToggle from './ThemeToggle.jsx'
 import { FolioSweep } from './PageTransition.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
@@ -64,7 +65,7 @@ export default function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Top navbar — scrolls away with the page (not sticky) */}
-      <nav className="z-50 w-full border-b border-warm bg-white">
+      <nav className="z-50 w-full border-b border-warm bg-surface">
         <div className="mx-auto flex max-w-container-max items-center px-margin-mobile py-3">
           {/* Left: logo video + wordmark */}
           <Link to="/" aria-label="Shrutsanjeevan" className="-ml-2 flex items-center gap-2">
@@ -74,6 +75,7 @@ export default function Layout() {
 
           {/* Right: actions + menu */}
           <div className="ml-auto flex items-center gap-3">
+            <ThemeToggle />
             <LanguageSwitcher />
             <button
               type="button"
@@ -95,15 +97,16 @@ export default function Layout() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="fixed inset-0 z-[200] flex flex-col bg-white"
+            className="fixed inset-0 z-[200] flex flex-col bg-surface"
           >
-            <div className="border-b border-warm bg-white">
+            <div className="border-b border-warm bg-surface">
               <div className="mx-auto flex max-w-container-max items-center justify-between px-margin-mobile py-3">
                 <Link to="/" className="-ml-2 flex items-center gap-2" onClick={() => setMenuOpen(false)}>
                   <img src="/logo.png" alt="" aria-hidden="true" className="h-12 w-auto" />
                   <span className="font-headline-lg text-[24px] leading-none text-sepia">Shrutsanjeevan</span>
                 </Link>
                 <div className="flex items-center gap-3">
+                  <ThemeToggle />
                   <LanguageSwitcher />
                   <button
                     type="button"
@@ -120,11 +123,11 @@ export default function Layout() {
               <FlowingMenu
                 items={menuItems}
                 speed={18}
-                bgColor="#ffffff"
-                textColor="#2f2418"
-                marqueeBgColor="#8a1f1c"
+                bgColor="var(--surface)"
+                textColor="var(--ink)"
+                marqueeBgColor="var(--oxblood)"
                 marqueeTextColor="#f3e9d6"
-                borderColor="#e7dcc7"
+                borderColor="var(--line)"
               />
             </div>
           </motion.div>

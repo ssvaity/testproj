@@ -10,7 +10,7 @@
   --olive: #6b6a3a;
   --brass: #d9a441;
 
-  /* Neutrals */
+  /* Neutrals (hex — used directly in CSS) */
   --ink: #2f2418;
   --muted: #7c6b52;
   --line: #e7dcc7;
@@ -18,6 +18,28 @@
   --leaf: #f3e9d6;
   --straw: #ffffff;
   --bg: #ffffff;
+
+  /* RGB triplets consumed by Tailwind colors (theme-able + opacity-friendly) */
+  --c-bg: 255 255 255;
+  --c-surface: 255 255 255;
+  --c-surface-2: 250 247 241;
+  --c-surface-3: 243 233 214;
+  --c-surface-4: 247 240 228;
+  --c-ink: 47 36 24;
+  --c-sepia: 92 67 38;
+  --c-muted: 124 107 82;
+  --c-line: 231 220 199;
+  --c-outline: 154 134 106;
+  --c-oxblood: 138 31 28;
+  --c-oxblood-dark: 110 23 20;
+
+  /* Accent RGB triplets (light values = the original fixed hexes) */
+  --c-brass: 217 164 65;
+  --c-olive: 107 106 58;
+  --c-olive-soft: 220 214 176;
+  --c-gold-light: 224 207 160;
+  --c-on-secondary-fixed: 51 50 15;
+  --c-on-secondary-container: 74 71 24;
 
   --radius: 4px;
   --shadow-sm: 0 1px 2px rgba(47, 36, 24, 0.06);
@@ -29,7 +51,7 @@
 
   font: 16px/1.6 var(--serif);
   color: var(--ink);
-  background: #ffffff;
+  background: var(--bg);
   color-scheme: light;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -41,8 +63,48 @@
 
 body {
   margin: 0;
-  background: #ffffff; /* white page background (footer uses warm cream) */
+  background: var(--bg);
   overflow-x: clip; /* allow full-bleed bands without a horizontal scrollbar */
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Dark theme — colors matched to the live site (shrutsanjeevan.vercel.app):
+   near-black neutrals with warm accents (coral oxblood, gold brass, olive).
+   The Home hero and the partner "logo loop" band keep their light backgrounds
+   (white-supplied artwork) — set locally. */
+.dark {
+  --ink: #e9e9ec;
+  --muted: #9a9aa1;
+  --line: #38383e;
+  --surface: #1e1e21;
+  --leaf: #2b2b30;
+  --straw: #121214;
+  --bg: #121214;
+  --sepia: #cbcbd1;
+  --oxblood: #d66860;
+  --oxblood-dark: #c2524a;
+
+  --c-bg: 18 18 20;
+  --c-surface: 30 30 33;
+  --c-surface-2: 25 25 28;
+  --c-surface-3: 43 43 48;
+  --c-surface-4: 35 35 39;
+  --c-ink: 233 233 236;
+  --c-sepia: 203 203 209;
+  --c-muted: 154 154 161;
+  --c-line: 56 56 62;
+  --c-outline: 122 122 130;
+  --c-oxblood: 214 104 96;
+  --c-oxblood-dark: 194 82 74;
+
+  --c-brass: 224 176 84;
+  --c-olive: 160 160 100;
+  --c-olive-soft: 50 50 55;
+  --c-gold-light: 224 176 84;
+  --c-on-secondary-fixed: 233 233 236;
+  --c-on-secondary-container: 233 233 236;
+
+  color-scheme: dark;
 }
 
 #root {
