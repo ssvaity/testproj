@@ -51,7 +51,7 @@ export default function Requests() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-[calc(100vh-6rem)]">
       {/* Header */}
       <div className="mb-stack-md">
         <p className="eyebrow mb-2">{r.eyebrow}</p>
