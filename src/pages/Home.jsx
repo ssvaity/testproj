@@ -149,9 +149,6 @@ export default function Home() {
           <div
             className="relative z-10 max-w-3xl px-margin-mobile py-stack-lg [text-shadow:0_0_10px_rgba(255,255,255,0.95),0_0_10px_rgba(255,255,255,0.9),0_0_4px_rgba(255,255,255,0.9)] md:ml-[36%] md:pr-8 md:[text-shadow:none]"
           >
-            <p className="eyebrow mb-5">
-              <span className="indic">श्रुतसंजीवन</span> · Ratnatrayee Trust
-            </p>
             <p className="font-headline-md text-[26px] leading-snug text-ink md:text-[34px]">
               {h.heroLead}
             </p>

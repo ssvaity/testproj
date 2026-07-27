@@ -46,7 +46,7 @@ export default function Search() {
   const [filters, setFilters] = useState(initialFilters)
   const [perPage, setPerPage] = useState(25)
   const [page, setPage] = useState(1)
-  const [showAdvanced, setShowAdvanced] = useState(false)
+  const [showAdvanced, setShowAdvanced] = useState(true)
   const [hasSearched, setHasSearched] = useState(Boolean(initialKeyword))
   const [hindiKb, setHindiKb] = useState(false)
   const [kbPage, setKbPage] = useState('letters')
@@ -133,7 +133,7 @@ export default function Search() {
     setDraft(emptyFilters)
     setFilters(emptyFilters)
     setPage(1)
-    setShowAdvanced(false)
+    setShowAdvanced(true)
     setHasSearched(false)
   }
 
@@ -181,7 +181,7 @@ export default function Search() {
             <button
               type="button"
               onClick={newSearch}
-              className="inline-flex items-center gap-1.5 rounded-full border border-warm px-4 py-2 font-label-md text-label-md text-text-muted transition-colors hover:bg-surface-container-low"
+              className="inline-flex items-center gap-1.5 font-label-md text-label-md text-text-muted transition-colors hover:text-oxblood"
             >
               <span className="material-symbols-outlined text-[18px]">arrow_back</span>
               New search
@@ -189,10 +189,16 @@ export default function Search() {
           </div>
         ) : (
           <div className="text-center">
-            <h1 className="mb-4 font-headline-xl text-[36px] leading-tight text-sepia md:text-[52px]">
+            <p className="mb-4 font-label-md text-[12px] uppercase tracking-[0.32em] text-brass">
+              {t.catalogue.eyebrow}
+            </p>
+            <h1
+              className="mb-5 text-[38px] font-normal leading-[1.04] text-ink md:text-[58px]"
+              style={{ fontFamily: "'Playfair Display', 'Noto Serif Devanagari', 'Noto Serif Gujarati', serif" }}
+            >
               {t.catalogue.heading}
             </h1>
-            <p className="font-body-lg text-body-lg text-text-muted">
+            <p className="mx-auto max-w-xl font-body-lg text-body-lg text-text-muted">
               {t.catalogue.subtitle}
             </p>
           </div>
@@ -479,7 +485,10 @@ export default function Search() {
                   const inCart = has(b.id)
                   const num = String((currentPage - 1) * perPage + i + 1).padStart(2, '0')
                   return (
-                    <li key={b.id} className="group border-b border-warm">
+                    <li
+                      key={b.id}
+                      className={`group border-b border-warm transition-colors ${inCart ? 'bg-oxblood/[0.06]' : ''}`}
+                    >
                       <div className="flex items-start gap-4 py-5">
                         <span className="hidden w-8 shrink-0 pt-1 text-sm tabular-nums text-text-muted sm:block">
                           {num}

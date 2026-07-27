@@ -67,6 +67,7 @@ export const translations = {
       ],
     },
     catalogue: {
+      eyebrow: 'The catalogue',
       heading: 'Where knowledge begins',
       subtitle: 'Search over 80,000 manuscripts by title, author, language, bhandar or topic.',
     },
@@ -195,6 +196,7 @@ export const translations = {
       ],
     },
     catalogue: {
+      eyebrow: 'ग्रंथसूची',
       heading: 'जहाँ ज्ञान का आरंभ होता है',
       subtitle: '80,000 से अधिक पांडुलिपियाँ शीर्षक, लेखक, भाषा, भंडार या विषय से खोजें।',
     },
@@ -323,6 +325,7 @@ export const translations = {
       ],
     },
     catalogue: {
+      eyebrow: 'ગ્રંથસૂચિ',
       heading: 'જ્યાં જ્ઞાનનો આરંભ થાય છે',
       subtitle: '80,000થી વધુ હસ્તપ્રતો શીર્ષક, લેખક, ભાષા, ભંડાર કે વિષય દ્વારા શોધો.',
     },

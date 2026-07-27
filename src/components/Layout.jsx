@@ -31,21 +31,6 @@ export default function Layout() {
     { link: '/contact', text: t.nav.contact, image: '/images/garden-strip.jpg' },
   ]
 
-  // The two logo videos (navbar + menu header) are separate elements, so they
-  // play on independent clocks. Sync the menu one to the navbar one on open.
-  const navVideoRef = useRef(null)
-  const menuVideoRef = useRef(null)
-  useEffect(() => {
-    if (menuOpen && menuVideoRef.current && navVideoRef.current) {
-      try {
-        menuVideoRef.current.currentTime = navVideoRef.current.currentTime
-        menuVideoRef.current.play()
-      } catch {
-        /* ignore */
-      }
-    }
-  }, [menuOpen])
-
   // Replay the folio sweep on real navigations (not the initial page load).
   const prev = useRef(pathname)
   const [sweepKey, setSweepKey] = useState(0)
@@ -82,18 +67,8 @@ export default function Layout() {
       <nav className="z-50 w-full border-b border-warm bg-white">
         <div className="mx-auto flex max-w-container-max items-center px-margin-mobile py-3">
           {/* Left: logo video + wordmark */}
-          <Link to="/" aria-label="Shrutsanjeevan" className="flex items-center gap-3">
-            <video
-              ref={navVideoRef}
-              src="/logo-video.mp4"
-              poster="/logo.png"
-              autoPlay
-              loop
-              muted
-              playsInline
-              aria-hidden="true"
-              className="h-12 w-auto [filter:brightness(1.09)_contrast(1.04)]"
-            />
+          <Link to="/" aria-label="Shrutsanjeevan" className="-ml-2 flex items-center gap-2">
+            <img src="/logo.png" alt="" aria-hidden="true" className="h-12 w-auto" />
             <span className="font-headline-lg text-[24px] leading-none text-sepia">Shrutsanjeevan</span>
           </Link>
 
@@ -124,18 +99,8 @@ export default function Layout() {
           >
             <div className="border-b border-warm bg-white">
               <div className="mx-auto flex max-w-container-max items-center justify-between px-margin-mobile py-3">
-                <Link to="/" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
-                  <video
-                    ref={menuVideoRef}
-                    src="/logo-video.mp4"
-                    poster="/logo.png"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    aria-hidden="true"
-                    className="h-12 w-auto [filter:brightness(1.09)_contrast(1.04)]"
-                  />
+                <Link to="/" className="-ml-2 flex items-center gap-2" onClick={() => setMenuOpen(false)}>
+                  <img src="/logo.png" alt="" aria-hidden="true" className="h-12 w-auto" />
                   <span className="font-headline-lg text-[24px] leading-none text-sepia">Shrutsanjeevan</span>
                 </Link>
                 <div className="flex items-center gap-3">

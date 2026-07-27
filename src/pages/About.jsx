@@ -62,19 +62,22 @@ export default function About() {
 
       {/* Scrolling words band — full-bleed to both page edges */}
       <section className="mb-stack-lg ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] w-screen overflow-hidden border-y border-warm py-6 md:py-10">
-        <div className="marquee-track">
+        <div className="marquee-track" style={{ animationDuration: '90s' }}>
           {[0, 1].map((g) => (
             <div
               key={g}
               aria-hidden={g === 1}
               className="flex shrink-0 items-center gap-8 pr-8 font-headline-xl text-[40px] leading-none text-ink/10 md:text-[64px]"
             >
-              {['Our Vision', 'Our Mission', 'Our Story'].map((w) => (
-                <span key={w} className="flex items-center gap-8 whitespace-nowrap">
-                  {w}
-                  <span aria-hidden="true">·</span>
-                </span>
-              ))}
+              {/* repeated enough that one half always exceeds the viewport → seamless */}
+              {Array.from({ length: 4 }).flatMap((_, rep) =>
+                ['Our Vision', 'Our Mission', 'Our Story'].map((w) => (
+                  <span key={`${rep}-${w}`} className="flex items-center gap-8 whitespace-nowrap">
+                    {w}
+                    <span aria-hidden="true">·</span>
+                  </span>
+                )),
+              )}
             </div>
           ))}
         </div>
