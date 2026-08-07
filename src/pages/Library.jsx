@@ -1,5 +1,5 @@
-import { useMemo, useRef, useState } from 'react'
-import { sampleLibrary } from '../data/sampleLibrary.js'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { getLibrary } from '../lib/libraryStore.js'
 import PdfReaderModal from '../components/PdfReaderModal.jsx'
 import Dialog from '../components/Dialog.jsx'
 import HindiKeyboard from '../components/HindiKeyboard.jsx'
@@ -13,9 +13,6 @@ function recordDownload(book) {
   trackDownload(book)
   incrementDownloadCount()
 }
-
-const languages = [...new Set(sampleLibrary.map((b) => b.language))].sort()
-const topics = [...new Set(sampleLibrary.map((b) => b.topic))].sort()
 
 // Deterministic jacket themes so every book gets a distinct, stable cover.
 const COVERS = [
@@ -48,6 +45,30 @@ export default function Library() {
   const [selected, setSelected] = useState(null)
   const [reading, setReading] = useState(null)
   const [chapterSel, setChapterSel] = useState(new Set())
+  const [allBooks, setAllBooks] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  // Load the catalogue (Sanity when configured, else the sample list).
+  useEffect(() => {
+    let alive = true
+    getLibrary().then((data) => {
+      if (!alive) return
+      setAllBooks(data)
+      setLoading(false)
+    })
+    return () => {
+      alive = false
+    }
+  }, [])
+
+  const languages = useMemo(
+    () => [...new Set(allBooks.map((b) => b.language).filter(Boolean))].sort(),
+    [allBooks]
+  )
+  const topics = useMemo(
+    () => [...new Set(allBooks.map((b) => b.topic).filter(Boolean))].sort(),
+    [allBooks]
+  )
 
   const openBook = (b) => {
     setSelected(b)
@@ -95,19 +116,24 @@ export default function Library() {
 
   const books = useMemo(() => {
     const kw = keyword.trim().toLowerCase()
-    const list = sampleLibrary.filter((b) => {
+    const list = allBooks.filter((b) => {
       const matchesKeyword =
-        !kw || [b.title, b.author, b.topic, b.summary].join(' ').toLowerCase().includes(kw)
+        !kw ||
+        [b.title, b.author, b.topic, b.summary]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase()
+          .includes(kw)
       const matchesLanguage = !language || b.language === language
       const matchesTopic = !topic || b.topic === topic
       return matchesKeyword && matchesLanguage && matchesTopic
     })
-    return list.sort((a, b) => {
-      if (sort === 'year') return b.year - a.year
-      if (sort === 'author') return a.author.localeCompare(b.author)
-      return a.title.localeCompare(b.title)
+    return [...list].sort((a, b) => {
+      if (sort === 'year') return (b.year || 0) - (a.year || 0)
+      if (sort === 'author') return (a.author || '').localeCompare(b.author || '')
+      return (a.title || '').localeCompare(b.title || '')
     })
-  }, [keyword, language, topic, sort])
+  }, [keyword, language, topic, sort, allBooks])
 
   const chevron = (
     <span className="material-symbols-outlined pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[18px] text-text-muted">
@@ -199,13 +225,19 @@ export default function Library() {
         )}
       </div>
 
-      <p className="mb-stack-md font-body-md text-sm text-text-muted">
-        <strong className="text-on-surface">{books.length}</strong>{' '}
-        {books.length === 1 ? 'book' : 'books'}
-      </p>
+      {!loading && (
+        <p className="mb-stack-md font-body-md text-sm text-text-muted">
+          <strong className="text-on-surface">{books.length}</strong>{' '}
+          {books.length === 1 ? 'book' : 'books'}
+        </p>
+      )}
 
       {/* Cover grid */}
-      {books.length === 0 ? (
+      {loading ? (
+        <div className="rounded-xl border border-warm bg-surface-container-lowest p-8 text-center text-text-muted">
+          Loading library…
+        </div>
+      ) : books.length === 0 ? (
         <div className="rounded-xl border border-warm bg-surface-container-lowest p-8 text-center text-text-muted">
           No books match your filters.
         </div>

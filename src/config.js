@@ -52,3 +52,25 @@ export const FIREBASE = {
   // Usually "<projectId>.firebaseapp.com" — copy the value Firebase gives you.
   authDomain: 'internproj3-bf45a.firebaseapp.com',
 }
+
+// -----------------------------------------------------------------------------
+// Sanity CMS — powers the Library (books + chapters + PDFs), edited by non-devs.
+// -----------------------------------------------------------------------------
+// Staff add/edit books in the hosted Sanity Studio (no code); the Library page
+// reads from here. The projectId is PUBLIC and safe to expose. Leave projectId
+// as '' to use the built-in sample library in src/data/sampleLibrary.js.
+//
+// SETUP (one time, ~15 minutes — see studio/README.md for the full walkthrough):
+//   1. In a NEW folder run:  npm create sanity@latest
+//      Sign in, create a project (e.g. "shrutsanjeevan-library"), dataset
+//      "production". This scaffolds a Studio app.
+//   2. Copy studio/schemas/book.js from this repo into the Studio's schema
+//      folder and register it (see studio/README.md).
+//   3. Run  npx sanity deploy  to publish the Studio at <name>.sanity.studio.
+//   4. Studio -> Settings -> API -> CORS origins: add your website URL (and
+//      http://localhost:3000 for local dev).
+//   5. Paste the projectId below. Add books in the Studio and reload the site.
+export const SANITY = {
+  projectId: '2x48hirj',
+  dataset: 'production',
+}
