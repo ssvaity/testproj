@@ -95,3 +95,12 @@ export function foldLatin(input) {
 export function searchKey(input) {
   return foldLatin(devToLatin(input))
 }
+
+// Per-word folded tokens (used by the fuzzy matcher). Splits on whitespace and
+// punctuation *after* transliteration, then folds each word individually.
+export function searchTokens(input) {
+  return devToLatin(String(input))
+    .split(/[^0-9A-Za-zऀ-ॿ]+/)
+    .map(foldLatin)
+    .filter(Boolean)
+}

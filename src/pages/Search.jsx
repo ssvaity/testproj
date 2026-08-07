@@ -1,7 +1,8 @@
 import { useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useBooks } from '../hooks/useBooks.js'
-import { searchKey } from '../lib/translit.js'
+import { searchKey, searchTokens } from '../lib/translit.js'
+import { fuzzyMatch } from '../lib/fuzzy.js'
 import { LANGUAGES, GENRES, facetLabel } from '../lib/catalogFacets.js'
 import { LoaderOne } from '../components/Loader.jsx'
 import { useCart } from '../context/CartContext.jsx'
@@ -103,8 +104,11 @@ export default function Search() {
     // Cross-script key: matches whether the visitor types Devanagari or Latin,
     // against both the English names and the Devanagari Type/Language fields.
     const kwKey = searchKey(kw)
+    // Per-word tokens power typo-tolerant (fuzzy) matching as a fallback.
+    const kwTokens = searchTokens(kw)
     return books.filter((b) => {
-      const matchesKeyword = !kwKey || b._key.includes(kwKey)
+      const matchesKeyword =
+        !kwKey || b._key.includes(kwKey) || fuzzyMatch(b._tokens, kwTokens)
       // Language/Type match against the canonical facet sets (handles combos).
       const matchesLanguage = !filters.language || b._langs.includes(filters.language)
       const matchesTopic = !filters.topic || b._genres.includes(filters.topic)

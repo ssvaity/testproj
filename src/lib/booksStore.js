@@ -19,7 +19,7 @@
 //   Granth Name | Type | Language | Karta | Tikakaar | Speciality
 // -----------------------------------------------------------------------------
 import { BOOKS_SHEET_CSV_URL } from '../config.js'
-import { searchKey } from './translit.js'
+import { searchKey, searchTokens } from './translit.js'
 import { languagesOf, genresOf } from './catalogFacets.js'
 
 // --- CSV parsing (RFC 4180: quotes, escaped "", commas & newlines in fields) --
@@ -134,6 +134,8 @@ function rowsToBooks(rows) {
       speciality,
       // Cross-script search key (Devanagari <-> Latin). Computed once per load.
       _key: searchKey([name, type, language, author, tikakaar, speciality].join(' ')),
+      // Per-word tokens for the fuzzy (typo-tolerant) matcher.
+      _tokens: searchTokens([name, type, language, author, tikakaar, speciality].join(' ')),
       // Per-field cross-script keys so the Author / Commentator filters match
       // whether the visitor types Latin or Devanagari.
       _authorKey: searchKey(author),
