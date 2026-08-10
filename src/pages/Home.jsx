@@ -110,57 +110,23 @@ export default function Home() {
   const h = t.home
   return (
     <>
-      {/* Hero — white background + painterly peacock video (opaque MP4 on white, so it
-          reads as transparent and works in every browser). Plays once, then holds its
-          final frame (no loop). */}
+      {/* Hero — white background + brand logo on the left, hero lead text to its right. */}
       {/* First fold — hero grows to fill; the logo loop sits flush at the
           bottom of the viewport (no scroll needed to see it end). */}
       <div className="flex min-h-[calc(100vh-4.5rem)] flex-col">
       <section className="flex w-full flex-1 flex-col">
-        <div className="relative flex min-h-[52vh] w-full flex-1 items-center overflow-hidden bg-[#fffdf8] md:min-h-[64vh]">
-          <video
-            className="pointer-events-none absolute bottom-0 left-0 z-0 h-[82%] w-auto max-w-none object-contain object-bottom opacity-90 md:z-[5] md:h-[96%] md:opacity-100"
-            poster="/images/peacock-poster.jpg"
-            autoPlay
-            muted
-            playsInline
-            preload="auto"
-            aria-hidden="true"
-          >
-            <source src="/videos/peacock.mp4" type="video/mp4" />
-          </video>
-
-          {/* Grass footing — static art that grounds the peacock and covers its legs.
-              mix-blend-multiply drops the image's white background so only the grass shows. */}
+        <div className="relative flex min-h-[52vh] w-full flex-1 items-center overflow-hidden bg-[#fffdf8] md:min-h-[64vh] dark:bg-straw">
+          {/* Brand logo — replaces the painterly peacock on the left of the hero. */}
           <img
-            src="/images/hero-grass-low.png"
-            alt=""
-            aria-hidden="true"
-            style={{
-              maskImage: 'linear-gradient(to right, #000 58%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, #000 58%, transparent 100%)',
-            }}
-            className="pointer-events-none absolute bottom-0 left-0 z-[1] w-[60%] max-w-[340px] object-contain object-bottom mix-blend-multiply md:left-[2%] md:z-[6] md:w-[32%] md:max-w-[400px]"
-          />
-          {/* Second clump — low plants only (no tall grass), overlaps the first so the grass
-              reads as one continuous patch. Edge mask fades it smoothly into the white. */}
-          <img
-            src="/images/hero-grass-low.png"
-            alt=""
-            aria-hidden="true"
-            style={{
-              maskImage:
-                'linear-gradient(to right, transparent 0%, #000 22%, #000 74%, transparent 100%)',
-              WebkitMaskImage:
-                'linear-gradient(to right, transparent 0%, #000 22%, #000 74%, transparent 100%)',
-            }}
-            className="pointer-events-none absolute bottom-0 left-[30%] z-[2] w-[50%] max-w-[280px] -scale-x-100 object-contain object-bottom mix-blend-multiply md:left-[12%] md:z-[7] md:w-[28%] md:max-w-[340px]"
+            src="/logo.png"
+            alt="Shrutsanjeevan"
+            className="pointer-events-none absolute bottom-1/2 left-4 z-[5] w-[52%] max-w-[240px] translate-y-1/2 object-contain md:left-[4%] md:w-[30%] md:max-w-[360px]"
           />
 
           <div
-            className="relative z-10 max-w-3xl px-margin-mobile py-stack-lg [text-shadow:0_0_10px_rgba(255,255,255,0.95),0_0_10px_rgba(255,255,255,0.9),0_0_4px_rgba(255,255,255,0.9)] md:ml-[36%] md:pr-8 md:[text-shadow:none]"
+            className="relative z-10 max-w-3xl px-margin-mobile py-stack-lg [text-shadow:0_0_10px_rgba(255,255,255,0.95),0_0_10px_rgba(255,255,255,0.9),0_0_4px_rgba(255,255,255,0.9)] md:ml-[44%] md:pr-8 md:[text-shadow:none] dark:[text-shadow:none]"
           >
-            <p className="font-headline-md text-[26px] leading-snug text-[#2f2418] md:text-[34px]">
+            <p className="font-headline-md text-[26px] leading-snug text-ink md:text-[34px]">
               {h.heroLead}
             </p>
           </div>
@@ -170,19 +136,19 @@ export default function Home() {
 
       {/* Partner marquee — the "logo loop" keeps its light band in both themes
           (partner logos are supplied on white). */}
-      <section className="w-full overflow-hidden border-y border-[#e7dcc7] bg-[#fffdf8] pb-10 pt-1">
-        <p className="eyebrow mb-4 text-center" style={{ color: '#d9a441' }}>{h.supportOf}</p>
+      <section className="w-full overflow-hidden border-y border-[#e7dcc7] bg-[#fffdf8] pb-4 pt-1">
+        <p className="eyebrow mb-2 text-center" style={{ color: '#d9a441' }}>{h.supportOf}</p>
         <div className="marquee-track">
           {[0, 1].map((g) => (
-            <div key={g} className="flex items-end gap-16 pr-16">
+            <div key={g} className="flex items-end gap-24 pr-24">
               {partners.map((p) => (
-                <div key={p.name} className="flex w-44 shrink-0 flex-col items-center gap-3 text-center">
-                  <div className="flex h-20 items-center justify-center">
+                <div key={p.name} className="flex w-32 shrink-0 flex-col items-center gap-2 text-center">
+                  <div className="flex h-14 items-center justify-center">
                     {p.logo ? (
                       <img
                         src={p.logo}
                         alt={p.name}
-                        className="max-h-20 w-auto max-w-[12rem] object-contain"
+                        className="max-h-14 w-auto max-w-[8rem] object-contain"
                       />
                     ) : (
                       <span className="font-headline-md text-[15px] leading-snug text-[#5c4326] line-clamp-3">
@@ -245,7 +211,7 @@ export default function Home() {
       />
 
       {/* Collection stats — between the two feature sections */}
-      <section className="mx-auto w-full max-w-container-max px-margin-mobile py-stack-lg">
+      <section className="mx-auto w-full max-w-container-max px-margin-mobile py-24 lg:py-32">
         <p className="eyebrow mb-3">{h.byNumbers}</p>
         <h2 className="mb-stack-md font-headline-lg text-headline-lg text-sepia">{h.digitalCollection}</h2>
         <div className="grid grid-cols-2 gap-gutter lg:grid-cols-4">
@@ -316,7 +282,7 @@ export default function Home() {
       />
 
       {/* Blessings of the Gurudevs — just before the footer */}
-      <section className="mx-auto w-full max-w-container-max px-margin-mobile pb-stack-lg pt-stack-md">
+      <section className="mx-auto w-full max-w-container-max px-margin-mobile pb-32 pt-24 lg:pb-40 lg:pt-32">
         <div className="mb-stack-md text-center">
           <p className="eyebrow mb-3">{h.reverence}</p>
           <h2 className="font-headline-lg text-headline-lg text-sepia">{h.gurudevsTitle}</h2>

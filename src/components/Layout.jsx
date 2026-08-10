@@ -6,7 +6,6 @@ import FlowingMenu from './FlowingMenu.jsx'
 import LanguageSwitcher from './LanguageSwitcher.jsx'
 import LanguageModal from './LanguageModal.jsx'
 import ThemeToggle from './ThemeToggle.jsx'
-import { FolioSweep } from './PageTransition.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
 
@@ -16,7 +15,18 @@ export default function Layout() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
   const isHome = pathname === '/'
+  const isArchivePage = pathname.startsWith('/search')
   const reduce = useReducedMotion()
+
+  // Primary inline links shown on desktop. Archive is not here — it lives as an
+  // icon on the right (and swaps to the request list while on the archive page).
+  const navLinks = [
+    { to: '/', label: t.nav.home },
+    { to: '/about', label: t.nav.about },
+    { to: '/library', label: t.nav.library },
+    { to: '/contact', label: t.nav.contact },
+  ]
+  const isActive = (to) => (to === '/' ? pathname === '/' : pathname.startsWith(to))
 
   // Full menu — all pages, always shown.
   const menuItems = [
@@ -32,27 +42,11 @@ export default function Layout() {
     { link: '/contact', text: t.nav.contact, image: '/images/garden-strip.jpg' },
   ]
 
-  // Replay the folio sweep on real navigations (not the initial page load).
-  const prev = useRef(pathname)
-  const [sweepKey, setSweepKey] = useState(0)
-  const [sweeping, setSweeping] = useState(false)
+  // On navigation, close the menu and jump to the top of the new page.
   useEffect(() => {
-    if (prev.current !== pathname) {
-      prev.current = pathname
-      setSweepKey((k) => k + 1)
-      setSweeping(true)
-      setMenuOpen(false)
-      window.scrollTo(0, 0)
-    }
+    setMenuOpen(false)
+    window.scrollTo(0, 0)
   }, [pathname])
-
-  // Unmount the sweep once it has finished so a stray folio can never linger
-  // (e.g. if rAF was paused mid-animation by a background tab).
-  useEffect(() => {
-    if (!sweeping) return undefined
-    const t = setTimeout(() => setSweeping(false), 2400)
-    return () => clearTimeout(t)
-  }, [sweeping, sweepKey])
 
   // Lock body scroll while the full-screen menu is open
   useEffect(() => {
@@ -62,38 +56,120 @@ export default function Layout() {
     }
   }, [menuOpen])
 
+  // Hide the glass navbar on scroll-down, reveal it on scroll-up
+  // (always shown near the top and whenever the menu is open). `scrolled`
+  // drives the Aceternity-style shrink, matching ViramTech's navbar.
+  const [navHidden, setNavHidden] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const lastScrollY = useRef(0)
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 80)
+      // Stay visible until we've scrolled past one full viewport; after that,
+      // hide on scroll-down and reveal on scroll-up.
+      if (y < window.innerHeight) {
+        setNavHidden(false)
+      } else if (y > lastScrollY.current + 4) {
+        setNavHidden(true) // scrolling down
+      } else if (y < lastScrollY.current - 4) {
+        setNavHidden(false) // scrolling up
+      }
+      lastScrollY.current = y
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Top navbar — scrolls away with the page (not sticky) */}
-      <nav className="z-50 w-full border-b border-warm bg-surface">
-        <div className="relative flex w-full items-stretch">
-          {/* Left: logo + wordmark — position matched to shrutsanjeevan.vercel.app */}
-          <Link
-            to="/"
-            aria-label="Shrutsanjeevan"
-            className="flex min-w-0 items-center gap-3 py-4 pl-margin-mobile pr-6 lg:pl-8"
-          >
-            <img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-auto shrink-0 sm:h-9" />
-            <span className="whitespace-nowrap font-headline-lg text-[20px] leading-none text-sepia sm:text-[24px]">
-              Shrutsanjeevan
-            </span>
-          </Link>
+      {/* Top navbar — floating glass pill, exact ViramTech dimensions (max-w 80rem,
+          shrinking to 64rem on scroll); hides on scroll-down, returns on scroll-up. */}
+      <motion.nav
+        initial={false}
+        animate={{
+          maxWidth: scrolled ? '64rem' : '80rem',
+          top: scrolled ? '1rem' : '0.75rem',
+          y: navHidden && !menuOpen ? '-140%' : '0%',
+          opacity: navHidden && !menuOpen ? 0 : 1,
+          paddingTop: scrolled ? '0.5rem' : '0.75rem',
+          paddingBottom: scrolled ? '0.5rem' : '0.75rem',
+          paddingLeft: scrolled ? '1.25rem' : '1.75rem',
+          paddingRight: scrolled ? '1.25rem' : '1.75rem',
+          boxShadow: scrolled ? '0 12px 32px rgba(0,0,0,0.12)' : '0 6px 20px rgba(0,0,0,0.08)',
+        }}
+        transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 200, damping: 50 }}
+        className="fixed inset-x-0 z-50 mx-auto flex w-[calc(100%-2rem)] items-center gap-8 rounded-full border border-warm/60 bg-surface/70 backdrop-blur-md supports-[backdrop-filter]:bg-surface/60"
+      >
+        {/* Left: logo + wordmark */}
+        <Link
+          to="/"
+          aria-label="Shrutsanjeevan"
+          className="flex min-w-0 flex-1 items-center gap-3"
+        >
+          <img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-auto shrink-0 sm:h-9" />
+          <span className="whitespace-nowrap font-headline-lg text-[20px] leading-none text-sepia sm:text-[24px]">
+            Shrutsanjeevan
+          </span>
+        </Link>
 
-          {/* Right: actions + menu */}
-          <div className="ml-auto flex shrink-0 items-center gap-3 pr-margin-mobile lg:pr-8">
-            <ThemeToggle />
-            <LanguageSwitcher />
-            <button
-              type="button"
-              onClick={() => setMenuOpen(true)}
-              aria-label="Open menu"
+        {/* Center: primary links (desktop only) */}
+        <ul className="hidden items-center gap-1 text-sm font-normal lg:flex">
+          {navLinks.map((link) => (
+            <li key={link.to}>
+              <Link
+                to={link.to}
+                className={`px-3 py-2 transition-colors ${
+                  isActive(link.to)
+                    ? 'text-oxblood'
+                    : 'text-ink/80 hover:text-oxblood'
+                }`}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* Right: contextual archive/request icon, controls, mobile menu */}
+        <div className="flex flex-1 items-center justify-end gap-2">
+          {isArchivePage ? (
+            // On the archive page the icon becomes the request list, badged with its count.
+            <Link
+              to="/requests"
+              aria-label={`${t.requestCart}${count > 0 ? ` (${count})` : ''}`}
+              title={t.requestCart}
+              className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood"
+            >
+              <span className="material-symbols-outlined">list_alt</span>
+              {count > 0 && (
+                <sup className="absolute right-0.5 top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-oxblood px-1 text-[10px] font-bold leading-none text-white">
+                  {count}
+                </sup>
+              )}
+            </Link>
+          ) : (
+            <Link
+              to="/search"
+              aria-label={t.nav.archive}
+              title={t.nav.archive}
               className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood"
             >
-              <span className="material-symbols-outlined">menu</span>
-            </button>
-          </div>
+              <span className="material-symbols-outlined">search</span>
+            </Link>
+          )}
+          <ThemeToggle />
+          <LanguageSwitcher />
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood lg:hidden"
+          >
+            <span className="material-symbols-outlined">menu</span>
+          </button>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Full-screen flowing menu */}
       <AnimatePresence>
@@ -149,24 +225,14 @@ export default function Layout() {
       <main
         className={
           isHome
-            ? 'w-full flex-1'
-            : 'mx-auto w-full max-w-container-max flex-1 px-margin-mobile py-10'
+            ? 'w-full flex-1 pt-[5rem]'
+            : 'mx-auto w-full max-w-container-max flex-1 px-margin-mobile pb-10 pt-[calc(5rem+2.5rem)]'
         }
       >
-        <motion.div
-          key={pathname}
-          initial={reduce ? false : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: reduce ? 0 : 0.62, ease: 'easeOut' }}
-        >
-          <Outlet />
-        </motion.div>
+        <Outlet />
       </main>
 
       <Footer />
-
-      {/* Manuscript folios sweep across on each route change */}
-      {!reduce && sweeping && <FolioSweep key={sweepKey} />}
 
       {/* First-visit language chooser */}
       <LanguageModal />

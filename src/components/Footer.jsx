@@ -53,7 +53,7 @@ export default function Footer() {
             </div>
             <Link
               to="/contact"
-              className="inline-flex items-center font-label-md text-base text-oxblood transition-colors hover:text-oxblood-dark"
+              className="inline-flex items-center font-label-md text-base text-oxblood transition-colors hover:opacity-80 dark:text-brass"
             >
               Contact us
             </Link>
@@ -69,7 +69,7 @@ export default function Footer() {
             <InfoBlock label="Email">
               <a
                 href="mailto:ratnatrayeetrust@gmail.com"
-                className="transition-colors hover:text-oxblood-dark"
+                className="transition-colors hover:opacity-80 dark:text-brass"
               >
                 ratnatrayeetrust@gmail.com
               </a>
@@ -94,7 +94,7 @@ export default function Footer() {
               <Link
                 key={l.label}
                 to={l.to}
-                className="text-[15px] text-sepia transition-colors hover:text-oxblood"
+                className="text-[15px] text-sepia transition-colors hover:text-oxblood dark:hover:text-brass"
               >
                 {l.label}
               </Link>
@@ -106,7 +106,7 @@ export default function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="text-text-muted transition-colors hover:text-oxblood"
+                className="text-text-muted transition-colors hover:text-oxblood dark:hover:text-brass"
               >
                 <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                   <path fill="currentColor" d={path} />
