@@ -96,23 +96,31 @@ export default function Library() {
     setSelected(null)
   }
 
-  // Trigger a browser download for each chapter (staggered so pop-up blockers
-  // don't drop the later ones) and record each in the counter.
-  const downloadChapters = (chs) => {
-    chs
-      .filter((c) => c.downloadUrl)
-      .forEach((ch, idx) =>
-        setTimeout(() => {
-          const a = document.createElement('a')
-          a.href = ch.downloadUrl
-          a.target = '_blank'
-          a.rel = 'noopener'
-          document.body.appendChild(a)
-          a.click()
-          a.remove()
-          recordDownload({ ...selected, chapter: ch.title })
-        }, idx * 350),
-      )
+  // Download each chapter as an actual file. We fetch into a Blob and save it,
+  // rather than opening new tabs — multiple new tabs get pop-up-blocked (only
+  // the first opens), which is the bug this replaces. Falls back to opening the
+  // URL if the file can't be fetched (e.g. the host blocks cross-origin reads).
+  const downloadChapters = async (chs) => {
+    const list = chs.filter((c) => c.downloadUrl)
+    for (const ch of list) {
+      const filename = `${selected.title} — ${ch.title}.pdf`.replace(/[\\/:*?"<>|]+/g, '-')
+      try {
+        const res = await fetch(ch.downloadUrl)
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        const blob = await res.blob()
+        const href = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = href
+        a.download = filename
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+        URL.revokeObjectURL(href)
+      } catch {
+        window.open(ch.downloadUrl, '_blank', 'noopener')
+      }
+      recordDownload({ ...selected, chapter: ch.title })
+    }
   }
 
   const downloadSelected = () => {
