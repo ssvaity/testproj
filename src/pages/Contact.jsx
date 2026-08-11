@@ -281,8 +281,9 @@ export default function Contact() {
         </div>
       </div>
 
-      {/* Donation — Dravya Sanjivan */}
-      <section className="mt-stack-lg rounded-xl border border-warm bg-surface-container-lowest p-stack-md shadow-sm">
+      {/* Donation — Dravya Sanjivan. Full-bleed band in a warm sand tone. */}
+      <section className="-mb-10 mt-stack-lg ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] w-screen bg-[#EAE2D2] py-stack-lg">
+        <div className="mx-auto w-full max-w-container-max px-margin-mobile">
         <p className="eyebrow mb-3 text-brass">Dravya Sanjivan</p>
         <h2 className="mb-stack-sm font-headline-md text-headline-md text-sepia">Support the mission</h2>
         <p className="mb-stack-md max-w-3xl font-body-md text-body-md text-text-muted">
@@ -383,6 +384,7 @@ export default function Contact() {
           </button>
           <p className="text-xs text-text-muted">Secure checkout coming soon.</p>
           </div>
+        </div>
         </div>
       </section>
     </>
