@@ -136,7 +136,7 @@ export default function Home() {
 
       {/* Partner marquee — the "logo loop" keeps its light band in both themes
           (partner logos are supplied on white). */}
-      <section className="w-full overflow-hidden bg-[#faf7f1] pb-7 pt-1">
+      <section className="w-full overflow-hidden border-t border-[#e7dcc7] bg-[#faf7f1] pb-7 pt-1">
         <p className="eyebrow mb-5 text-center" style={{ color: '#d9a441' }}>{h.supportOf}</p>
         <div className="marquee-track">
           {[0, 1].map((g) => (
