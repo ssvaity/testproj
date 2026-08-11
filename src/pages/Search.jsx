@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { searchBooks } from '../lib/supabase.js'
 import { LANGUAGES, GENRES, facetLabel } from '../lib/catalogFacets.js'
+import { BOOKS_SHEET_CSV_URL } from '../config.js'
 import { LoaderOne } from '../components/Loader.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
@@ -59,6 +60,7 @@ export default function Search() {
   const [hasSearched, setHasSearched] = useState(Boolean(initialKeyword))
   const [hindiKb, setHindiKb] = useState(false)
   const [kbPage, setKbPage] = useState('letters')
+  const [downloading, setDownloading] = useState(null)
   const keywordRef = useRef(null)
 
   // Insert a character from the on-screen keyboard at the cursor position.
@@ -162,6 +164,34 @@ export default function Search() {
     setDraft({ ...draft, [key]: empty })
     setFilters({ ...filters, [key]: empty })
     setPage(1)
+  }
+
+  // Download the entire catalogue (the published Google Sheet — the full archive)
+  // in the requested format. The sheet serves csv/xlsx directly via its `output`
+  // param; we fetch into a Blob so the browser saves a file rather than
+  // navigating to the cross-origin URL.
+  const downloadCatalogue = async (fmt) => {
+    if (downloading || !BOOKS_SHEET_CSV_URL) return
+    setDownloading(fmt)
+    try {
+      const url = new URL(BOOKS_SHEET_CSV_URL)
+      url.searchParams.set('output', fmt)
+      const res = await fetch(url)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const blob = await res.blob()
+      const href = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = href
+      a.download = `shrutsanjeevan-archive.${fmt}`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(href)
+    } catch {
+      alert('Sorry — the catalogue could not be downloaded. Please try again.')
+    } finally {
+      setDownloading(null)
+    }
   }
 
   // Active advanced filters, summarised for the "current search" chips
@@ -464,6 +494,29 @@ export default function Search() {
             </div>
           )}
         </form>
+
+        {/* Download the whole archive */}
+        <div className="mt-3 mb-stack-md flex flex-wrap items-center justify-center gap-x-5 gap-y-2 font-label-md text-label-md">
+          <span className="text-text-muted">Download the full catalogue:</span>
+          <button
+            type="button"
+            onClick={() => downloadCatalogue('xlsx')}
+            disabled={Boolean(downloading)}
+            className="inline-flex items-center gap-1.5 text-oxblood transition-colors hover:text-maroon-dark disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <span className="material-symbols-outlined text-[18px]">download</span>
+            {downloading === 'xlsx' ? 'Preparing…' : 'Excel (.xlsx)'}
+          </button>
+          <button
+            type="button"
+            onClick={() => downloadCatalogue('csv')}
+            disabled={Boolean(downloading)}
+            className="inline-flex items-center gap-1.5 text-oxblood transition-colors hover:text-maroon-dark disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <span className="material-symbols-outlined text-[18px]">download</span>
+            {downloading === 'csv' ? 'Preparing…' : 'CSV'}
+          </button>
+        </div>
       </div>
 
       {/* Results (after a search) */}

@@ -5,7 +5,8 @@ import Footer from './Footer.jsx'
 import FlowingMenu from './FlowingMenu.jsx'
 import LanguageSwitcher from './LanguageSwitcher.jsx'
 import LanguageModal from './LanguageModal.jsx'
-import ThemeToggle from './ThemeToggle.jsx'
+// Theme toggle temporarily disabled (dark/light feature paused).
+// import ThemeToggle from './ThemeToggle.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
 
@@ -170,7 +171,7 @@ export default function Layout() {
               <span className="material-symbols-outlined">search</span>
             </Link>
           )}
-          <ThemeToggle />
+          {/* <ThemeToggle /> temporarily disabled */}
           <LanguageSwitcher />
           <button
             type="button"
@@ -206,7 +207,7 @@ export default function Layout() {
                   </span>
                 </Link>
                 <div className="ml-auto flex shrink-0 items-center gap-3 pr-margin-mobile lg:pr-8">
-                  <ThemeToggle />
+                  {/* <ThemeToggle /> temporarily disabled */}
                   <LanguageSwitcher />
                   <button
                     type="button"

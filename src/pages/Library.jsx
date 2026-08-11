@@ -9,9 +9,10 @@ import DownloadCounter from '../components/DownloadCounter.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
 
 // Records a download in both Google Analytics and the live shared counter.
-function recordDownload(book) {
+// `count` lets a whole-book download tally all its chapters at once.
+function recordDownload(book, count = 1) {
   trackDownload(book)
-  incrementDownloadCount()
+  incrementDownloadCount(count)
 }
 
 // Deterministic jacket themes so every book gets a distinct, stable cover.
@@ -457,7 +458,10 @@ export default function Library() {
                       target="_blank"
                       rel="noopener"
                       aria-disabled={!selected.downloadUrl}
-                      onClick={() => selected.downloadUrl && recordDownload(selected)}
+                      onClick={() =>
+                        selected.downloadUrl &&
+                        recordDownload(selected, selected.chapters?.length || 1)
+                      }
                       className={`flex items-center gap-1 rounded-lg bg-primary px-4 py-2 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark ${
                         selected.downloadUrl ? '' : 'pointer-events-none opacity-50'
                       }`}

@@ -16,15 +16,18 @@
     />
     <title>Shrutsanjeevan</title>
     <script>
-      // Apply saved/system theme before paint to avoid a flash.
-      (function () {
-        try {
-          var t = localStorage.getItem('theme')
-          if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-          }
-        } catch (e) {}
-      })()
+      // Dark/light theme temporarily disabled — force light mode.
+      // To re-enable, delete the line below and restore the commented block.
+      document.documentElement.classList.remove('dark')
+      // (function () {
+      //   // Apply saved/system theme before paint to avoid a flash.
+      //   try {
+      //     var t = localStorage.getItem('theme')
+      //     if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      //       document.documentElement.classList.add('dark')
+      //     }
+      //   } catch (e) {}
+      // })()
     </script>
   </head>
   <body>
