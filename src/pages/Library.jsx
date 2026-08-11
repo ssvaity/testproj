@@ -96,23 +96,46 @@ export default function Library() {
     setSelected(null)
   }
 
-  const downloadSelected = () => {
-    const chs = [...chapterSel]
-      .sort((a, b) => a - b)
-      .map((i) => selected.chapters[i])
+  // Trigger a browser download for each chapter (staggered so pop-up blockers
+  // don't drop the later ones) and record each in the counter.
+  const downloadChapters = (chs) => {
+    chs
       .filter((c) => c.downloadUrl)
-    chs.forEach((ch, idx) =>
-      setTimeout(() => {
-        const a = document.createElement('a')
-        a.href = ch.downloadUrl
-        a.target = '_blank'
-        a.rel = 'noopener'
-        document.body.appendChild(a)
-        a.click()
-        a.remove()
-        recordDownload({ ...selected, chapter: ch.title })
-      }, idx * 350)
-    )
+      .forEach((ch, idx) =>
+        setTimeout(() => {
+          const a = document.createElement('a')
+          a.href = ch.downloadUrl
+          a.target = '_blank'
+          a.rel = 'noopener'
+          document.body.appendChild(a)
+          a.click()
+          a.remove()
+          recordDownload({ ...selected, chapter: ch.title })
+        }, idx * 350),
+      )
+  }
+
+  const downloadSelected = () => {
+    const chs = [...chapterSel].sort((a, b) => a - b).map((i) => selected.chapters[i])
+    downloadChapters(chs)
+  }
+
+  // "Download whole book": use a single combined file if the book has one,
+  // otherwise select and download every chapter.
+  const downloadWholeBook = () => {
+    const chapters = selected.chapters || []
+    if (selected.downloadUrl) {
+      const a = document.createElement('a')
+      a.href = selected.downloadUrl
+      a.target = '_blank'
+      a.rel = 'noopener'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      recordDownload(selected, chapters.filter((c) => c.downloadUrl).length || 1)
+      return
+    }
+    downloadChapters(chapters)
   }
 
   const books = useMemo(() => {
@@ -453,22 +476,18 @@ export default function Library() {
                       <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>download</span>
                       Download selected{chapterSel.size ? ` (${chapterSel.size})` : ''}
                     </button>
-                    <a
-                      href={selected.downloadUrl || undefined}
-                      target="_blank"
-                      rel="noopener"
-                      aria-disabled={!selected.downloadUrl}
-                      onClick={() =>
-                        selected.downloadUrl &&
-                        recordDownload(selected, selected.chapters?.length || 1)
+                    <button
+                      type="button"
+                      disabled={
+                        !selected.downloadUrl &&
+                        !(selected.chapters || []).some((c) => c.downloadUrl)
                       }
-                      className={`flex items-center gap-1 rounded-lg bg-primary px-4 py-2 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark ${
-                        selected.downloadUrl ? '' : 'pointer-events-none opacity-50'
-                      }`}
+                      onClick={downloadWholeBook}
+                      className="flex items-center gap-1 rounded-lg bg-primary px-4 py-2 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-primary"
                     >
                       <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>menu_book</span>
                       Download whole book
-                    </a>
+                    </button>
                   </div>
                 </>
               ) : (
