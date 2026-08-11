@@ -458,7 +458,7 @@ export default function Library() {
                       rel="noopener"
                       aria-disabled={!selected.downloadUrl}
                       onClick={() => selected.downloadUrl && recordDownload(selected)}
-                      className={`flex items-center gap-1 rounded-lg bg-primary px-4 py-2 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark ${
+                      className={`flex items-center gap-1 rounded-lg bg-primary px-4 py-2 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark ${
                         selected.downloadUrl ? '' : 'pointer-events-none opacity-50'
                       }`}
                     >
@@ -476,7 +476,7 @@ export default function Library() {
                       setReading(selected)
                       setSelected(null)
                     }}
-                    className="flex items-center gap-1 rounded-lg bg-primary px-4 py-2 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-primary"
+                    className="flex items-center gap-1 rounded-lg bg-primary px-4 py-2 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-primary"
                   >
                     <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>auto_stories</span>
                     Read preview

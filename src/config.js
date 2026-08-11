@@ -6,7 +6,7 @@
 // Where book requests (from the Search page cart) are delivered.
 // WhatsApp number: country code + number, DIGITS ONLY (no +, spaces or dashes).
 // Example: +91 75750 01083  ->  '917575001083'
-export const REQUEST_WHATSAPP = '917575001083'
+export const REQUEST_WHATSAPP = '919321577048'
 
 // Email address that should receive book requests.
 export const REQUEST_EMAIL = 'kendra@kobatirth.org'
@@ -19,6 +19,26 @@ export const REQUEST_EMAIL = 'kendra@kobatirth.org'
 // -----------------------------------------------------------------------------
 export const BOOKS_SHEET_CSV_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vSkn2CmRShypf5J5p0-kwWsdCiwrz58Ndo30e4wFyWnlwIRa7aAFxMYUCyV1UP5r9cwoKLs4dU4Uty4/pub?output=csv'
+
+// -----------------------------------------------------------------------------
+// Supabase (optional) — server-side archive search backed by a database.
+// -----------------------------------------------------------------------------
+// The Google Sheet stays your editing surface. A GitHub Action syncs the sheet
+// into Supabase every 2 hours (.github/workflows/sync-catalogue.yml), and the
+// Search page then queries the database instead of downloading the whole sheet.
+//
+// SETUP (one time):
+//   1. Create a free project at https://supabase.com.
+//   2. Open the SQL Editor and run the contents of  supabase/schema.sql .
+//   3. Project Settings -> API: copy "Project URL" and the "anon public" key
+//      into the two fields below. (Both are PUBLIC and safe to expose.)
+//   4. Add the sync secrets in GitHub (see supabase/README-sync.md).
+//
+// Leave `url` blank to keep the in-browser Google Sheet search (no database).
+export const SUPABASE = {
+  url: 'https://hbmovzrvppmkovnfjwgc.supabase.co',
+  anonKey: 'sb_publishable_oriOKX2IU3w89X-7eg239g_hApq992j',
+}
 
 // Google Analytics 4 Measurement ID, e.g. 'G-XXXXXXXXXX'.
 // Leave it as '' to turn analytics off. When set, every "Download" click is

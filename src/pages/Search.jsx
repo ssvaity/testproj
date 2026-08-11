@@ -1,8 +1,6 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { useBooks } from '../hooks/useBooks.js'
-import { searchKey, searchTokens } from '../lib/translit.js'
-import { fuzzyMatch } from '../lib/fuzzy.js'
+import { searchBooks } from '../lib/supabase.js'
 import { LANGUAGES, GENRES, facetLabel } from '../lib/catalogFacets.js'
 import { LoaderOne } from '../components/Loader.jsx'
 import { useCart } from '../context/CartContext.jsx'
@@ -44,8 +42,9 @@ const labelClass = 'block font-label-md text-label-md text-on-surface mb-base'
 export default function Search() {
   const { toggle, has } = useCart()
   const { t } = useLanguage()
-  // The whole catalogue is loaded once (cached) and searched in-browser.
-  const { books, loading, error } = useBooks(true)
+  // The archive is searched server-side on Supabase — only the matching page of
+  // rows is fetched (the whole catalogue is never downloaded to the browser).
+  const [server, setServer] = useState({ rows: [], total: 0, loading: true, error: null })
   const [searchParams] = useSearchParams()
 
   // Clean, curated dropdown options (LANGUAGES/GENRES from catalogFacets).
@@ -99,40 +98,41 @@ export default function Search() {
     })
   }
 
-  const results = useMemo(() => {
-    const kw = filters.keyword.trim()
-    // Cross-script key: matches whether the visitor types Devanagari or Latin,
-    // against both the English names and the Devanagari Type/Language fields.
-    const kwKey = searchKey(kw)
-    // Per-word tokens power typo-tolerant (fuzzy) matching as a fallback.
-    const kwTokens = searchTokens(kw)
-    return books.filter((b) => {
-      const matchesKeyword =
-        !kwKey || b._key.includes(kwKey) || fuzzyMatch(b._tokens, kwTokens)
-      // Language/Type match against the canonical facet sets (handles combos).
-      const matchesLanguage = !filters.language || b._langs.includes(filters.language)
-      const matchesTopic = !filters.topic || b._genres.includes(filters.topic)
-      // Cross-script (Latin <-> Devanagari) match on the specific field.
-      const matchesAuthor =
-        !filters.author.trim() || b._authorKey.includes(searchKey(filters.author))
-      const matchesTikakaar =
-        !filters.tikakaar.trim() || b._tikKey.includes(searchKey(filters.tikakaar))
-      const matchesCommentary = !filters.onlyCommentary || Boolean(b.tikakaar)
-      return (
-        matchesKeyword &&
-        matchesLanguage &&
-        matchesTopic &&
-        matchesAuthor &&
-        matchesTikakaar &&
-        matchesCommentary
-      )
-    })
-  }, [filters, books])
+  // Server-side search — refetch from Supabase whenever the filters or page change.
+  useEffect(() => {
+    let alive = true
+    setServer((s) => ({ ...s, loading: true }))
+    searchBooks({
+      keyword: filters.keyword,
+      language: filters.language,
+      topic: filters.topic,
+      author: filters.author,
+      tikakaar: filters.tikakaar,
+      onlyCommentary: filters.onlyCommentary,
+      page,
+      perPage,
+    }).then(
+      ({ rows, total }) => alive && setServer({ rows, total, loading: false, error: null }),
+      (err) => alive && setServer({ rows: [], total: 0, loading: false, error: err }),
+    )
+    return () => {
+      alive = false
+    }
+  }, [filters, page, perPage])
 
-  const resultCount = results.length
+  const { loading, error, total: resultCount } = server
   const totalPages = Math.max(1, Math.ceil(resultCount / perPage))
   const currentPage = Math.min(page, totalPages)
-  const pageRows = results.slice((currentPage - 1) * perPage, currentPage * perPage)
+  const pageRows = server.rows
+  // A search is "empty" when nothing is typed and no filter is chosen.
+  const hasCriteria = Boolean(
+    filters.keyword.trim() ||
+      filters.language ||
+      filters.topic ||
+      filters.author.trim() ||
+      filters.tikakaar.trim() ||
+      filters.onlyCommentary,
+  )
 
   const update = (key) => (e) => setDraft({ ...draft, [key]: e.target.value })
 
@@ -225,7 +225,7 @@ export default function Search() {
         )}
 
         {/* Search box */}
-        <form onSubmit={runSearch} className={hasSearched ? 'mb-stack-md' : 'mt-16 md:mt-24'}>
+        <form onSubmit={runSearch} className={hasSearched ? 'mb-stack-md' : 'mt-8 md:mt-12'}>
           <div className="rounded-2xl border border-warm bg-surface px-4 py-3 shadow-sm transition-shadow focus-within:ring-2 focus-within:ring-secondary-fixed-dim focus-within:ring-opacity-50">
             <input
               ref={keywordRef}
@@ -433,7 +433,7 @@ export default function Search() {
                 </button>
                 <button
                   type="submit"
-                  className="rounded-lg bg-primary px-6 py-2 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark"
+                  className="rounded-lg bg-primary px-6 py-2 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark"
                 >
                   Apply filters
                 </button>
@@ -476,6 +476,8 @@ export default function Search() {
                 'Searching…'
               ) : error ? (
                 <span className="text-oxblood">Couldn’t load the catalogue.</span>
+              ) : !hasCriteria ? (
+                'Type a title, author, or keyword to search'
               ) : (
                 <>
                   Found <strong className="text-on-surface">{resultCount.toLocaleString()}</strong>{' '}
@@ -523,7 +525,9 @@ export default function Search() {
               <div className="border-b border-warm py-12 text-center text-text-muted">
                 {error
                   ? 'The catalogue could not be loaded. Please try again later.'
-                  : 'No books match your search.'}
+                  : hasCriteria
+                    ? 'No books match your search.'
+                    : 'Enter a title, author, or keyword above — or choose a filter — to search the archive.'}
               </div>
             ) : (
               <ul>
@@ -609,7 +613,7 @@ export default function Search() {
                   aria-current={item === currentPage ? 'page' : undefined}
                   className={`h-10 min-w-[2.5rem] rounded-lg px-2 font-label-md text-label-md tabular-nums ${
                     item === currentPage
-                      ? 'bg-primary text-white shadow-sm'
+                      ? 'bg-primary text-straw shadow-sm'
                       : 'border border-warm text-on-surface transition-colors hover:bg-surface-container-low'
                   }`}
                 >

@@ -1,0 +1,34 @@
+name: Sync catalogue to Supabase
+
+# Keeps the Supabase `books` table in step with the Google Sheet.
+# Runs every 2 hours, and can be run on demand from the Actions tab.
+on:
+  schedule:
+    - cron: '0 */2 * * *'   # every 2 hours (UTC)
+  workflow_dispatch: {}      # manual "Run workflow" button
+
+# Avoid overlapping syncs if one run is slow.
+concurrency:
+  group: sync-catalogue
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Sync sheet -> Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          # Optional: only needed if the sheet URL differs from src/config.js
+          BOOKS_SHEET_CSV_URL: ${{ secrets.BOOKS_SHEET_CSV_URL }}
+        run: node scripts/sync-sheet-to-supabase.mjs

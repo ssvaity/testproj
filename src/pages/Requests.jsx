@@ -73,7 +73,7 @@ export default function Requests() {
           </p>
           <Link
             to="/search"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark"
           >
             <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>search</span>
             {r.browse}
@@ -147,7 +147,7 @@ export default function Requests() {
             <button
               onClick={sendWhatsApp}
               disabled={!canSend}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-oxblood px-4 py-3.5 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-oxblood"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-oxblood px-4 py-3.5 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-oxblood"
             >
               <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>chat</span>
               {r.whatsapp}
@@ -189,7 +189,7 @@ export default function Requests() {
               clear()
               setConfirmClear(false)
             }}
-            className="rounded-lg bg-primary px-5 py-2 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark"
+            className="rounded-lg bg-primary px-5 py-2 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark"
           >
             {r.clear}
           </button>

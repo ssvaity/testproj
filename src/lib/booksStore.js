@@ -1,25 +1,15 @@
 // -----------------------------------------------------------------------------
-// Archive catalogue data layer.
+// Google Sheet CSV parser + row mapper for the archive catalogue.
 //
-// The archive (Search page) reads its list of manuscripts from a Google Sheet
-// that you keep in a normal spreadsheet. Edit the sheet, and the site shows the
-// new data on the next page load — no code change and no server needed.
-//
-// HOW IT WORKS
-//   1. Your catalogue lives in a Google Sheet (import New Catalogue.xlsx once).
-//   2. In the sheet:  File -> Share -> Publish to web -> pick the sheet ->
-//      choose "Comma-separated values (.csv)" -> Publish. Copy that URL.
-//   3. Paste the URL into BOOKS_SHEET_CSV_URL in src/config.js.
-//   That's it. The site fetches the latest rows and searches them in-browser.
-//
-// If BOOKS_SHEET_CSV_URL is empty, the archive throws a clear error (there is
-// no bundled sample list — the catalogue comes only from the sheet).
+// Used by the sync job (scripts/sync-sheet-to-supabase.mjs): it fetches the
+// published sheet, parses it here, and each row is projected to the search keys
+// and canonical facets stored in Supabase. Keeping this here means the stored
+// keys are computed with the exact same logic the site uses.
 //
 // Expected columns (header row, any order — matched by name, else by position):
 //   Granth Name | Type | Language | Karta | Tikakaar | Speciality
 // -----------------------------------------------------------------------------
-import { BOOKS_SHEET_CSV_URL } from '../config.js'
-import { searchKey, searchTokens } from './translit.js'
+import { searchKey, searchText } from './translit.js'
 import { languagesOf, genresOf } from './catalogFacets.js'
 
 // --- CSV parsing (RFC 4180: quotes, escaped "", commas & newlines in fields) --
@@ -106,7 +96,7 @@ function buildColumnIndex(headerRow) {
 }
 
 // --- Rows -> book objects ---------------------------------------------------
-function rowsToBooks(rows) {
+export function rowsToBooks(rows) {
   if (!rows.length) return []
   const index = buildColumnIndex(rows[0])
   const cell = (row, key) => String(row[index[key]] ?? '').trim()
@@ -134,8 +124,8 @@ function rowsToBooks(rows) {
       speciality,
       // Cross-script search key (Devanagari <-> Latin). Computed once per load.
       _key: searchKey([name, type, language, author, tikakaar, speciality].join(' ')),
-      // Per-word tokens for the fuzzy (typo-tolerant) matcher.
-      _tokens: searchTokens([name, type, language, author, tikakaar, speciality].join(' ')),
+      // Space-separated version for word-level fuzzy (typo-tolerant) search.
+      _text: searchText([name, type, language, author, tikakaar, speciality].join(' ')),
       // Per-field cross-script keys so the Author / Commentator filters match
       // whether the visitor types Latin or Devanagari.
       _authorKey: searchKey(author),
@@ -147,30 +137,3 @@ function rowsToBooks(rows) {
   }
   return books
 }
-
-// --- Public API -------------------------------------------------------------
-let cache = null
-
-async function loadBooks() {
-  if (!BOOKS_SHEET_CSV_URL) throw new Error('No catalogue URL is configured.')
-  const res = await fetch(BOOKS_SHEET_CSV_URL)
-  if (!res.ok) throw new Error(`Could not load the catalogue (HTTP ${res.status})`)
-  const books = rowsToBooks(parseCsv(await res.text()))
-  if (!books.length) throw new Error('The catalogue sheet has no rows yet.')
-  return books
-}
-
-// Returns a cached promise so the whole catalogue is fetched at most once per
-// SPA session. A hard page reload re-fetches, which is how sheet edits show up.
-export function getBooks() {
-  if (!cache) cache = loadBooks()
-  return cache
-}
-
-// Force the next getBooks() to re-fetch (e.g. a manual "refresh" button).
-export function refreshBooks() {
-  cache = null
-  return getBooks()
-}
-
-export const usingLiveSheet = Boolean(BOOKS_SHEET_CSV_URL)

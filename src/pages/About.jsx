@@ -41,27 +41,15 @@ export default function About() {
             {a.quote}
           </p>
         </div>
-        <div className="rounded-[24px] bg-oxblood p-stack-md text-[#f3e9d6]">
+        <div className="rounded-[24px] bg-oxblood p-stack-md text-straw">
           <p className="eyebrow mb-4 text-brass">{a.aboutLabel}</p>
           <p className="mb-4 text-base leading-relaxed text-[#f3e9d6]/85">{a.aboutPara1}</p>
           <p className="text-base leading-relaxed text-[#f3e9d6]/85">{a.aboutPara2}</p>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="mb-stack-lg">
-        <div className="grid grid-cols-1 divide-y divide-warm rounded-[24px] border border-warm sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {a.stats.map((s) => (
-            <div key={s.label} className="flex items-baseline gap-3 p-stack-md">
-              <span className="font-headline-xl text-[38px] leading-none text-oxblood">{s.value}</span>
-              <span className="font-label-md text-label-md text-text-muted">{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Scrolling words band — full-bleed to both page edges */}
-      <section className="mb-stack-lg ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] w-screen overflow-hidden border-y border-warm py-6 md:py-10">
+      {/* Scrolling words band — leads into Vision & Mission as its header */}
+      <section className="mb-stack-md ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] w-screen overflow-hidden border-y border-warm py-6 md:py-10">
         <div className="marquee-track" style={{ animationDuration: '90s' }}>
           {[0, 1].map((g) => (
             <div

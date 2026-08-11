@@ -70,7 +70,7 @@ function FeatureSection({ icon, eyebrow, title, intro, items, image, reverse, ca
         ? 'lg:mr-[calc(50%-50vw+3.5rem)]'
         : ''
   return (
-    <section className="w-full border-y border-warm bg-surface">
+    <section className="w-full border-y border-warm bg-[#faf7f1] dark:bg-surface">
       <div
         className={`mx-auto flex w-full max-w-container-max flex-col lg:min-h-[560px] lg:flex-row lg:gap-10 ${
           reverse ? 'lg:flex-row-reverse' : ''
@@ -115,7 +115,7 @@ export default function Home() {
           bottom of the viewport (no scroll needed to see it end). */}
       <div className="flex min-h-[calc(100vh-4.5rem)] flex-col">
       <section className="flex w-full flex-1 flex-col">
-        <div className="relative flex min-h-[52vh] w-full flex-1 items-center overflow-hidden bg-[#fffdf8] md:min-h-[64vh] dark:bg-straw">
+        <div className="relative flex min-h-[52vh] w-full flex-1 items-center overflow-hidden bg-[#faf7f1] md:min-h-[64vh] dark:bg-straw">
           {/* Brand logo — replaces the painterly peacock on the left of the hero. */}
           <img
             src="/logo.png"
@@ -136,8 +136,8 @@ export default function Home() {
 
       {/* Partner marquee — the "logo loop" keeps its light band in both themes
           (partner logos are supplied on white). */}
-      <section className="w-full overflow-hidden border-y border-[#e7dcc7] bg-[#fffdf8] pb-4 pt-1">
-        <p className="eyebrow mb-2 text-center" style={{ color: '#d9a441' }}>{h.supportOf}</p>
+      <section className="w-full overflow-hidden bg-[#faf7f1] pb-7 pt-1">
+        <p className="eyebrow mb-5 text-center" style={{ color: '#d9a441' }}>{h.supportOf}</p>
         <div className="marquee-track">
           {[0, 1].map((g) => (
             <div key={g} className="flex items-end gap-24 pr-24">
@@ -156,7 +156,6 @@ export default function Home() {
                       </span>
                     )}
                   </div>
-                  <span className="font-label-md text-label-md text-[#7c6b52]">{h.partnerRoles[p.role] || p.role}</span>
                 </div>
               ))}
             </div>
@@ -200,7 +199,7 @@ export default function Home() {
             <div className="p-4">
               <button
                 type="button"
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-oxblood py-2.5 font-label-md text-label-md text-white transition-colors hover:bg-maroon-dark"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-oxblood py-2.5 font-label-md text-label-md text-straw transition-colors hover:bg-maroon-dark"
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>chat</span>
                 {h.search.requestWhatsApp}
@@ -263,7 +262,7 @@ export default function Home() {
               <div className="flex gap-2">
                 <button
                   type="button"
-                  className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-oxblood py-2 font-label-md text-label-md text-white transition-colors hover:bg-maroon-dark"
+                  className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-oxblood py-2 font-label-md text-label-md text-straw transition-colors hover:bg-maroon-dark"
                 >
                   <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>auto_stories</span>
                   {h.read.readBtn}

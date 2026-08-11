@@ -107,7 +107,19 @@ export default function Layout() {
           aria-label="Shrutsanjeevan"
           className="flex min-w-0 flex-1 items-center gap-3"
         >
-          <img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-auto shrink-0 sm:h-9" />
+          {/* Logo video: white background dropped via multiply on the light glass;
+              in dark mode it rides a small cream plate so the white never shows. */}
+          <span className="flex h-8 shrink-0 items-center overflow-hidden rounded-md sm:h-9 dark:bg-[#fffdf8] dark:px-1.5 dark:py-0.5">
+            <video
+              src="/nav-logo.mp4"
+              className="h-full w-auto mix-blend-multiply"
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-hidden="true"
+            />
+          </span>
           <span className="whitespace-nowrap font-headline-lg text-[20px] leading-none text-sepia sm:text-[24px]">
             Shrutsanjeevan
           </span>
@@ -143,7 +155,7 @@ export default function Layout() {
             >
               <span className="material-symbols-outlined">list_alt</span>
               {count > 0 && (
-                <sup className="absolute right-0.5 top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-oxblood px-1 text-[10px] font-bold leading-none text-white">
+                <sup className="absolute right-0.5 top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-oxblood px-1 text-[10px] font-bold leading-none text-straw">
                   {count}
                 </sup>
               )}

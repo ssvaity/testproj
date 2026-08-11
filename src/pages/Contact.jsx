@@ -166,7 +166,7 @@ export default function Contact() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-11 h-11 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                  className="w-11 h-11 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-straw transition-colors"
                 >
                   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
                     <path fill="currentColor" d={path} />
@@ -269,7 +269,7 @@ export default function Contact() {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="px-6 py-2 rounded-lg bg-primary text-white font-label-md text-label-md hover:bg-maroon-dark transition-colors shadow-sm flex items-center gap-2"
+                className="px-6 py-2 rounded-lg bg-primary text-straw font-label-md text-label-md hover:bg-maroon-dark transition-colors shadow-sm flex items-center gap-2"
               >
                 <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
                   send

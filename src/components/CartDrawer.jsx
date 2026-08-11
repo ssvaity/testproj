@@ -135,7 +135,7 @@ export default function CartDrawer({ open, onClose }) {
             </div>
             <button
               onClick={sendWhatsApp}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-oxblood px-4 py-3.5 font-label-md text-label-md text-white shadow-sm transition-colors hover:bg-maroon-dark"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-oxblood px-4 py-3.5 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark"
             >
               <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>chat</span>
               Request via WhatsApp

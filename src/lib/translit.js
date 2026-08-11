@@ -96,11 +96,13 @@ export function searchKey(input) {
   return foldLatin(devToLatin(input))
 }
 
-// Per-word folded tokens (used by the fuzzy matcher). Splits on whitespace and
-// punctuation *after* transliteration, then folds each word individually.
-export function searchTokens(input) {
+// Space-separated folded tokens — keeps word boundaries so the database can do
+// word-level fuzzy (typo-tolerant) matching via pg_trgm word_similarity, e.g.
+// "stvan" still finds "stavan". Stored per record as `search_text`.
+export function searchText(input) {
   return devToLatin(String(input))
     .split(/[^0-9A-Za-zऀ-ॿ]+/)
     .map(foldLatin)
     .filter(Boolean)
+    .join(' ')
 }

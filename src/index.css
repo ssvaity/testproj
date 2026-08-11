@@ -16,11 +16,11 @@
   --line: #e7dcc7;
   --surface: #ffffff;
   --leaf: #f3e9d6;
-  --straw: #ffffff;
-  --bg: #ffffff;
+  --straw: #faf7f1;
+  --bg: #faf7f1;
 
   /* RGB triplets consumed by Tailwind colors (theme-able + opacity-friendly) */
-  --c-bg: 255 255 255;
+  --c-bg: 250 247 241;
   --c-surface: 255 255 255;
   --c-surface-2: 250 247 241;
   --c-surface-3: 243 233 214;
@@ -73,36 +73,36 @@ body {
    The Home hero and the partner "logo loop" band keep their light backgrounds
    (white-supplied artwork) — set locally. */
 .dark {
-  --ink: #e9e9ec;
-  --muted: #9a9aa1;
-  --line: #38383e;
-  --surface: #1e1e21;
-  --leaf: #2b2b30;
-  --straw: #121214;
-  --bg: #121214;
-  --sepia: #cbcbd1;
-  --oxblood: #d66860;
-  --oxblood-dark: #c2524a;
+  --ink: #ede7dc;
+  --muted: #a69884;
+  --line: #362b1c;
+  --surface: #201811;
+  --leaf: #2a2015;
+  --straw: #15100a;
+  --bg: #15100a;
+  --sepia: #d9d0c1;
+  --oxblood: #8fb48a;
+  --oxblood-dark: #7aa376;
 
-  --c-bg: 18 18 20;
-  --c-surface: 30 30 33;
-  --c-surface-2: 25 25 28;
-  --c-surface-3: 43 43 48;
-  --c-surface-4: 35 35 39;
-  --c-ink: 233 233 236;
-  --c-sepia: 203 203 209;
-  --c-muted: 154 154 161;
-  --c-line: 56 56 62;
-  --c-outline: 122 122 130;
-  --c-oxblood: 214 104 96;
-  --c-oxblood-dark: 194 82 74;
+  --c-bg: 21 16 10;
+  --c-surface: 32 24 17;
+  --c-surface-2: 26 20 13;
+  --c-surface-3: 42 32 21;
+  --c-surface-4: 37 28 18;
+  --c-ink: 237 231 220;
+  --c-sepia: 217 208 193;
+  --c-muted: 166 152 132;
+  --c-line: 54 43 28;
+  --c-outline: 132 118 98;
+  --c-oxblood: 143 180 138;
+  --c-oxblood-dark: 122 163 118;
 
   --c-brass: 224 176 84;
   --c-olive: 160 160 100;
-  --c-olive-soft: 50 50 55;
+  --c-olive-soft: 42 34 24;
   --c-gold-light: 224 176 84;
-  --c-on-secondary-fixed: 233 233 236;
-  --c-on-secondary-container: 233 233 236;
+  --c-on-secondary-fixed: 237 231 220;
+  --c-on-secondary-container: 237 231 220;
 
   color-scheme: dark;
 }
