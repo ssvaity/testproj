@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import CountUp from '../components/CountUp.jsx'
 import { blobB, blobC } from '../data/blobs.js'
 import { useLanguage } from '../context/LanguageContext.jsx'
@@ -116,19 +117,28 @@ export default function Home() {
       <div className="flex min-h-[calc(100vh-4.5rem)] flex-col">
       <section className="flex w-full flex-1 flex-col">
         <div className="relative flex min-h-[52vh] w-full flex-1 items-center overflow-hidden bg-[#faf7f1] md:min-h-[64vh] dark:bg-straw">
-          {/* Brand logo — replaces the painterly peacock on the left of the hero. */}
+          {/* Brand logo — a large centered watermark on mobile; on desktop it
+              returns to the left as the full-opacity hero mark. */}
           <img
             src="/logo.png"
             alt="Shrutsanjeevan"
-            className="pointer-events-none absolute bottom-1/2 left-4 z-[5] w-[52%] max-w-[240px] translate-y-1/2 object-contain md:left-[4%] md:w-[30%] md:max-w-[360px]"
+            className="pointer-events-none absolute bottom-1/2 left-1/2 z-[5] w-[82%] max-w-[340px] -translate-x-1/2 translate-y-1/2 object-contain opacity-[0.12] md:left-[4%] md:w-[30%] md:max-w-[360px] md:translate-x-0 md:opacity-100"
           />
 
           <div
-            className="relative z-10 max-w-3xl px-margin-mobile py-stack-lg [text-shadow:0_0_10px_rgba(255,255,255,0.95),0_0_10px_rgba(255,255,255,0.9),0_0_4px_rgba(255,255,255,0.9)] md:ml-[44%] md:pr-8 md:[text-shadow:none] dark:[text-shadow:none]"
+            className="relative z-10 flex max-w-3xl flex-col px-margin-mobile py-stack-lg text-center [text-shadow:0_1px_8px_rgba(250,247,241,0.9)] md:ml-[44%] md:items-start md:pr-8 md:text-left md:[text-shadow:none] dark:[text-shadow:none]"
           >
-            <p className="font-headline-md text-[26px] leading-snug text-ink md:text-[34px]">
+            <p className="eyebrow mb-4 self-center md:self-start">{h.heroKicker}</p>
+            <p className="font-headline-md text-[26px] leading-snug tracking-tight text-ink sm:text-[30px] md:text-[34px] md:tracking-normal">
               {h.heroLead}
             </p>
+            <Link
+              to="/search"
+              className="mt-8 inline-flex items-center gap-2 self-center rounded-full bg-oxblood px-6 py-3 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark md:self-start"
+            >
+              {h.heroCta}
+              <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </Link>
           </div>
         </div>
       </section>

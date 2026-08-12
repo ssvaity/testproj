@@ -6,6 +6,8 @@ export const translations = {
     home: {
       heroLead:
         'Shrutsanjeevan, an initiative of the Ratnatrayee Trust, is devoted to rejuvenating our ancient manuscript treasure — transcribing, researching, editing and digitizing the scriptural heritage so that knowledge once locked in bhandars can be read by anyone, anywhere.',
+      heroKicker: 'Reviving ancient manuscripts',
+      heroCta: 'Browse the archive',
       supportOf: 'With the support of',
       partnerRoles: {
         Host: 'Host',
@@ -135,6 +137,8 @@ export const translations = {
     home: {
       heroLead:
         'श्रुतसंजीवन, रत्नत्रयी ट्रस्ट की एक पहल, हमारी प्राचीन पांडुलिपि-निधि को पुनर्जीवित करने के लिए समर्पित है — प्रतिलेखन, अनुसंधान, संपादन और डिजिटलीकरण के माध्यम से शास्त्रीय विरासत को इस प्रकार सहेजना कि भंडारों में बंद ज्ञान हर किसी तक, हर कहीं पहुँच सके।',
+      heroKicker: 'प्राचीन पांडुलिपियों का पुनरुद्धार',
+      heroCta: 'संग्रह देखें',
       supportOf: 'जिनके सहयोग से',
       partnerRoles: {
         Host: 'आयोजक',
@@ -264,6 +268,8 @@ export const translations = {
     home: {
       heroLead:
         'શ્રુતસંજીવન, રત્નત્રયી ટ્રસ્ટની એક પહેલ, આપણી પ્રાચીન હસ્તપ્રત-નિધિને પુનર્જીવિત કરવા સમર્પિત છે — પ્રતિલેખન, સંશોધન, સંપાદન અને ડિજિટલીકરણ દ્વારા શાસ્ત્રીય વારસાને એવી રીતે સાચવવો કે ભંડારોમાં બંધ જ્ઞાન દરેક સુધી, ગમે ત્યાં પહોંચી શકે.',
+      heroKicker: 'પ્રાચીન હસ્તપ્રતોનું પુનરુત્થાન',
+      heroCta: 'સંગ્રહ જુઓ',
       supportOf: 'જેમના સહયોગથી',
       partnerRoles: {
         Host: 'આયોજક',

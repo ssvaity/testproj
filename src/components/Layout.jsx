@@ -106,7 +106,7 @@ export default function Layout() {
         <Link
           to="/"
           aria-label="Shrutsanjeevan"
-          className="flex min-w-0 flex-1 items-center gap-3"
+          className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3"
         >
           {/* Logo video: white background dropped via multiply on the light glass;
               in dark mode it rides a small cream plate so the white never shows. */}
@@ -121,7 +121,7 @@ export default function Layout() {
               aria-hidden="true"
             />
           </span>
-          <span className="whitespace-nowrap font-headline-lg text-[20px] leading-none text-sepia sm:text-[24px]">
+          <span className="whitespace-nowrap font-headline-lg text-[17px] leading-none text-sepia sm:text-[24px]">
             Shrutsanjeevan
           </span>
         </Link>
