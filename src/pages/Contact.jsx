@@ -294,7 +294,7 @@ export default function Contact() {
 
         <div className="grid grid-cols-1 gap-stack-md lg:grid-cols-2">
           {/* Benefaction */}
-          <div className="rounded-lg border border-warm p-stack-sm">
+          <div className="rounded-xl border border-warm bg-surface-container-lowest p-stack-md shadow-sm">
             <p className="mb-stack-sm font-label-md text-label-md text-on-surface">Benefaction</p>
             <div className="grid grid-cols-2 gap-gutter">
               <div>
@@ -327,7 +327,7 @@ export default function Contact() {
           </div>
 
           {/* Bank details */}
-          <div className="rounded-lg border border-warm p-stack-sm">
+          <div className="rounded-xl border border-warm bg-surface-container-lowest p-stack-md shadow-sm">
             <p className="mb-stack-sm font-label-md text-label-md text-on-surface">Bank details</p>
             <dl className="flex flex-col divide-y divide-warm font-body-md text-body-md">
               {[

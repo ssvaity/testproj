@@ -2,10 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Footer from './Footer.jsx'
-import FlowingMenu from './FlowingMenu.jsx'
 import LanguageSwitcher from './LanguageSwitcher.jsx'
 import LanguageModal from './LanguageModal.jsx'
-// Theme toggle temporarily disabled (dark/light feature paused).
+// Dark mode paused for now — re-add ThemeToggle (navbar + menu) to bring it back.
 // import ThemeToggle from './ThemeToggle.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
@@ -171,69 +170,61 @@ export default function Layout() {
               <span className="material-symbols-outlined">search</span>
             </Link>
           )}
-          {/* <ThemeToggle /> temporarily disabled */}
           <LanguageSwitcher />
           <button
             type="button"
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open menu"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
             className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood lg:hidden"
           >
-            <span className="material-symbols-outlined">menu</span>
+            <span className="material-symbols-outlined">{menuOpen ? 'close' : 'menu'}</span>
           </button>
         </div>
+
+        {/* Mobile dropdown — drops from the bottom edge of the glass pill; the
+            page stays visible below it (no full-page takeover). */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={reduce ? { duration: 0 } : { duration: 0.18, ease: 'easeOut' }}
+              className="absolute left-0 right-0 top-full mt-3 origin-top overflow-hidden rounded-2xl border border-warm bg-surface/95 p-2 shadow-xl backdrop-blur-md lg:hidden"
+            >
+              <ul className="flex flex-col">
+                {menuItems.map((item) => (
+                  <li key={item.link}>
+                    <Link
+                      to={item.link}
+                      onClick={() => setMenuOpen(false)}
+                      className={`block rounded-xl px-4 py-3 font-headline-md text-[17px] transition-colors ${
+                        isActive(item.link)
+                          ? 'bg-cream-surface text-oxblood'
+                          : 'text-ink hover:bg-cream-surface hover:text-oxblood'
+                      }`}
+                    >
+                      {item.text}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.nav>
 
-      {/* Full-screen flowing menu */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="fixed inset-0 z-[200] flex flex-col bg-surface"
-          >
-            <div className="border-b border-warm bg-surface">
-              <div className="relative flex w-full items-stretch">
-                <Link
-                  to="/"
-                  className="flex min-w-0 items-center gap-3 py-4 pl-margin-mobile pr-6 lg:pl-8"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-auto shrink-0 sm:h-9" />
-                  <span className="whitespace-nowrap font-headline-lg text-[20px] leading-none text-sepia sm:text-[24px]">
-                    Shrutsanjeevan
-                  </span>
-                </Link>
-                <div className="ml-auto flex shrink-0 items-center gap-3 pr-margin-mobile lg:pr-8">
-                  {/* <ThemeToggle /> temporarily disabled */}
-                  <LanguageSwitcher />
-                  <button
-                    type="button"
-                    onClick={() => setMenuOpen(false)}
-                    aria-label="Close menu"
-                    className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood"
-                  >
-                    <span className="material-symbols-outlined">close</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="flex-1" onClick={() => setMenuOpen(false)}>
-              <FlowingMenu
-                items={menuItems}
-                speed={18}
-                bgColor="var(--surface)"
-                textColor="var(--ink)"
-                marqueeBgColor="var(--oxblood)"
-                marqueeTextColor="#f3e9d6"
-                borderColor="var(--line)"
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Tap-outside catcher — closes the dropdown without dimming the page. */}
+      {menuOpen && (
+        <button
+          type="button"
+          aria-hidden="true"
+          tabIndex={-1}
+          onClick={() => setMenuOpen(false)}
+          className="fixed inset-0 z-40 cursor-default lg:hidden"
+        />
+      )}
 
       <main
         className={

@@ -41,7 +41,7 @@ function InfoBlock({ label, children }) {
 
 export default function Footer() {
   return (
-    <footer className="border-t-2 border-brass/50 bg-[#EAE2D2] dark:bg-[#2A2013]">
+    <footer className="border-t-2 border-brass/50 bg-[#EAE2D2] dark:bg-[#3A2B20]">
       <div className="mx-auto w-full max-w-container-max px-margin-mobile py-stack-lg">
         {/* Top */}
         <div className="flex flex-col gap-stack-lg lg:flex-row lg:items-start lg:justify-between">
@@ -53,7 +53,7 @@ export default function Footer() {
             </div>
             <Link
               to="/contact"
-              className="inline-flex items-center font-label-md text-base text-oxblood transition-colors hover:opacity-80 dark:text-brass"
+              className="inline-flex items-center font-label-md text-base text-oxblood transition-colors hover:opacity-80"
             >
               Contact us
             </Link>
@@ -69,7 +69,7 @@ export default function Footer() {
             <InfoBlock label="Email">
               <a
                 href="mailto:ratnatrayeetrust@gmail.com"
-                className="transition-colors hover:opacity-80 dark:text-brass"
+                className="transition-colors hover:text-oxblood"
               >
                 ratnatrayeetrust@gmail.com
               </a>
@@ -94,7 +94,7 @@ export default function Footer() {
               <Link
                 key={l.label}
                 to={l.to}
-                className="text-[15px] text-sepia transition-colors hover:text-oxblood dark:hover:text-brass"
+                className="text-[15px] text-sepia transition-colors hover:text-oxblood"
               >
                 {l.label}
               </Link>
@@ -106,7 +106,7 @@ export default function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="text-text-muted transition-colors hover:text-oxblood dark:hover:text-brass"
+                className="text-text-muted transition-colors hover:text-oxblood"
               >
                 <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                   <path fill="currentColor" d={path} />

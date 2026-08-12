@@ -3,6 +3,7 @@
 export const translations = {
   en: {
     nav: { home: 'Home', about: 'About', search: 'Search', archive: 'Archive', library: 'Library', contact: 'Contact' },
+    theme: { dark: 'Dark mode', light: 'Light mode' },
     home: {
       heroLead:
         'Shrutsanjeevan, an initiative of the Ratnatrayee Trust, is devoted to rejuvenating our ancient manuscript treasure — transcribing, researching, editing and digitizing the scriptural heritage so that knowledge once locked in bhandars can be read by anyone, anywhere.',
@@ -134,6 +135,7 @@ export const translations = {
   },
   hi: {
     nav: { home: 'होम', about: 'अबाउट', search: 'खोज', archive: 'आर्काइव', library: 'लाइब्रेरी', contact: 'संपर्क' },
+    theme: { dark: 'डार्क मोड', light: 'लाइट मोड' },
     home: {
       heroLead:
         'श्रुतसंजीवन, रत्नत्रयी ट्रस्ट की एक पहल, हमारी प्राचीन पांडुलिपि-निधि को पुनर्जीवित करने के लिए समर्पित है — प्रतिलेखन, अनुसंधान, संपादन और डिजिटलीकरण के माध्यम से शास्त्रीय विरासत को इस प्रकार सहेजना कि भंडारों में बंद ज्ञान हर किसी तक, हर कहीं पहुँच सके।',
@@ -265,6 +267,7 @@ export const translations = {
   },
   gu: {
     nav: { home: 'હોમ', about: 'અબાઉટ', search: 'શોધ', archive: 'આર્કાઇવ', library: 'લાઇબ્રેરી', contact: 'સંપર્ક' },
+    theme: { dark: 'ડાર્ક મોડ', light: 'લાઇટ મોડ' },
     home: {
       heroLead:
         'શ્રુતસંજીવન, રત્નત્રયી ટ્રસ્ટની એક પહેલ, આપણી પ્રાચીન હસ્તપ્રત-નિધિને પુનર્જીવિત કરવા સમર્પિત છે — પ્રતિલેખન, સંશોધન, સંપાદન અને ડિજિટલીકરણ દ્વારા શાસ્ત્રીય વારસાને એવી રીતે સાચવવો કે ભંડારોમાં બંધ જ્ઞાન દરેક સુધી, ગમે ત્યાં પહોંચી શકે.',

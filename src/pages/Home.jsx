@@ -122,7 +122,7 @@ export default function Home() {
           <img
             src="/logo.png"
             alt="Shrutsanjeevan"
-            className="pointer-events-none absolute bottom-1/2 left-1/2 z-[5] w-[82%] max-w-[340px] -translate-x-1/2 translate-y-1/2 object-contain opacity-[0.12] md:left-[4%] md:w-[30%] md:max-w-[360px] md:translate-x-0 md:opacity-100"
+            className="pointer-events-none absolute bottom-1/2 left-1/2 z-[5] w-[82%] max-w-[340px] -translate-x-1/2 translate-y-1/2 object-contain opacity-[0.24] md:left-[4%] md:w-[30%] md:max-w-[360px] md:translate-x-0 md:opacity-100"
           />
 
           <div
@@ -310,12 +310,12 @@ export default function Home() {
           {h.gurudevs.map((g, i) => (
             <div
               key={g.name}
-              className={`flex flex-col gap-6 sm:min-h-[420px] sm:items-center ${
-                i % 2 === 1 ? 'sm:flex-row-reverse' : 'sm:flex-row'
+              className={`flex flex-col gap-6 lg:min-h-[420px] lg:items-center ${
+                i % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'
               }`}
             >
               {/* Portrait — organic blob frame */}
-              <div className="relative mx-auto w-full max-w-[460px] self-center sm:mx-0 sm:w-[470px] sm:shrink-0">
+              <div className="relative mx-auto w-full max-w-[460px] self-center lg:mx-0 lg:w-[42%] lg:max-w-[470px] lg:shrink-0">
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-[-10%]"
@@ -333,13 +333,13 @@ export default function Home() {
               </div>
               {/* Text — no container */}
               <div
-                className={`flex flex-1 flex-col justify-center gap-4 ${
-                  i % 2 === 1 ? 'sm:pr-4' : 'sm:pl-4'
+                className={`flex min-w-0 flex-1 flex-col justify-center gap-4 ${
+                  i % 2 === 1 ? 'lg:pr-4' : 'lg:pl-4'
                 }`}
               >
                 <div>
-                  <p className="eyebrow mb-2 text-brass">{g.title}</p>
-                  <h3 className="font-headline-md text-[24px] leading-snug text-sepia">{g.name}</h3>
+                  <p className="eyebrow mb-2 break-words text-brass">{g.title}</p>
+                  <h3 className="font-headline-md text-[24px] leading-snug text-sepia break-words">{g.name}</h3>
                 </div>
                 <p className="max-w-2xl text-sm leading-relaxed text-text-muted">{g.bio}</p>
                 {g.facts.length > 0 && (
