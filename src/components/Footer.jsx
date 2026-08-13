@@ -41,7 +41,7 @@ function InfoBlock({ label, children }) {
 
 export default function Footer() {
   return (
-    <footer className="border-t-2 border-brass/50 bg-[#EAE2D2] dark:bg-[#3A2B20]">
+    <footer className="border-t-2 border-brass/50 bg-[#EAE2D2] dark:bg-[#262016]">
       <div className="mx-auto w-full max-w-container-max px-margin-mobile py-stack-lg">
         {/* Top */}
         <div className="flex flex-col gap-stack-lg lg:flex-row lg:items-start lg:justify-between">

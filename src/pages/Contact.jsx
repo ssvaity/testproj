@@ -282,7 +282,7 @@ export default function Contact() {
       </div>
 
       {/* Donation — Dravya Sanjivan. Full-bleed band in a warm sand tone. */}
-      <section className="-mb-10 mt-stack-lg ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] w-screen bg-[#EAE2D2] py-stack-lg">
+      <section className="-mb-10 mt-stack-lg ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] w-screen bg-[#EAE2D2] py-stack-lg dark:bg-surface-container-low">
         <div className="mx-auto w-full max-w-container-max px-margin-mobile">
         <p className="eyebrow mb-3 text-brass">Dravya Sanjivan</p>
         <h2 className="mb-stack-sm font-headline-md text-headline-md text-sepia">Support the mission</h2>

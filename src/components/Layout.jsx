@@ -4,8 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Footer from './Footer.jsx'
 import LanguageSwitcher from './LanguageSwitcher.jsx'
 import LanguageModal from './LanguageModal.jsx'
-// Dark mode paused for now — re-add ThemeToggle (navbar + menu) to bring it back.
-// import ThemeToggle from './ThemeToggle.jsx'
+import ThemeToggle from './ThemeToggle.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
 
@@ -109,7 +108,7 @@ export default function Layout() {
         >
           {/* Logo video: white background dropped via multiply on the light glass;
               in dark mode it rides a small cream plate so the white never shows. */}
-          <span className="flex h-8 shrink-0 items-center overflow-hidden rounded-md sm:h-9 dark:bg-[#fffdf8] dark:px-1.5 dark:py-0.5">
+          <span className="flex h-8 shrink-0 items-center overflow-hidden rounded-md sm:h-9 dark:bg-[#fffdf8]">
             <video
               src="/nav-logo.mp4"
               className="h-full w-auto mix-blend-multiply"
@@ -133,8 +132,8 @@ export default function Layout() {
                 to={link.to}
                 className={`px-3 py-2 transition-colors ${
                   isActive(link.to)
-                    ? 'text-oxblood'
-                    : 'text-ink/80 hover:text-oxblood'
+                    ? 'text-oxblood dark:text-oxblood'
+                    : 'text-ink/80 hover:text-oxblood dark:text-white dark:hover:text-oxblood'
                 }`}
               >
                 {link.label}
@@ -151,7 +150,7 @@ export default function Layout() {
               to="/requests"
               aria-label={`${t.requestCart}${count > 0 ? ` (${count})` : ''}`}
               title={t.requestCart}
-              className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood dark:text-white dark:hover:text-oxblood"
             >
               <span className="material-symbols-outlined">list_alt</span>
               {count > 0 && (
@@ -165,11 +164,12 @@ export default function Layout() {
               to="/search"
               aria-label={t.nav.archive}
               title={t.nav.archive}
-              className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood dark:text-white dark:hover:text-oxblood"
             >
               <span className="material-symbols-outlined">search</span>
             </Link>
           )}
+          <ThemeToggle />
           <LanguageSwitcher />
           <button
             type="button"
@@ -202,13 +202,16 @@ export default function Layout() {
                       className={`block rounded-xl px-4 py-3 font-headline-md text-[17px] transition-colors ${
                         isActive(item.link)
                           ? 'bg-cream-surface text-oxblood'
-                          : 'text-ink hover:bg-cream-surface hover:text-oxblood'
+                          : 'text-ink hover:bg-cream-surface hover:text-oxblood dark:text-white dark:hover:text-oxblood'
                       }`}
                     >
                       {item.text}
                     </Link>
                   </li>
                 ))}
+                <li className="mt-1 border-t border-warm pt-1">
+                  <ThemeToggle withLabel />
+                </li>
               </ul>
             </motion.div>
           )}

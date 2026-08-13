@@ -73,43 +73,86 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Dark theme — "mocha": warm mid-brown neutrals (lifted well off black, not
-   near-black) with a terracotta/clay accent standing in for the oxblood, plus
-   brass and olive. The Home hero and the partner "logo loop" band keep their
-   light backgrounds (white-supplied artwork) — set locally. */
+/* Dark theme — "Deep parchment": a really-dark version of the warm light theme.
+   The cream ground is inverted to a deep warm near-black (#14110B), white surfaces
+   become dark browns, and the dark-brown ink becomes light cream text. Accent is
+   a softened vermillion (#C23A2E); a thin logo gold (#D8A860) still lines the
+   footer + About eyebrow. Home hero + partner "logo loop" band keep their light
+   backgrounds — set locally. */
 .dark {
-  --ink: #f2eadf;
-  --muted: #bbab97;
-  --line: #5e4b39;
-  --surface: #4c3a2c;
-  --leaf: #564332;
-  --straw: #423125;
-  --bg: #423125;
-  --sepia: #f0e2d0;
-  --oxblood: #ce7c5a;
-  --oxblood-dark: #b4623f;
+  --ink: #efe8d8;
+  --muted: #a99c84;
+  --line: #342c1e;
+  --surface: #1f1a12;
+  --leaf: #262016;
+  --straw: #14110b;
+  --bg: #14110b;
+  --sepia: #efe8d8;
+  --oxblood: #c23a2e;      /* softened vermillion accent */
+  --oxblood-dark: #a82e24; /* deeper red — hover */
 
-  --c-bg: 66 49 37;
-  --c-surface: 76 58 44;
-  --c-surface-2: 66 49 37;
-  --c-surface-3: 86 67 50;
-  --c-surface-4: 81 64 47;
-  --c-ink: 242 234 223;
-  --c-sepia: 240 226 208;
-  --c-muted: 187 171 151;
-  --c-line: 94 75 57;
-  --c-outline: 154 135 112;
-  --c-oxblood: 206 124 90;
-  --c-oxblood-dark: 180 98 63;
+  --c-bg: 20 17 11;
+  --c-surface: 31 26 18;
+  --c-surface-2: 25 21 16;
+  --c-surface-3: 38 32 22;
+  --c-surface-4: 34 29 20;
+  --c-ink: 239 232 216;
+  --c-sepia: 239 232 216;
+  --c-muted: 169 156 132;
+  --c-line: 52 44 30;
+  --c-outline: 74 63 44;
+  --c-oxblood: 194 58 46;      /* softened vermillion accent #C23A2E */
+  --c-oxblood-dark: 168 46 36;
 
-  --c-brass: 224 176 84;
-  --c-olive: 160 160 100;
-  --c-olive-soft: 81 64 47;
-  --c-gold-light: 224 176 84;
-  --c-on-secondary-fixed: 242 234 223;
-  --c-on-secondary-container: 242 234 223;
+  --c-brass: 216 168 96;       /* logo gold #D8A860 — thin footer line + About eyebrow */
+  --c-olive: 194 58 46;        /* secondary → red (icons, focus rings) */
+  --c-olive-soft: 38 32 22;    /* chip background (warm dark) */
+  --c-gold-light: 215 108 98;  /* lighter red — hovers/glows */
+  --c-on-secondary-fixed: 239 232 216;
+  --c-on-secondary-container: 239 232 216;
 
   color-scheme: dark;
+}
+
+/* Opt-out scope: forces the light palette for a subtree even under `.dark`.
+   Applied to components whose colors must never flip (request list, book card).
+   Re-declares every theme var to its :root (light) value; because these are set
+   on the element itself, its descendants inherit light values regardless of the
+   ancestor `.dark`. */
+.keep-light {
+  --oxblood: #8a1f1c;
+  --oxblood-dark: #6e1714;
+  --sepia: #5c4326;
+  --olive: #6b6a3a;
+  --brass: #d9a441;
+  --ink: #2f2418;
+  --muted: #7c6b52;
+  --line: #e7dcc7;
+  --surface: #ffffff;
+  --leaf: #f3e9d6;
+  --straw: #faf7f1;
+  --bg: #faf7f1;
+
+  --c-bg: 250 247 241;
+  --c-surface: 255 255 255;
+  --c-surface-2: 250 247 241;
+  --c-surface-3: 243 233 214;
+  --c-surface-4: 247 240 228;
+  --c-ink: 47 36 24;
+  --c-sepia: 92 67 38;
+  --c-muted: 124 107 82;
+  --c-line: 231 220 199;
+  --c-outline: 154 134 106;
+  --c-oxblood: 138 31 28;
+  --c-oxblood-dark: 110 23 20;
+  --c-brass: 217 164 65;
+  --c-olive: 107 106 58;
+  --c-olive-soft: 220 214 176;
+  --c-gold-light: 224 207 160;
+  --c-on-secondary-fixed: 51 50 15;
+  --c-on-secondary-container: 74 71 24;
+
+  color-scheme: light;
 }
 
 #root {
@@ -135,6 +178,15 @@ h1 {
 a {
   color: var(--oxblood);
 }
+
+/* Dark mode: the accent (oxblood) is a mid-tone red, so primary buttons need a
+   light label rather than following --straw (the dark ground). */
+.dark .bg-oxblood,
+.dark .bg-primary,
+.dark .hover\:bg-primary:hover {
+  color: #fff;
+}
+
 
 /* Partner marquee — continuous horizontal scroll. */
 @keyframes marquee {

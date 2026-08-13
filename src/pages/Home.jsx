@@ -71,7 +71,7 @@ function FeatureSection({ icon, eyebrow, title, intro, items, image, reverse, ca
         ? 'lg:mr-[calc(50%-50vw+3.5rem)]'
         : ''
   return (
-    <section className="w-full border-y border-warm bg-[#faf7f1] dark:bg-surface">
+    <section className="w-full border-y border-warm bg-[#faf7f1] dark:bg-straw">
       <div
         className={`mx-auto flex w-full max-w-container-max flex-col lg:min-h-[560px] lg:flex-row lg:gap-10 ${
           reverse ? 'lg:flex-row-reverse' : ''
@@ -132,13 +132,6 @@ export default function Home() {
             <p className="font-headline-md text-[26px] leading-snug tracking-tight text-ink sm:text-[30px] md:text-[34px] md:tracking-normal">
               {h.heroLead}
             </p>
-            <Link
-              to="/search"
-              className="mt-8 inline-flex items-center gap-2 self-center rounded-full bg-oxblood px-6 py-3 font-label-md text-label-md text-straw shadow-sm transition-colors hover:bg-maroon-dark md:self-start"
-            >
-              {h.heroCta}
-              <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
-            </Link>
           </div>
         </div>
       </section>
@@ -146,19 +139,18 @@ export default function Home() {
 
       {/* Partner marquee — the "logo loop" keeps its light band in both themes
           (partner logos are supplied on white). */}
-      <section className="w-full overflow-hidden border-t border-[#e7dcc7] bg-[#faf7f1] pb-7 pt-1">
-        <p className="eyebrow mb-5 text-center" style={{ color: '#d9a441' }}>{h.supportOf}</p>
+      <section className="keep-light w-full overflow-hidden border-t border-[#e7dcc7] bg-[#faf7f1] py-6">
         <div className="marquee-track">
           {[0, 1].map((g) => (
-            <div key={g} className="flex items-end gap-24 pr-24">
+            <div key={g} className="flex items-end gap-16 pr-16">
               {partners.map((p) => (
-                <div key={p.name} className="flex w-32 shrink-0 flex-col items-center gap-2 text-center">
-                  <div className="flex h-14 items-center justify-center">
+                <div key={p.name} className="flex w-36 shrink-0 flex-col items-center gap-2.5 text-center">
+                  <div className="flex h-11 items-center justify-center">
                     {p.logo ? (
                       <img
                         src={p.logo}
                         alt={p.name}
-                        className="max-h-14 w-auto max-w-[8rem] object-contain"
+                        className="max-h-11 w-auto max-w-[7rem] object-contain"
                       />
                     ) : (
                       <span className="font-headline-md text-[15px] leading-snug text-[#5c4326] line-clamp-3">
@@ -166,6 +158,7 @@ export default function Home() {
                       </span>
                     )}
                   </div>
+                  <span className="font-label-md text-label-md text-text-muted">{h.partnerRoles[p.role] || p.role}</span>
                 </div>
               ))}
             </div>
@@ -207,13 +200,13 @@ export default function Home() {
               ))}
             </div>
             <div className="p-4">
-              <button
-                type="button"
+              <Link
+                to="/requests"
                 className="flex w-full items-center justify-center gap-2 rounded-lg bg-oxblood py-2.5 font-label-md text-label-md text-straw transition-colors hover:bg-maroon-dark"
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>chat</span>
                 {h.search.requestWhatsApp}
-              </button>
+              </Link>
             </div>
           </div>
         }
@@ -270,20 +263,20 @@ export default function Home() {
             </div>
             <div className="p-5">
               <div className="flex gap-2">
-                <button
-                  type="button"
+                <Link
+                  to="/library"
                   className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-oxblood py-2 font-label-md text-label-md text-straw transition-colors hover:bg-maroon-dark"
                 >
                   <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>auto_stories</span>
                   {h.read.readBtn}
-                </button>
-                <button
-                  type="button"
+                </Link>
+                <Link
+                  to="/library"
                   className="flex flex-1 items-center justify-center gap-1 rounded-lg border border-oxblood py-2 font-label-md text-label-md text-oxblood transition-colors hover:bg-cream-surface"
                 >
                   <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>download</span>
                   {h.read.pdfBtn}
-                </button>
+                </Link>
               </div>
             </div>
           </div>

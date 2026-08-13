@@ -356,7 +356,7 @@ export default function Library() {
         open={Boolean(selected)}
         onClose={() => setSelected(null)}
         ariaLabel={selected?.title}
-        panelClassName="bg-surface-container-lowest rounded-xl shadow-lg max-w-5xl w-full max-h-[85vh] overflow-y-auto"
+        panelClassName="keep-light bg-surface-container-lowest rounded-xl shadow-lg max-w-5xl w-full max-h-[85vh] overflow-y-auto"
       >
         {selected && (
           <div className="flex flex-col gap-5 p-stack-md sm:flex-row">
