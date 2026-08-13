@@ -7,9 +7,9 @@ function getInitial() {
   } catch {
     /* ignore */
   }
-  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light'
+  // No saved choice → light. The OS preference is intentionally ignored so a
+  // first visit always opens light, matching the pre-paint script in index.html.
+  return 'light'
 }
 
 // `withLabel` renders a full-width menu row (icon + text) for the mobile

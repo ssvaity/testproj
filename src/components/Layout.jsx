@@ -60,6 +60,17 @@ export default function Layout() {
   // drives the Aceternity-style shrink, matching ViramTech's navbar.
   const [navHidden, setNavHidden] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  // The pill's padding is animated inline, so it can't come from a Tailwind
+  // breakpoint — track the viewport instead and use tighter padding on phones.
+  const [isCompact, setIsCompact] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 639px)').matches
+  )
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 639px)')
+    const onChange = (e) => setIsCompact(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
   const lastScrollY = useRef(0)
   useEffect(() => {
     const onScroll = () => {
@@ -83,7 +94,11 @@ export default function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Top navbar — floating glass pill, exact ViramTech dimensions (max-w 80rem,
-          shrinking to 64rem on scroll); hides on scroll-down, returns on scroll-up. */}
+          shrinking to 64rem on scroll); hides on scroll-down, returns on scroll-up.
+          `keep-light` pins the pill (and its dropdown) to the light palette in dark
+          mode so the logo video's white background blends into it — no plate needed.
+          It also goes fully opaque in dark mode: a translucent white over dark page
+          content would drag the video's multiply blend back down to grey. */}
       <motion.nav
         initial={false}
         animate={{
@@ -93,25 +108,29 @@ export default function Layout() {
           opacity: navHidden && !menuOpen ? 0 : 1,
           paddingTop: scrolled ? '0.5rem' : '0.75rem',
           paddingBottom: scrolled ? '0.5rem' : '0.75rem',
-          paddingLeft: scrolled ? '1.25rem' : '1.75rem',
-          paddingRight: scrolled ? '1.25rem' : '1.75rem',
+          paddingLeft: isCompact ? '0.875rem' : scrolled ? '1.25rem' : '1.75rem',
+          paddingRight: isCompact ? '0.875rem' : scrolled ? '1.25rem' : '1.75rem',
           boxShadow: scrolled ? '0 12px 32px rgba(0,0,0,0.12)' : '0 6px 20px rgba(0,0,0,0.08)',
         }}
         transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 200, damping: 50 }}
-        className="fixed inset-x-0 z-50 mx-auto flex w-[calc(100%-2rem)] items-center gap-8 rounded-full border border-warm/60 bg-surface/70 backdrop-blur-md supports-[backdrop-filter]:bg-surface/60"
+        className="keep-light fixed inset-x-0 z-50 mx-auto flex w-[calc(100%-2rem)] items-center gap-2 rounded-full border border-warm/60 bg-surface/70 backdrop-blur-md supports-[backdrop-filter]:bg-surface/60 dark:bg-surface sm:gap-6 lg:gap-8"
       >
         {/* Left: logo + wordmark */}
         <Link
           to="/"
           aria-label="Shrutsanjeevan"
-          className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3"
+          className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-3"
         >
-          {/* Logo video: white background dropped via multiply on the light glass;
-              in dark mode it rides a small cream plate so the white never shows. */}
-          <span className="flex h-8 shrink-0 items-center overflow-hidden rounded-md sm:h-9 dark:bg-[#fffdf8]">
+          {/* Logo video: white background dropped via multiply onto the glass,
+              which stays light in both themes. The source clip is 768×980 with
+              wide white margins (and a watermark in the bottom corner), so the
+              artwork — x 100–690, y 150–870 — is cropped to fill this box: scale
+              to 980/720 of the box height, then shift the 100px/150px offsets
+              back out of view. */}
+          <span className="relative block h-8 w-[26px] shrink-0 overflow-hidden rounded-md sm:h-9 sm:w-[29px]">
             <video
               src="/nav-logo.mp4"
-              className="h-full w-auto mix-blend-multiply"
+              className="absolute left-0 top-0 h-[136.1%] w-auto max-w-none -translate-x-[13.02%] -translate-y-[15.31%] mix-blend-multiply"
               autoPlay
               muted
               loop
@@ -119,7 +138,7 @@ export default function Layout() {
               aria-hidden="true"
             />
           </span>
-          <span className="whitespace-nowrap font-headline-lg text-[17px] leading-none text-sepia sm:text-[24px]">
+          <span className="truncate font-headline-lg text-[15px] leading-[1.35] text-sepia sm:text-[24px]">
             Shrutsanjeevan
           </span>
         </Link>
@@ -131,9 +150,7 @@ export default function Layout() {
               <Link
                 to={link.to}
                 className={`px-3 py-2 transition-colors ${
-                  isActive(link.to)
-                    ? 'text-oxblood dark:text-oxblood'
-                    : 'text-ink/80 hover:text-oxblood dark:text-white dark:hover:text-oxblood'
+                  isActive(link.to) ? 'text-oxblood' : 'text-ink/80 hover:text-oxblood'
                 }`}
               >
                 {link.label}
@@ -143,14 +160,14 @@ export default function Layout() {
         </ul>
 
         {/* Right: contextual archive/request icon, controls, mobile menu */}
-        <div className="flex flex-1 items-center justify-end gap-2">
+        <div className="flex shrink-0 items-center justify-end gap-0.5 sm:flex-1 sm:gap-2">
           {isArchivePage ? (
             // On the archive page the icon becomes the request list, badged with its count.
             <Link
               to="/requests"
               aria-label={`${t.requestCart}${count > 0 ? ` (${count})` : ''}`}
               title={t.requestCart}
-              className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood dark:text-white dark:hover:text-oxblood"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood"
             >
               <span className="material-symbols-outlined">list_alt</span>
               {count > 0 && (
@@ -164,12 +181,15 @@ export default function Layout() {
               to="/search"
               aria-label={t.nav.archive}
               title={t.nav.archive}
-              className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood dark:text-white dark:hover:text-oxblood"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-cream-surface hover:text-oxblood"
             >
               <span className="material-symbols-outlined">search</span>
             </Link>
           )}
-          <ThemeToggle />
+          {/* Desktop only — on mobile the theme toggle lives inside the menu. */}
+          <span className="hidden lg:block">
+            <ThemeToggle />
+          </span>
           <LanguageSwitcher />
           <button
             type="button"
@@ -191,7 +211,7 @@ export default function Layout() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={reduce ? { duration: 0 } : { duration: 0.18, ease: 'easeOut' }}
-              className="absolute left-0 right-0 top-full mt-3 origin-top overflow-hidden rounded-2xl border border-warm bg-surface/95 p-2 shadow-xl backdrop-blur-md lg:hidden"
+              className="absolute left-0 right-0 top-full mt-3 origin-top overflow-hidden rounded-2xl border border-warm bg-surface/95 p-2 shadow-xl backdrop-blur-md dark:bg-surface lg:hidden"
             >
               <ul className="flex flex-col">
                 {menuItems.map((item) => (
@@ -202,7 +222,7 @@ export default function Layout() {
                       className={`block rounded-xl px-4 py-3 font-headline-md text-[17px] transition-colors ${
                         isActive(item.link)
                           ? 'bg-cream-surface text-oxblood'
-                          : 'text-ink hover:bg-cream-surface hover:text-oxblood dark:text-white dark:hover:text-oxblood'
+                          : 'text-ink hover:bg-cream-surface hover:text-oxblood'
                       }`}
                     >
                       {item.text}
