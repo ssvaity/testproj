@@ -16,12 +16,18 @@
     />
     <title>Shrutsanjeevan</title>
     <script>
-      // Apply the saved theme before paint to avoid a flash. First visits always
-      // start in light mode — the OS preference is deliberately ignored.
+      // TEMPORARY: dark mode is switched off site-wide. The saved preference is
+      // left untouched in localStorage so restoring this block brings each
+      // visitor's own choice back.
+      //
+      // To restore dark mode:
+      //   1. swap the two lines below back for the commented-out original
+      //   2. un-comment the <ThemeToggle /> usages in src/components/Layout.jsx
       ;(function () {
         try {
-          var t = localStorage.getItem('theme')
-          document.documentElement.classList.toggle('dark', t === 'dark')
+          // var t = localStorage.getItem('theme')
+          // document.documentElement.classList.toggle('dark', t === 'dark')
+          document.documentElement.classList.remove('dark')
         } catch (e) {}
       })()
     </script>

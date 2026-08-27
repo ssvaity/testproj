@@ -5,7 +5,8 @@ import Footer from './Footer.jsx'
 import ChatWidget from './ChatWidget.jsx'
 import LanguageSwitcher from './LanguageSwitcher.jsx'
 import LanguageModal from './LanguageModal.jsx'
-import ThemeToggle from './ThemeToggle.jsx'
+// TEMPORARY: dark mode is off site-wide — see the note in index.html.
+// import ThemeToggle from './ThemeToggle.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
 
@@ -18,11 +19,12 @@ export default function Layout() {
   const isArchivePage = pathname.startsWith('/search')
   const reduce = useReducedMotion()
 
-  // Primary inline links shown on desktop. Archive is not here — it lives as an
-  // icon on the right (and swaps to the request list while on the archive page).
+  // Primary inline links shown on desktop. Archive also keeps its icon on the
+  // right, which swaps to the request list while on the archive page.
   const navLinks = [
     { to: '/', label: t.nav.home },
     { to: '/about', label: t.nav.about },
+    { to: '/search', label: t.nav.archive },
     { to: '/library', label: t.nav.library },
     { to: '/contact', label: t.nav.contact },
   ]
@@ -189,7 +191,7 @@ export default function Layout() {
           )}
           {/* Desktop only — on mobile the theme toggle lives inside the menu. */}
           <span className="hidden lg:block">
-            <ThemeToggle />
+            {/* TEMPORARY: dark-mode toggle hidden — <ThemeToggle /> */}
           </span>
           <LanguageSwitcher />
           <button
@@ -231,7 +233,7 @@ export default function Layout() {
                   </li>
                 ))}
                 <li className="mt-1 border-t border-warm pt-1">
-                  <ThemeToggle withLabel />
+                  {/* TEMPORARY: dark-mode toggle hidden — <ThemeToggle withLabel /> */}
                 </li>
               </ul>
             </motion.div>
