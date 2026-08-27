@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Footer from './Footer.jsx'
+import ChatWidget from './ChatWidget.jsx'
 import LanguageSwitcher from './LanguageSwitcher.jsx'
 import LanguageModal from './LanguageModal.jsx'
 import ThemeToggle from './ThemeToggle.jsx'
@@ -263,6 +264,9 @@ export default function Layout() {
 
       {/* First-visit language chooser */}
       <LanguageModal />
+
+      {/* Floating site guide */}
+      <ChatWidget />
     </div>
   )
 }
