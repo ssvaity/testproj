@@ -4,6 +4,8 @@ import { useCart } from '../context/CartContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
 import Dialog from '../components/Dialog.jsx'
 import { REQUEST_WHATSAPP, REQUEST_EMAIL } from '../config.js'
+import Seo from '../components/Seo.jsx'
+import { seo } from '../data/seo.js'
 
 // Builds the plain-text message the library receives.
 function buildMessage(items, name, phone, email, note) {
@@ -52,6 +54,7 @@ export default function Requests() {
 
   return (
     <div className="min-h-[calc(100vh-6rem)]">
+      <Seo {...seo.requests} />
       {/* Header */}
       <div className="mb-stack-md">
         <p className="eyebrow mb-2">{r.eyebrow}</p>

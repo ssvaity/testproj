@@ -1,4 +1,6 @@
 import { useLanguage } from '../context/LanguageContext.jsx'
+import Seo from '../components/Seo.jsx'
+import { seo } from '../data/seo.js'
 
 export default function About() {
   const { t } = useLanguage()
@@ -11,6 +13,7 @@ export default function About() {
 
   return (
     <>
+      <Seo {...seo.about} />
       {/* Hero */}
       <section className="mb-stack-lg">
         <p className="eyebrow mb-4">{a.eyebrow}</p>

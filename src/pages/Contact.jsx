@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import StringDivider from '../components/StringDivider.jsx'
+import Seo from '../components/Seo.jsx'
+import { seo } from '../data/seo.js'
 
 const offices = [
   {
@@ -76,6 +78,7 @@ export default function Contact() {
 
   return (
     <>
+      <Seo {...seo.contact} />
       {/* Page Header */}
       <div className="mb-stack-lg text-center">
         <p className="eyebrow mb-3">Write to the kendra</p>

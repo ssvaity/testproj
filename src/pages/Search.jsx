@@ -6,6 +6,8 @@ import { BOOKS_SHEET_CSV_URL } from '../config.js'
 import { LoaderOne } from '../components/Loader.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
+import Seo from '../components/Seo.jsx'
+import { seo } from '../data/seo.js'
 
 // Shared typography with the About page: Playfair serif titles + gold eyebrow.
 const serif = { fontFamily: "'Playfair Display', serif" }
@@ -220,6 +222,7 @@ export default function Search() {
 
   return (
     <>
+      <Seo {...seo.search} />
       <div
         className={
           hasSearched

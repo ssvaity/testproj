@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import Seo from '../components/Seo.jsx'
+import { seo } from '../data/seo.js'
 
 function Sources() {
   return (
@@ -135,6 +137,7 @@ function ScrollScrub() {
 export default function IntroDemo() {
   return (
     <>
+      <Seo {...seo.introDemo} />
       <div className="mb-stack-md text-center">
         <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-base">
           Intro Animation — Options

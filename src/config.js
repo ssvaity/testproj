@@ -3,6 +3,16 @@
 // Change the values below and save; no other code needs to change.
 // -----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
+// Public address of the live website — used to build canonical URLs, social
+// share tags and sitemap.xml. NO trailing slash.
+//
+// Change this the moment the site moves to its real domain: search engines use
+// canonical URLs to decide which address to list, so a wrong value here means
+// the wrong (or no) pages get indexed.
+// -----------------------------------------------------------------------------
+export const SITE_URL = 'https://shrutsanjeevan.org'
+
 // Where book requests (from the Search page cart) are delivered.
 // WhatsApp number: country code + number, DIGITS ONLY (no +, spaces or dashes).
 // Example: +91 75750 01083  ->  '917575001083'
