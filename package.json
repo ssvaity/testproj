@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/generate-seo-files.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
-    "sync": "node scripts/sync-sheet-to-supabase.mjs"
+    "sync": "node scripts/sync-sheet-to-supabase.mjs",
+    "seo:files": "node scripts/generate-seo-files.mjs"
   },
   "dependencies": {
     "@sanity/client": "^6.29.1",

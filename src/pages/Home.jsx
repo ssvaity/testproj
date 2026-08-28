@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import CountUp from '../components/CountUp.jsx'
 import { blobB, blobC } from '../data/blobs.js'
 import { useLanguage } from '../context/LanguageContext.jsx'
+import Seo from '../components/Seo.jsx'
+import { seo } from '../data/seo.js'
 
 const gurudevBlobs = [blobB, blobC]
 
@@ -111,6 +113,7 @@ export default function Home() {
   const h = t.home
   return (
     <>
+      <Seo {...seo.home} />
       {/* Hero — white background + brand logo on the left, hero lead text to its right. */}
       {/* First fold — hero grows to fill; the logo loop sits flush at the
           bottom of the viewport (no scroll needed to see it end). */}
@@ -128,6 +131,10 @@ export default function Home() {
           <div
             className="relative z-10 flex max-w-3xl flex-col px-margin-mobile py-stack-lg text-center [text-shadow:0_1px_8px_rgba(250,247,241,0.9)] md:ml-[44%] md:items-start md:pr-8 md:text-left md:[text-shadow:none] dark:[text-shadow:none]"
           >
+            {/* The visible title of this page is the logo image, which leaves the
+                page with no <h1> for search engines and screen readers. This
+                supplies one without changing the design. */}
+            <h1 className="sr-only">Shrutsanjeevan — {h.heroKicker}</h1>
             <p className="eyebrow mb-4 self-center md:self-start">{h.heroKicker}</p>
             <p className="font-headline-md text-[26px] leading-snug tracking-tight text-ink sm:text-[30px] md:text-[34px] md:tracking-normal">
               {h.heroLead}

@@ -7,6 +7,8 @@ import { trackDownload } from '../lib/analytics.js'
 import { incrementDownloadCount } from '../lib/downloadCounter.js'
 import DownloadCounter from '../components/DownloadCounter.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
+import Seo from '../components/Seo.jsx'
+import { seo } from '../data/seo.js'
 
 // Records a download in both Google Analytics and the live shared counter.
 // `count` lets a whole-book download tally all its chapters at once.
@@ -175,6 +177,7 @@ export default function Library() {
 
   return (
     <>
+      <Seo {...seo.library} />
       {/* Header */}
       <div className="mb-stack-md flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>

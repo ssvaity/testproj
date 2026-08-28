@@ -7,6 +7,7 @@ import Library from './pages/Library.jsx'
 import Contact from './pages/Contact.jsx'
 import Requests from './pages/Requests.jsx'
 import IntroDemo from './pages/IntroDemo.jsx'
+import NotFound from './pages/NotFound.jsx'
 
 export default function App() {
   return (
@@ -19,6 +20,8 @@ export default function App() {
         <Route path="contact" element={<Contact />} />
         <Route path="requests" element={<Requests />} />
         <Route path="intro-demo" element={<IntroDemo />} />
+        {/* Catch-all — must stay last. */}
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   )
